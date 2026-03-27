@@ -1,7 +1,7 @@
 {
   "functions": {
     "api/notion.js": {
-      "runtime": "@vercel/node"
+      "runtime": "edge"
     }
   }
 }
