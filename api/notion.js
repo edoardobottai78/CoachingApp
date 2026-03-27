@@ -1,47 +1,30 @@
-export const config = { runtime: 'edge' };
+export default async function handler(req, res) {
+  // CORS
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-const NOTION_TOKEN = process.env.NOTION_TOKEN;
-const NOTION_VERSION = '2022-06-28';
-
-export default async function handler(req) {
-  // CORS preflight
   if (req.method === 'OPTIONS') {
-    return new Response(null, {
-      status: 204,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type',
-      },
-    });
+    return res.status(204).end();
   }
 
-  const url = new URL(req.url);
-  const notionPath = url.searchParams.get('path'); // e.g. /v1/pages or /v1/databases/xxx/query
-
+  const notionPath = req.query.path;
   if (!notionPath) {
-    return new Response(JSON.stringify({ error: 'Missing path parameter' }), { status: 400 });
+    return res.status(400).json({ error: 'Missing path parameter' });
   }
 
-  const body = req.method !== 'GET' ? await req.text() : undefined;
+  const body = req.method !== 'GET' ? JSON.stringify(req.body) : undefined;
 
   const notionRes = await fetch(`https://api.notion.com${notionPath}`, {
     method: req.method,
     headers: {
-      'Authorization': `Bearer ${NOTION_TOKEN}`,
+      'Authorization': `Bearer ${process.env.NOTION_TOKEN}`,
       'Content-Type': 'application/json',
-      'Notion-Version': NOTION_VERSION,
+      'Notion-Version': '2022-06-28',
     },
     body,
   });
 
-  const data = await notionRes.text();
-
-  return new Response(data, {
-    status: notionRes.status,
-    headers: {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-    },
-  });
+  const data = await notionRes.json();
+  return res.status(notionRes.status).json(data);
 }
