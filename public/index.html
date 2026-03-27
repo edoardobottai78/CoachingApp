@@ -392,7 +392,7 @@ body {
   </div>
   <div class="scroll-body">
     <div class="eyebrow" style="margin-bottom:.5rem">Riepilogo serata</div>
-    <h2 class="hero" style="font-size:2rem;margin-bottom:16px">La tua <em>serata</em></h2>
+    <h2 class="hero" style="font-size:2rem">La tua <em>serata</em></h2>
     <div id="sum-cards"></div>
     <div id="hsum" style="display:none;margin-top:10px" class="card">
       <div class="clbl">Habits del giorno</div>
@@ -404,7 +404,7 @@ body {
       <div class="itxt" id="itxt"><div class="ald"><span></span><span></span><span></span></div></div>
     </div>
     <div class="sum-actions">
-      <button class="btn-primary" id="btn-save" onclick="saveNotion()">Salva su Notion →</button>
+      <button class="btn-primary" id="btn-save" onclick="copyForClaude()">📋 Copia per Claude →</button>
       <button class="btn-ghost" onclick="goScreen('home')">Scarta</button>
     </div>
     <div class="status-msg" id="save-st"></div>
@@ -454,6 +454,7 @@ body {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
 // ─── CONSTANTS ───────────────────────────────────────────
+const NOTION_TOKEN='IL_TUO_TOKEN_QUI';
 const JDS='1aadac0a-f6b2-8320-adc4-0767f76264b7';
 const HL=['Vitamins','Fotografia/Video','Reading','Allenamento','Stretching'];
 const HI={'Vitamins':'💊','Fotografia/Video':'📸','Reading':'📖','Allenamento':'🏋️','Stretching':'🧘'};
@@ -659,31 +660,36 @@ async function fetchInsight(){
   }catch{const el=document.getElementById('itxt');if(el)el.textContent='Non disponibile.';}
 }
 
-async function saveNotion(){
+function copyForClaude(){
   const btn=document.getElementById('btn-save');
   const st=document.getElementById('save-st');
-  btn.disabled=true;btn.textContent='Salvataggio…';
-  st.className='status-msg vis';st.textContent='Connessione a Notion…';
   const today=new Date();
   const ds=today.toISOString().split('T')[0];
   const nm=today.toLocaleDateString('it-IT',{day:'numeric',month:'long',year:'numeric'});
-  const mN=sd.mood?MM[sd.mood]:null;const rN=sd.rat?RM[sd.rat]:null;
-  let body='';
-  if(sd.refl)body+=`## Riflessione\n${sd.refl}\n\n`;
-  if(sd.hi)body+=`## Highlight del giorno\n${sd.hi}\n\n`;
-  if(sd.grat&&sd.grat.some(Boolean))body+=`## Gratitudine\n${sd.grat.filter(Boolean).map((g,i)=>`${i+1}. ${g}`).join('\n')}\n\n`;
-  if(sd.hab){const dn=HL.filter(h=>sd.hab[h]).map(h=>HIT[h]);const ms=HL.filter(h=>!sd.hab[h]).map(h=>HIT[h]);body+=`## Habits\n`;if(dn.length)body+=`✓ ${dn.join(', ')}\n`;if(ms.length)body+=`✗ ${ms.join(', ')}\n`;body+='\n';}
-  if(sd.air)body+=`## Riflessione AI\n${sd.air}`;
-  const habProps=sd.hab?HL.map(h=>`- ${h}: ${sd.hab[h]?'true':'false'}`).join('\n'):'';
-  const prompt=`Hai accesso al database Notion Daily Journal (data source ID: ${JDS}).\nCrea una nuova pagina con queste proprietà:\n- Name: "${nm}"\n- Date of Entry: "${ds}"\n- Mood: ${mN?`["${mN}"]`:'null'}\n- Rate The Day: ${rN?`"${rN}"`:'null'}\n${habProps?`Habits (proprietà checkbox, nomi esatti):\n${habProps}\n`:''}- Body:\n"""\n${body}\n"""\nUsa notion-create-pages con parent data_source_id: ${JDS}.\nRispondi solo: SAVED_OK`;
-  try{
-    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,mcp_servers:[{type:'url',url:'https://mcp.notion.com/mcp',name:'notion-mcp'}],messages:[{role:'user',content:prompt}]})});
-    const d=await r.json();
-    const allTxt=d.content.filter(b=>b.type==='text').map(b=>b.text).join('');
-    const toolUsed=d.content.some(b=>b.type==='mcp_tool_use');
-    if(allTxt.includes('SAVED_OK')||toolUsed){saveStreakDay();renderStreak();st.className='status-msg vis ok';st.textContent='✓ Salvato nel Daily Journal su Notion';btn.textContent='Salvato ✓';}
-    else throw new Error();
-  }catch{st.className='status-msg vis err';st.textContent='Errore. Riprova.';btn.disabled=false;btn.textContent='Salva su Notion →';}
+
+  let text='SALVA_JOURNAL\n';
+  text+='Data: '+nm+' ('+ds+')\n';
+  if(sd.mood) text+='Mood: '+MM[sd.mood]+'\n';
+  if(sd.rat)  text+='Rating: '+RM[sd.rat]+'\n';
+  if(sd.refl) text+='Riflessione: '+sd.refl+'\n';
+  if(sd.hi)   text+='Highlight: '+sd.hi+'\n';
+  if(sd.grat&&sd.grat.some(Boolean)) text+='Gratitudine: '+sd.grat.filter(Boolean).join(' | ')+'\n';
+  if(sd.hab){
+    const dn=HL.filter(h=>sd.hab[h]).map(h=>HIT[h]);
+    const ms=HL.filter(h=>!sd.hab[h]).map(h=>HIT[h]);
+    if(dn.length) text+='Habits OK: '+dn.join(', ')+'\n';
+    if(ms.length) text+='Habits miss: '+ms.join(', ')+'\n';
+  }
+  if(sd.air) text+='Riflessione AI: '+sd.air+'\n';
+
+  navigator.clipboard.writeText(text).then(()=>{
+    saveStreakDay();renderStreak();
+    btn.textContent='✓ Copiato!';
+    st.className='status-msg vis ok';
+    st.textContent='Incolla questo testo in chat con Claude e lui lo salverà su Notion 🌙';
+  }).catch(()=>{
+    window.prompt('Copia questo testo e incollalo in chat con Claude:',text);
+  });
 }
 
 // ─── WEEKLY ──────────────────────────────────────────────
@@ -692,15 +698,26 @@ async function loadWeek(){
   wc.innerHTML='<div class="ald" style="justify-content:center;padding:2rem 0"><span></span><span></span><span></span></div>';
   const startOfWeek=new Date();startOfWeek.setDate(startOfWeek.getDate()-6);
   const startStr=startOfWeek.toISOString().split('T')[0];
-  const prompt=`Hai accesso al database Notion Daily Journal (data source ID: ${JDS}).\nRecupera entries degli ultimi 7 giorni (da ${startStr}).\nRispondi SOLO con JSON array:\n[{"date":"2026-03-25","name":"25 marzo","mood":"😊","rating":4,"snippet":"testo..."},...]\nSe nessuna entry: []`;
   try{
-    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,mcp_servers:[{type:'url',url:'https://mcp.notion.com/mcp',name:'notion-mcp'}],messages:[{role:'user',content:prompt}]})});
+    const r=await fetch('https://api.notion.com/v1/databases/'+JDS+'/query',{
+      method:'POST',
+      headers:{'Authorization':'Bearer '+NOTION_TOKEN,'Content-Type':'application/json','Notion-Version':'2022-06-28'},
+      body:JSON.stringify({filter:{property:'Date of Entry',date:{on_or_after:startStr}},sorts:[{property:'Date of Entry',direction:'ascending'}]})
+    });
     const d=await r.json();
-    const allTxt=d.content.filter(b=>b.type==='text').map(b=>b.text).join('');
-    let entries=[];
-    try{const m=allTxt.replace(/```json|```/g,'').trim().match(/\[[\s\S]*\]/);if(m)entries=JSON.parse(m[0]);}catch{}
+    const entries=(d.results||[]).map(p=>{
+      const props=p.properties;
+      const dateVal=props['Date of Entry']?.date?.start||'';
+      const moodArr=props['Mood']?.multi_select||[];
+      const moodRaw=moodArr[0]?.name||'';
+      const ratingRaw=props['Rate The Day']?.select?.name||'';
+      const ratingNum={'⭐':1,'⭐⭐':2,'⭐⭐⭐':3,'⭐⭐⭐⭐':4,'⭐⭐⭐⭐⭐':5}[ratingRaw]||0;
+      const titleArr=props['Name']?.title||[];
+      const nameStr=titleArr.map(t=>t.plain_text).join('')||dateVal;
+      return {date:dateVal,name:nameStr,mood:moodRaw,rating:ratingNum,snippet:''};
+    });
     renderWeek(entries,startOfWeek);
-  }catch{wc.innerHTML='<p style="font-family:var(--fd);font-style:italic;color:var(--ink-s)">Errore caricamento.</p>';}
+  }catch(e){wc.innerHTML='<p style="font-family:var(--fd);font-style:italic;color:var(--ink-s)">Errore caricamento: '+e.message+'</p>';}
 }
 
 function moodToEmoji(m){if(!m)return'';if(m.includes('Happy'))return'😄';if(m.includes('Excited'))return'😊';if(m.includes('Neutral'))return'😐';if(m.includes('Sad'))return'☹️';if(m.includes('Angry'))return'😠';if(m.includes('Anxious'))return'😰';return m.split(' ')[0]||'';}
@@ -765,22 +782,36 @@ async function loadExportPreview(sm){
   document.getElementById('btn-pdf').disabled=true;
   const prev=document.getElementById('exp-prev');prev.style.display='block';
   prev.innerHTML='<div class="ald" style="justify-content:center"><span></span><span></span><span></span></div>';
-  const s=new Date(sm.year,sm.month,1).toISOString().split('T')[0];
-  const e=new Date(sm.year,sm.month+1,0).toISOString().split('T')[0];
+  const startDate=new Date(sm.year,sm.month,1).toISOString().split('T')[0];
+  const endDate=new Date(sm.year,sm.month+1,0).toISOString().split('T')[0];
   const mname=new Date(sm.year,sm.month,1).toLocaleDateString('it-IT',{month:'long',year:'numeric'});
-  const prompt=`Database Notion Daily Journal (ID: ${JDS}).\nRecupera entries di ${mname} (da ${s} a ${e}).\nJSON:\n{"month":"${mname}","count":N,"avgRating":N,"topMood":"...","entries":[{"date":"...","name":"...","mood":"...","rating":N,"content":"..."}]}\nSe nessuna entry: entries vuoto.`;
   try{
-    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,mcp_servers:[{type:'url',url:'https://mcp.notion.com/mcp',name:'notion-mcp'}],messages:[{role:'user',content:prompt}]})});
-    const d=await r.json();const allTxt=d.content.filter(b=>b.type==='text').map(b=>b.text).join('');
-    let data={count:0,entries:[]};
-    try{const m=allTxt.replace(/```json|```/g,'').trim().match(/\{[\s\S]*\}/);if(m)data=JSON.parse(m[0]);}catch{}
-    exportEntries=data.entries||[];
-    prev.innerHTML=`<h3 style="font-family:var(--fd);font-size:1.1rem;font-weight:400;margin-bottom:10px">${data.month||mname}</h3>
-    <div class="exp-row"><span class="exp-lbl">Sessioni</span><span class="exp-val">${data.count||exportEntries.length}</span></div>
-    <div class="exp-row"><span class="exp-lbl">Rating medio</span><span class="exp-val">${data.avgRating?'★'.repeat(Math.round(data.avgRating)):'—'}</span></div>
-    <div class="exp-row"><span class="exp-lbl">Mood prevalente</span><span class="exp-val">${data.topMood||'—'}</span></div>`;
-    document.getElementById('btn-pdf').disabled=exportEntries.length===0;
-  }catch{prev.innerHTML='<p style="color:var(--ink-s);font-size:.85rem">Errore caricamento.</p>';}
+    const r=await fetch('https://api.notion.com/v1/databases/'+JDS+'/query',{
+      method:'POST',
+      headers:{'Authorization':'Bearer '+NOTION_TOKEN,'Content-Type':'application/json','Notion-Version':'2022-06-28'},
+      body:JSON.stringify({filter:{and:[{property:'Date of Entry',date:{on_or_after:startDate}},{property:'Date of Entry',date:{on_or_before:endDate}}]},sorts:[{property:'Date of Entry',direction:'ascending'}]})
+    });
+    const d=await r.json();
+    exportEntries=(d.results||[]).map(p=>{
+      const props=p.properties;
+      const dateVal=props['Date of Entry']?.date?.start||'';
+      const moodArr=props['Mood']?.multi_select||[];
+      const moodRaw=moodArr[0]?.name||'';
+      const ratingRaw=props['Rate The Day']?.select?.name||'';
+      const ratingNum={'⭐':1,'⭐⭐':2,'⭐⭐⭐':3,'⭐⭐⭐⭐':4,'⭐⭐⭐⭐⭐':5}[ratingRaw]||0;
+      const titleArr=props['Name']?.title||[];
+      return {date:dateVal,name:titleArr.map(t=>t.plain_text).join('')||dateVal,mood:moodRaw,rating:ratingNum,content:''};
+    });
+    const count=exportEntries.length;
+    const avgR=count?exportEntries.filter(e=>e.rating).reduce((a,b)=>a+b.rating,0)/(exportEntries.filter(e=>e.rating).length||1):0;
+    const mc={};exportEntries.forEach(e=>{if(e.mood)mc[e.mood]=(mc[e.mood]||0)+1;});
+    const topMood=Object.entries(mc).sort((a,b)=>b[1]-a[1])[0];
+    prev.innerHTML=`<h3 style="font-family:var(--fd);font-size:1.1rem;font-weight:400;margin-bottom:10px">${mname}</h3>
+    <div class="exp-row"><span class="exp-lbl">Sessioni</span><span class="exp-val">${count}</span></div>
+    <div class="exp-row"><span class="exp-lbl">Rating medio</span><span class="exp-val">${avgR?'★'.repeat(Math.round(avgR)):'—'}</span></div>
+    <div class="exp-row"><span class="exp-lbl">Mood prevalente</span><span class="exp-val">${topMood?topMood[0]:'—'}</span></div>`;
+    document.getElementById('btn-pdf').disabled=count===0;
+  }catch(e){prev.innerHTML='<p style="color:var(--ink-s);font-size:.85rem">Errore: '+e.message+'</p>';}
 }
 
 async function generatePDF(){
@@ -839,7 +870,6 @@ async function generatePDF(){
 document.getElementById('hdate').textContent=new Date().toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
 renderStreak();
 
-// Service Worker registration
 if('serviceWorker' in navigator){
   const swCode=`
 const CACHE='er-v1';
