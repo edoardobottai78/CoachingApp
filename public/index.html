@@ -174,17 +174,28 @@ body {
 .jta::placeholder { color: var(--ink-s); }
 
 /* ── MOOD ── */
-.mood-g { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
+.mood-g { display: grid; grid-template-columns: repeat(3,1fr); gap: 7px; }
 .mbtn {
-  border: 0.5px solid var(--line); border-radius: 12px; padding: 12px 8px;
+  border: 0.5px solid var(--line); border-radius: 10px; padding: 9px 6px;
   background: var(--bg-w); cursor: pointer; text-align: center;
-  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
   -webkit-appearance: none; transition: all .15s;
 }
 .mbtn:active, .mbtn.sel { border-color: var(--gold); background: var(--gold-p); }
 .mbtn.sel { border-width: 1.5px; }
-.mem { font-size: 1.6rem; }
+.mem { font-size: 1.35rem; }
 .mlb { font-size: 10px; color: var(--ink-m); }
+/* word-mood grid */
+.mood-words { display: grid; grid-template-columns: repeat(3,1fr); gap: 6px; margin-bottom: 8px; }
+.mword {
+  border: 0.5px solid var(--line); border-radius: 8px; padding: 8px 4px;
+  background: var(--bg-w); cursor: pointer; text-align: center;
+  font-size: 12px; font-weight: 400; color: var(--ink-m);
+  -webkit-appearance: none; transition: all .15s; line-height: 1.2;
+}
+.mword:active, .mword.sel { border-color: var(--gold); background: var(--gold-p); color: var(--ink); font-weight: 500; }
+.mword.sel { border-width: 1.5px; }
+.mood-section-lbl { font-size: 9px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-s); margin: 10px 0 5px; }
 
 /* ── RATING ── */
 .rrow { display: flex; gap: 4px; justify-content: flex-start; padding: 4px 0; }
@@ -392,7 +403,7 @@ body {
   </div>
   <div class="scroll-body">
     <div class="eyebrow" style="margin-bottom:.5rem">Riepilogo serata</div>
-    <h2 class="hero" style="font-size:2rem">La tua <em>serata</em></h2>
+    <h2 class="hero" style="font-size:2rem;margin-bottom:16px">La tua <em>serata</em></h2>
     <div id="sum-cards"></div>
     <div id="hsum" style="display:none;margin-top:10px" class="card">
       <div class="clbl">Habits del giorno</div>
@@ -454,7 +465,6 @@ body {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
 // ─── CONSTANTS ───────────────────────────────────────────
-const NOTION_TOKEN='IL_TUO_TOKEN_QUI';
 const JDS='1aadac0a-f6b2-8320-adc4-0767f76264b7';
 const HL=['Vitamins','Fotografia/Video','Reading','Allenamento','Stretching'];
 const HI={'Vitamins':'💊','Fotografia/Video':'📸','Reading':'📖','Allenamento':'🏋️','Stretching':'🧘'};
@@ -462,6 +472,21 @@ const HIT={'Vitamins':'Vitamins','Fotografia/Video':'Fotografia/Video','Reading'
 const MM={'😄':'😄 Happy','☹️':'☹️ Sad','😠':'😠 Angry','😊':'😊 Excited','😐':'😐 Neutral','😰':'😰Anxious'};
 const ML={'😄':'Felice','☹️':'Triste','😠':'Arrabbiato','😊':'Entusiasta','😐':'Neutro','😰':'Ansioso'};
 const RM={1:'⭐',2:'⭐⭐',3:'⭐⭐⭐',4:'⭐⭐⭐⭐',5:'⭐⭐⭐⭐⭐'};
+
+// Full word mood list from journal book
+const MOOD_WORDS = [
+  {w:'Positive',g:'+'},{w:'Happy',g:'+'},{w:'Hopeful',g:'+'},{w:'Glad',g:'+'},{w:'Excited',g:'+'},{w:'Inspired',g:'+'},
+  {w:'Energetic',g:'+'},{w:'Confident',g:'+'},{w:'Grateful',g:'+'},{w:'Content',g:'+'},{w:'Calm',g:'+'},{w:'Strong',g:'+'},
+  {w:'Determined',g:'+'},{w:'Alive',g:'+'},{w:'Relieved',g:'+'},
+  {w:'Stressed',g:'-'},{w:'Nervous',g:'-'},{w:'Tense',g:'-'},{w:'Anxious',g:'-'},{w:'Worried',g:'-'},{w:'Insecure',g:'-'},
+  {w:'Confused',g:'-'},{w:'Bored',g:'-'},{w:'Tired',g:'-'},{w:'Hurt',g:'-'},{w:'Angry',g:'-'},{w:'Irritated',g:'-'},
+  {w:'Disappointed',g:'-'},{w:'Negative',g:'-'},{w:'Annoyed',g:'-'},{w:'Frustrated',g:'-'},{w:'Furious',g:'-'},
+  {w:'Unhappy',g:'-'},{w:'Regretful',g:'-'},{w:'Lonely',g:'-'},{w:'Low',g:'-'},{w:'Restless',g:'-'},
+  {w:'Overwhelmed',g:'-'},{w:'Sad',g:'-'},{w:'Scared',g:'-'},{w:'Trapped',g:'-'},{w:'Guilty',g:'-'},
+  {w:'Bitter',g:'-'},{w:'Shocked',g:'-'},{w:'Unsure',g:'-'},{w:'Surprised',g:'~'},{w:'Neutral',g:'~'},
+  {w:'Proud',g:'+'},
+];
+
 const PR={
   refl:['Cos\'è rimasto con te di questa giornata?','Cosa hai imparato su te stesso oggi?','Quale momento ti ha sorpreso?','Se potessi rivivere un momento di oggi, quale sarebbe?','Cosa ti ha dato più energia? Cosa te l\'ha tolta?','C\'è qualcosa che avresti fatto diversamente?','Qual è stata la conversazione più significativa?','Come ti senti rispetto al tuo percorso?'],
   hi:['Qual è stato il momento migliore di oggi?','Cosa ti ha fatto sorridere oggi?','Qual è stata la tua piccola vittoria?','Cosa hai fatto oggi di cui sei soddisfatto?','Chi o cosa ti ha dato forza oggi?'],
@@ -469,6 +494,43 @@ const PR={
   mg:['Una cosa per cui sei grato oggi','Cosa hai avuto oggi che non dai per scontato?','Chi ti ha supportato di recente?']
 };
 function gp(p){return p[new Date().getDate()%p.length];}
+
+// Biweekly deep reflection: rotates every 14 days among 3 exercises
+const DEEP_REFLECTIONS = [
+  {
+    id:'relationships',
+    lbl:'Riflessione profonda',
+    title:'Rifletti sulle tue relazioni',
+    q:'Pensa alle relazioni che hai avuto nella tua vita. Come ti hanno influenzato? Cosa hai imparato da ciascuna?',
+    placeholder:'Le relazioni che mi hanno formato di più…'
+  },
+  {
+    id:'stress_bucket',
+    lbl:'Riflessione profonda',
+    title:'Il tuo secchio dello stress',
+    q:'Elenca tutto ciò che ti causa stress. Poi: cosa ti aiuta a svuotare il secchio? Come potresti reagire in modo più positivo?',
+    placeholder:'Cosa mi riempie il secchio… cosa lo svuota…'
+  },
+  {
+    id:'missing',
+    lbl:'Riflessione profonda',
+    title:'Cosa manca nella tua vita?',
+    q:'Potrebbe essere senso di scopo, passione, significato, divertimento o avventura. Cosa potresti fare per trovarne di più? Cosa ti trattiene?',
+    placeholder:'Ciò che sento mancare…'
+  }
+];
+
+function getBiweeklyDeepReflection() {
+  const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(),0,0)) / 86400000);
+  const period = Math.floor(dayOfYear / 14);
+  return DEEP_REFLECTIONS[period % DEEP_REFLECTIONS.length];
+}
+
+// Check if today is a biweekly deep reflection day (every 14 days starting from day 1 of year)
+function isBiweeklyDay() {
+  const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(),0,0)) / 86400000);
+  return dayOfYear % 14 === 0;
+}
 
 const STEPS={
   reflection:[
@@ -536,6 +598,13 @@ function selM(el){
 // ─── SESSION ─────────────────────────────────────────────
 function startSession(){
   steps=STEPS[selM_].map(s=>({...s,q:typeof s.q==='function'?s.q():s.q}));
+  // Inject biweekly deep reflection after the first reflection step
+  if(isBiweeklyDay()){
+    const dr=getBiweeklyDeepReflection();
+    const deepStep={t:'deep',id:'deep_'+dr.id,lbl:dr.lbl,q:dr.q,title:dr.title,placeholder:dr.placeholder};
+    const reflIdx=steps.findIndex(s=>s.id==='refl');
+    steps.splice(reflIdx>=0?reflIdx+1:1,0,deepStep);
+  }
   step=0;sd={mode:selM_,date:new Date(),hab:{}};
   document.getElementById('slbl').textContent=selM_==='reflection'?'Riflessione':selM_==='mindfulness'?'Mindfulness':'Gratitudine';
   goScreen('session');renderStep();
@@ -554,9 +623,24 @@ function renderStep(){
     bl.innerHTML=`<div class="tlbl">${s.lbl}</div><div class="q">${s.q}</div>
     <textarea class="jta" id="f-${s.id}" placeholder="Scrivi qui…" rows="5">${sd[s.id]||''}</textarea>`;
   } else if(s.t==='mood'){
-    const ms=['😄','😊','😐','☹️','😠','😰'];
-    bl.innerHTML=`<div class="tlbl">${s.lbl}</div><div class="q">${s.q}</div>
-    <div class="mood-g">${ms.map(m=>`<button class="mbtn ${sd.mood===m?'sel':''}" onclick="pickMood('${m}',this)"><span class="mem">${m}</span><span class="mlb">${ML[m]}</span></button>`).join('')}</div>`;
+    const pos=MOOD_WORDS.filter(m=>m.g==='+');
+    const neg=MOOD_WORDS.filter(m=>m.g==='-');
+    const neu=MOOD_WORDS.filter(m=>m.g==='~');
+    const sel=sd.moods||[];
+    const wordBtn=(m)=>`<button class="mword ${sel.includes(m.w)?'sel':''}" onclick="toggleMoodWord('${m.w}',this)">${m.w}</button>`;
+    bl.innerHTML=`<div class="tlbl">${s.lbl}</div><div class="q" style="font-size:1.4rem">${s.q}</div>
+    <p style="font-size:12px;color:var(--ink-s);margin-bottom:8px;font-family:var(--fd);font-style:italic">Seleziona tutto ciò che senti (anche più di uno)</p>
+    <div class="mood-section-lbl">✦ Positivo</div>
+    <div class="mood-words">${pos.map(wordBtn).join('')}</div>
+    <div class="mood-section-lbl">— Neutro / misto</div>
+    <div class="mood-words">${neu.map(wordBtn).join('')}</div>
+    <div class="mood-section-lbl">↓ Difficile</div>
+    <div class="mood-words">${neg.map(wordBtn).join('')}</div>`;
+  } else if(s.t==='deep'){
+    bl.innerHTML=`<div class="tlbl" style="color:var(--ink-m)">${s.lbl} · ogni 2 settimane</div>
+    <div class="q" style="font-size:1.35rem">${s.title}</div>
+    <p style="font-family:var(--fd);font-size:.95rem;font-style:italic;color:var(--ink-m);margin-bottom:14px;line-height:1.6">${s.q}</p>
+    <textarea class="jta" id="f-${s.id}" placeholder="${s.placeholder}" rows="6">${sd[s.id]||''}</textarea>`;
   } else if(s.t==='rat'){
     const cur=sd.rat||0;
     bl.innerHTML=`<div class="tlbl">${s.lbl}</div><div class="q">${s.q}</div>
@@ -582,7 +666,13 @@ function renderStep(){
   body.scrollTop=0;
 }
 
-function pickMood(m,el){document.querySelectorAll('.mbtn').forEach(b=>b.classList.remove('sel'));el.classList.add('sel');sd.mood=m;}
+function toggleMoodWord(w,el){
+  sd.moods=sd.moods||[];
+  if(sd.moods.includes(w)){sd.moods=sd.moods.filter(x=>x!==w);el.classList.remove('sel');}
+  else{sd.moods.push(w);el.classList.add('sel');}
+  // also set legacy sd.mood to first selected for backwards compat
+  sd.mood=sd.moods[0]||'';
+}
 function setRat(n){sd.rat=n;document.querySelectorAll('.sbtn').forEach(b=>b.classList.toggle('lit',parseInt(b.dataset.s)<=n));}
 function togH(h,el){sd.hab=sd.hab||{};sd.hab[h]=!sd.hab[h];el.classList.toggle('done',sd.hab[h]);el.querySelector('.hchk').textContent=sd.hab[h]?'✓':'';}
 
@@ -616,18 +706,22 @@ async function fetchAI(){
 
 function buildCtx(){
   const p=[];
-  if(sd.mood)p.push('Umore: '+(ML[sd.mood]||sd.mood));
+  if(sd.moods&&sd.moods.length) p.push('Umore: '+sd.moods.join(', '));
+  else if(sd.mood) p.push('Umore: '+sd.mood);
   if(sd.refl)p.push('Riflessione: "'+sd.refl+'"');
   if(sd.hi)p.push('Highlight: "'+sd.hi+'"');
   if(sd.grat&&sd.grat.some(Boolean))p.push('Gratitudine: '+sd.grat.filter(Boolean).join(', '));
   if(sd.rat)p.push('Voto: '+sd.rat+'/5');
   if(sd.hab){const dn=HL.filter(h=>sd.hab[h]).map(h=>HIT[h]);const ms=HL.filter(h=>!sd.hab[h]).map(h=>HIT[h]);if(dn.length)p.push('Habit OK: '+dn.join(', '));if(ms.length)p.push('Habit miss: '+ms.join(', '));}
+  // deep reflections
+  const deepKeys=Object.keys(sd).filter(k=>k.startsWith('deep_'));
+  deepKeys.forEach(k=>{if(sd[k])p.push('Riflessione profonda ('+k.replace('deep_','')+'):\n"'+sd[k]+'"');});
   return p.join('\n')||'Nessun dato';
 }
 
 function saveSd(){
   const s=steps[step];
-  if(s.t==='ta'){const el=document.getElementById('f-'+s.id);if(el)sd[s.id]=el.value.trim();}
+  if(s.t==='ta'||s.t==='deep'){const el=document.getElementById('f-'+s.id);if(el)sd[s.id]=el.value.trim();}
   else if(s.t==='grat')sd.grat=[1,2,3].map(n=>{const el=document.getElementById('g-'+n);return el?el.value.trim():'';});
 }
 function nextStep(){saveSd();if(step<steps.length-1){step++;renderStep();}else showSum();}
@@ -669,7 +763,8 @@ function copyForClaude(){
 
   let text='SALVA_JOURNAL\n';
   text+='Data: '+nm+' ('+ds+')\n';
-  if(sd.mood) text+='Mood: '+MM[sd.mood]+'\n';
+  if(sd.moods&&sd.moods.length) text+='Mood: '+sd.moods.join(', ')+'\n';
+  else if(sd.mood) text+='Mood: '+sd.mood+'\n';
   if(sd.rat)  text+='Rating: '+RM[sd.rat]+'\n';
   if(sd.refl) text+='Riflessione: '+sd.refl+'\n';
   if(sd.hi)   text+='Highlight: '+sd.hi+'\n';
@@ -680,15 +775,17 @@ function copyForClaude(){
     if(dn.length) text+='Habits OK: '+dn.join(', ')+'\n';
     if(ms.length) text+='Habits miss: '+ms.join(', ')+'\n';
   }
+  const deepKeys=Object.keys(sd).filter(k=>k.startsWith('deep_'));
+  deepKeys.forEach(k=>{if(sd[k])text+='Riflessione profonda ('+k.replace('deep_','')+'):\n'+sd[k]+'\n';});
   if(sd.air) text+='Riflessione AI: '+sd.air+'\n';
 
   navigator.clipboard.writeText(text).then(()=>{
     saveStreakDay();renderStreak();
     btn.textContent='✓ Copiato!';
     st.className='status-msg vis ok';
-    st.textContent='Incolla questo testo in chat con Claude e lui lo salverà su Notion 🌙';
+    st.textContent='Incolla in chat con Claude → lui salva su Notion 🌙';
   }).catch(()=>{
-    window.prompt('Copia questo testo e incollalo in chat con Claude:',text);
+    window.prompt('Copia e incolla in chat con Claude:',text);
   });
 }
 
@@ -698,26 +795,15 @@ async function loadWeek(){
   wc.innerHTML='<div class="ald" style="justify-content:center;padding:2rem 0"><span></span><span></span><span></span></div>';
   const startOfWeek=new Date();startOfWeek.setDate(startOfWeek.getDate()-6);
   const startStr=startOfWeek.toISOString().split('T')[0];
+  const prompt=`Hai accesso al database Notion Daily Journal (data source ID: ${JDS}).\nRecupera entries degli ultimi 7 giorni (da ${startStr}).\nRispondi SOLO con JSON array:\n[{"date":"2026-03-25","name":"25 marzo","mood":"😊","rating":4,"snippet":"testo..."},...]\nSe nessuna entry: []`;
   try{
-    const r=await fetch('https://api.notion.com/v1/databases/'+JDS+'/query',{
-      method:'POST',
-      headers:{'Authorization':'Bearer '+NOTION_TOKEN,'Content-Type':'application/json','Notion-Version':'2022-06-28'},
-      body:JSON.stringify({filter:{property:'Date of Entry',date:{on_or_after:startStr}},sorts:[{property:'Date of Entry',direction:'ascending'}]})
-    });
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,mcp_servers:[{type:'url',url:'https://mcp.notion.com/mcp',name:'notion-mcp'}],messages:[{role:'user',content:prompt}]})});
     const d=await r.json();
-    const entries=(d.results||[]).map(p=>{
-      const props=p.properties;
-      const dateVal=props['Date of Entry']?.date?.start||'';
-      const moodArr=props['Mood']?.multi_select||[];
-      const moodRaw=moodArr[0]?.name||'';
-      const ratingRaw=props['Rate The Day']?.select?.name||'';
-      const ratingNum={'⭐':1,'⭐⭐':2,'⭐⭐⭐':3,'⭐⭐⭐⭐':4,'⭐⭐⭐⭐⭐':5}[ratingRaw]||0;
-      const titleArr=props['Name']?.title||[];
-      const nameStr=titleArr.map(t=>t.plain_text).join('')||dateVal;
-      return {date:dateVal,name:nameStr,mood:moodRaw,rating:ratingNum,snippet:''};
-    });
+    const allTxt=d.content.filter(b=>b.type==='text').map(b=>b.text).join('');
+    let entries=[];
+    try{const m=allTxt.replace(/```json|```/g,'').trim().match(/\[[\s\S]*\]/);if(m)entries=JSON.parse(m[0]);}catch{}
     renderWeek(entries,startOfWeek);
-  }catch(e){wc.innerHTML='<p style="font-family:var(--fd);font-style:italic;color:var(--ink-s)">Errore caricamento: '+e.message+'</p>';}
+  }catch{wc.innerHTML='<p style="font-family:var(--fd);font-style:italic;color:var(--ink-s)">Errore caricamento.</p>';}
 }
 
 function moodToEmoji(m){if(!m)return'';if(m.includes('Happy'))return'😄';if(m.includes('Excited'))return'😊';if(m.includes('Neutral'))return'😐';if(m.includes('Sad'))return'☹️';if(m.includes('Angry'))return'😠';if(m.includes('Anxious'))return'😰';return m.split(' ')[0]||'';}
@@ -782,36 +868,22 @@ async function loadExportPreview(sm){
   document.getElementById('btn-pdf').disabled=true;
   const prev=document.getElementById('exp-prev');prev.style.display='block';
   prev.innerHTML='<div class="ald" style="justify-content:center"><span></span><span></span><span></span></div>';
-  const startDate=new Date(sm.year,sm.month,1).toISOString().split('T')[0];
-  const endDate=new Date(sm.year,sm.month+1,0).toISOString().split('T')[0];
+  const s=new Date(sm.year,sm.month,1).toISOString().split('T')[0];
+  const e=new Date(sm.year,sm.month+1,0).toISOString().split('T')[0];
   const mname=new Date(sm.year,sm.month,1).toLocaleDateString('it-IT',{month:'long',year:'numeric'});
+  const prompt=`Database Notion Daily Journal (ID: ${JDS}).\nRecupera entries di ${mname} (da ${s} a ${e}).\nJSON:\n{"month":"${mname}","count":N,"avgRating":N,"topMood":"...","entries":[{"date":"...","name":"...","mood":"...","rating":N,"content":"..."}]}\nSe nessuna entry: entries vuoto.`;
   try{
-    const r=await fetch('https://api.notion.com/v1/databases/'+JDS+'/query',{
-      method:'POST',
-      headers:{'Authorization':'Bearer '+NOTION_TOKEN,'Content-Type':'application/json','Notion-Version':'2022-06-28'},
-      body:JSON.stringify({filter:{and:[{property:'Date of Entry',date:{on_or_after:startDate}},{property:'Date of Entry',date:{on_or_before:endDate}}]},sorts:[{property:'Date of Entry',direction:'ascending'}]})
-    });
-    const d=await r.json();
-    exportEntries=(d.results||[]).map(p=>{
-      const props=p.properties;
-      const dateVal=props['Date of Entry']?.date?.start||'';
-      const moodArr=props['Mood']?.multi_select||[];
-      const moodRaw=moodArr[0]?.name||'';
-      const ratingRaw=props['Rate The Day']?.select?.name||'';
-      const ratingNum={'⭐':1,'⭐⭐':2,'⭐⭐⭐':3,'⭐⭐⭐⭐':4,'⭐⭐⭐⭐⭐':5}[ratingRaw]||0;
-      const titleArr=props['Name']?.title||[];
-      return {date:dateVal,name:titleArr.map(t=>t.plain_text).join('')||dateVal,mood:moodRaw,rating:ratingNum,content:''};
-    });
-    const count=exportEntries.length;
-    const avgR=count?exportEntries.filter(e=>e.rating).reduce((a,b)=>a+b.rating,0)/(exportEntries.filter(e=>e.rating).length||1):0;
-    const mc={};exportEntries.forEach(e=>{if(e.mood)mc[e.mood]=(mc[e.mood]||0)+1;});
-    const topMood=Object.entries(mc).sort((a,b)=>b[1]-a[1])[0];
-    prev.innerHTML=`<h3 style="font-family:var(--fd);font-size:1.1rem;font-weight:400;margin-bottom:10px">${mname}</h3>
-    <div class="exp-row"><span class="exp-lbl">Sessioni</span><span class="exp-val">${count}</span></div>
-    <div class="exp-row"><span class="exp-lbl">Rating medio</span><span class="exp-val">${avgR?'★'.repeat(Math.round(avgR)):'—'}</span></div>
-    <div class="exp-row"><span class="exp-lbl">Mood prevalente</span><span class="exp-val">${topMood?topMood[0]:'—'}</span></div>`;
-    document.getElementById('btn-pdf').disabled=count===0;
-  }catch(e){prev.innerHTML='<p style="color:var(--ink-s);font-size:.85rem">Errore: '+e.message+'</p>';}
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,mcp_servers:[{type:'url',url:'https://mcp.notion.com/mcp',name:'notion-mcp'}],messages:[{role:'user',content:prompt}]})});
+    const d=await r.json();const allTxt=d.content.filter(b=>b.type==='text').map(b=>b.text).join('');
+    let data={count:0,entries:[]};
+    try{const m=allTxt.replace(/```json|```/g,'').trim().match(/\{[\s\S]*\}/);if(m)data=JSON.parse(m[0]);}catch{}
+    exportEntries=data.entries||[];
+    prev.innerHTML=`<h3 style="font-family:var(--fd);font-size:1.1rem;font-weight:400;margin-bottom:10px">${data.month||mname}</h3>
+    <div class="exp-row"><span class="exp-lbl">Sessioni</span><span class="exp-val">${data.count||exportEntries.length}</span></div>
+    <div class="exp-row"><span class="exp-lbl">Rating medio</span><span class="exp-val">${data.avgRating?'★'.repeat(Math.round(data.avgRating)):'—'}</span></div>
+    <div class="exp-row"><span class="exp-lbl">Mood prevalente</span><span class="exp-val">${data.topMood||'—'}</span></div>`;
+    document.getElementById('btn-pdf').disabled=exportEntries.length===0;
+  }catch{prev.innerHTML='<p style="color:var(--ink-s);font-size:.85rem">Errore caricamento.</p>';}
 }
 
 async function generatePDF(){
@@ -870,6 +942,7 @@ async function generatePDF(){
 document.getElementById('hdate').textContent=new Date().toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
 renderStreak();
 
+// Service Worker registration
 if('serviceWorker' in navigator){
   const swCode=`
 const CACHE='er-v1';
