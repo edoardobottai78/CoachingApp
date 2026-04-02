@@ -804,7 +804,7 @@ async function generatePDF(){
   // AI summary
   let aiSum='';
   if(exportEntries.length>0){
-    const ctx=exportEntries.map(e=>`${e.date}: mood:${e.mood||'?'} rating:${e.rating||'?'} ${(e.content||'').slice(0,100)}`).join('\n');
+    const ctx=exportEntries.map(e=>`${e.date}: mood:${e.mood||'?'} rating:${e.rating||'?'} ${([e.refl,e.hi].filter(Boolean).join(' ').slice(0,100))}`).join('\n');
     try{
       const r=await fetch(AI_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:AI_MODEL,max_tokens:1000,messages:[{role:'user',content:`Sintesi mensile (4-5 frasi) in italiano di questo journal di ${mname}:\n\n${ctx}\n\nPattern emotivi, progressi, temi principali.`}]})});
       const d=await r.json();aiSum=d.content?.[0]?.text||'';
@@ -847,10 +847,10 @@ async function generatePDF(){
       doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(28,26,23);doc.text(e.name||e.date,M,y);
       if(e.rating){doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(201,169,110);doc.text('★'.repeat(e.rating),W-M-12,y);}
       y+=4;
-      if(e.content){
+      const snippet=[e.refl,e.hi].filter(Boolean).join(' · ').slice(0,250)||e.content||'';
+      if(snippet){
         doc.setFont('helvetica','italic');doc.setFontSize(8);doc.setTextColor(74,69,64);
-        const snip=e.content.replace(/##[^\n]*/g,'').replace(/\n+/g,' ').trim().slice(0,250);
-        const lines=doc.splitTextToSize(snip,W-M*2);doc.text(lines.slice(0,3),M,y);y+=Math.min(lines.length,3)*3.5+5;
+        const lines=doc.splitTextToSize(snippet,W-M*2);doc.text(lines.slice(0,3),M,y);y+=Math.min(lines.length,3)*3.5+5;
       } else {y+=3;}
     });
 
