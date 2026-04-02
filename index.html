@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Evening">
+<meta name="theme-color" content="#FDFBF7">
+<meta name="description" content="Daily evening reflection & journaling">
+<title>Evening Reflection</title>
+
+<!-- PWA Manifest inline -->
+<script>
+const manifestData = {
+  name: "Evening Reflection",
+  short_name: "Evening",
+  description: "Daily evening reflection & journaling con Notion",
+  start_url: "./",
+  display: "standalone",
+  background_color: "#FDFBF7",
+  theme_color: "#FDFBF7",
+  orientation: "portrait",
+  icons: [
+    { src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' fill='%23F7F0E3'/%3E%3Ccircle cx='96' cy='96' r='60' fill='none' stroke='%23C9A96E' stroke-width='3'/%3E%3Ctext x='96' y='108' text-anchor='middle' font-size='48' fill='%23C9A96E'%3E✦%3C/text%3E%3C/svg%3E", sizes: "192x192", type: "image/svg+xml" },
+    { src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%23F7F0E3'/%3E%3Ccircle cx='256' cy='256' r='160' fill='none' stroke='%23C9A96E' stroke-width='8'/%3E%3Ctext x='256' y='285' text-anchor='middle' font-size='128' fill='%23C9A96E'%3E✦%3C/text%3E%3C/svg%3E", sizes: "512x512", type: "image/svg+xml" }
+  ]
+};
+const blob = new Blob([JSON.stringify(manifestData)], {type:'application/json'});
+const manifestURL = URL.createObjectURL(blob);
+document.write('<link rel="manifest" href="'+manifestURL+'">');
+</script>
+
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAACXBIWXMAAAsTAAALEwEAmpwYAAAF8WlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgOS4xLWMwMDEgNzkuMTQ2Mjg5OSwgMjAyMy8wNi8yNS0yMDowMTo1NSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIDI1LjAgKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6RjhGRTYwNzdFRTYyMTFFRUI4RTFEMkE2NkFEMDM4REMiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6RjhGRTYwNzhFRTYyMTFFRUI4RTFEMkE2NkFEMDM4REMiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpGOEZFNjA3NUVFNjIxMUVFQjhFMUQyQTY2QUQwMzhEQyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpGOEZFNjA3NkVFNjIxMUVFQjhFMUQyQTY2QUQwMzhEQyIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Pn2rAZAAAANCSURBVHja7NoxAQAAAMKg9U9tCU+gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAeAMBuAABHgAAAABJRU5ErkJggg==">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --gold: #C9A96E; --gold-l: #E8D5B0; --gold-p: #F7F0E3;
+  --ink: #1C1A17; --ink-m: #4A4540; --ink-s: #8A8178;
+  --bg: #FDFBF7; --bg-w: #F5F0E8; --line: rgba(201,169,110,.22);
+  --green: #3B6D11; --gbg: #EAF3DE;
+  --r: 16px; --r-sm: 12px;
+  --fd: 'Cormorant Garamond', Georgia, serif;
+  --fb: 'DM Sans', system-ui, sans-serif;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bot: env(safe-area-inset-bottom, 0px);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html { height: 100%; overscroll-behavior: none; }
+body { font-family: var(--fb); background: var(--bg); color: var(--ink); height: 100%; overflow: hidden; -webkit-font-smoothing: antialiased; }
+#app { height: 100vh; height: 100dvh; display: flex; flex-direction: column; overflow: hidden; }
+
+.screen { display: none; flex-direction: column; height: 100%; overflow: hidden; }
+.screen.active { display: flex; }
+
+.safe-top { padding-top: calc(var(--safe-top) + 12px); }
+.safe-bot { padding-bottom: calc(var(--safe-bot) + 12px); }
+
+.app-header {
+  background: var(--bg); border-bottom: 0.5px solid var(--line);
+  padding: calc(var(--safe-top) + 12px) 20px 12px;
+  display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
+}
+.app-header-title { font-family: var(--fd); font-size: 1.05rem; font-style: italic; color: var(--ink-m); }
+.icon-btn { background: none; border: none; color: var(--ink-s); font-size: 18px; cursor: pointer; padding: 6px; border-radius: 8px; display: flex; align-items: center; }
+.scroll-body { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 20px; }
+.pbar-w { height: 2px; background: var(--gold-l); flex-shrink: 0; }
+.pbar-f { height: 100%; background: var(--gold); transition: width .4s; }
+
+.bottom-nav { display: flex; border-top: 0.5px solid var(--line); background: var(--bg); padding-bottom: var(--safe-bot); flex-shrink: 0; }
+.nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 10px 8px; background: none; border: none; cursor: pointer; color: var(--ink-s); transition: color .2s; gap: 3px; }
+.nav-item.act { color: var(--gold); }
+.nav-icon { font-size: 18px; line-height: 1; }
+.nav-lbl { font-size: 9px; font-weight: 500; letter-spacing: .05em; text-transform: uppercase; }
+
+.eyebrow { font-size: 10px; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); margin-bottom: .5rem; }
+.hero { font-family: var(--fd); font-size: 2.4rem; font-weight: 300; line-height: 1.1; margin-bottom: .35rem; }
+.hero em { font-style: italic; color: var(--gold); }
+.sub { font-family: var(--fd); font-size: .9rem; font-style: italic; color: var(--ink-s); }
+
+.card { background: var(--bg-w); border: 0.5px solid var(--line); border-radius: var(--r); padding: 14px 16px; }
+.card + .card { margin-top: 10px; }
+.clbl { font-size: 10px; letter-spacing: .13em; text-transform: uppercase; color: var(--ink-s); margin-bottom: 4px; }
+.cval { font-family: var(--fd); font-size: .95rem; font-weight: 300; color: var(--ink); line-height: 1.5; }
+.divider { height: 0.5px; background: var(--line); margin: 16px 0; }
+
+.btn-primary {
+  width: 100%; background: var(--ink); color: var(--gold-l);
+  border: none; padding: 16px 24px; border-radius: 100px;
+  font-family: var(--fb); font-size: 15px; cursor: pointer; transition: all .2s;
+  display: flex; align-items: center; justify-content: center; gap: 8px; -webkit-appearance: none;
+}
+.btn-primary:active { transform: scale(.98); background: var(--ink-m); }
+.btn-primary:disabled { opacity: .35; }
+.btn-secondary { width: 100%; background: none; border: 0.5px solid var(--gold); color: var(--gold); padding: 14px 24px; border-radius: 100px; font-family: var(--fb); font-size: 14px; cursor: pointer; transition: all .2s; -webkit-appearance: none; }
+.btn-secondary:active { background: var(--gold-p); }
+.btn-ghost { width: 100%; background: none; border: 0.5px solid var(--line); color: var(--ink-s); padding: 14px 24px; border-radius: 100px; font-family: var(--fb); font-size: 14px; cursor: pointer; -webkit-appearance: none; }
+
+/* ── HOME ── */
+.streak-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0 20px; }
+.badge { background: var(--gold-p); border: 0.5px solid var(--gold-l); border-radius: 100px; padding: 7px 14px; font-size: 12px; color: var(--ink-m); display: inline-flex; align-items: center; gap: 5px; }
+.modes { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+.mcard { background: var(--bg-w); border: 0.5px solid var(--line); border-radius: var(--r); padding: 14px 16px; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: all .15s; -webkit-appearance: none; width: 100%; text-align: left; }
+.mcard:active, .mcard.sel { border-color: var(--gold); background: var(--gold-p); }
+.mcard.sel { border-width: 1.5px; }
+.mi { font-size: 1.1rem; width: 26px; text-align: center; flex-shrink: 0; }
+.ml { font-size: 14px; font-weight: 500; color: var(--ink); }
+.md { font-size: 11px; color: var(--ink-s); margin-top: 2px; }
+
+/* ── SESSION STEPS ── */
+.step-block { animation: fu .3s ease; }
+@keyframes fu { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.tlbl { font-size: 10px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); margin-bottom: .45rem; }
+.q { font-family: var(--fd); font-size: 1.75rem; font-weight: 300; line-height: 1.25; color: var(--ink); margin-bottom: 1.1rem; }
+.jta { width: 100%; min-height: 130px; padding: 14px 16px; border: 0.5px solid var(--line); border-radius: var(--r); background: var(--bg-w); font-family: var(--fd); font-size: 1rem; font-weight: 300; font-style: italic; color: var(--ink); resize: none; line-height: 1.7; -webkit-appearance: none; outline: none; transition: border-color .2s; }
+.jta:focus { border-color: var(--gold); background: var(--gold-p); }
+.jta::placeholder { color: var(--ink-s); }
+
+/* ── MOOD ── */
+.mood-g { display: grid; grid-template-columns: repeat(3,1fr); gap: 7px; }
+.mbtn { border: 0.5px solid var(--line); border-radius: 10px; padding: 9px 6px; background: var(--bg-w); cursor: pointer; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 3px; -webkit-appearance: none; transition: all .15s; }
+.mbtn:active, .mbtn.sel { border-color: var(--gold); background: var(--gold-p); }
+.mbtn.sel { border-width: 1.5px; }
+.mem { font-size: 1.35rem; }
+.mlb { font-size: 10px; color: var(--ink-m); }
+
+/* word-mood grid */
+.mood-words { display: grid; grid-template-columns: repeat(3,1fr); gap: 6px; margin-bottom: 8px; }
+.mword { border: 0.5px solid var(--line); border-radius: 8px; padding: 8px 4px; background: var(--bg-w); cursor: pointer; text-align: center; font-size: 12px; font-weight: 400; color: var(--ink-m); -webkit-appearance: none; transition: all .15s; line-height: 1.2; }
+.mword:active, .mword.sel { border-color: var(--gold); background: var(--gold-p); color: var(--ink); font-weight: 500; }
+.mword.sel { border-width: 1.5px; }
+.mood-section-lbl { font-size: 9px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-s); margin: 10px 0 5px; }
+
+/* ── RATING ── */
+.rrow { display: flex; gap: 4px; justify-content: flex-start; padding: 4px 0; }
+.sbtn { font-size: 2rem; background: none; border: none; cursor: pointer; color: var(--gold-l); padding: 4px; transition: transform .1s; }
+.sbtn.lit { color: var(--gold); }
+.sbtn:active { transform: scale(1.2); }
+
+/* ── BREATHING ── */
+.bwrap { display: flex; flex-direction: column; align-items: center; gap: 20px; padding: 10px 0; }
+.bcircle { width: 120px; height: 120px; border-radius: 50%; border: 1.5px solid var(--gold-l); display: flex; align-items: center; justify-content: center; font-family: var(--fd); font-size: 1.8rem; color: var(--ink-s); transition: all .1s linear; }
+.binstr { font-family: var(--fd); font-size: 1.1rem; font-style: italic; color: var(--ink-m); }
+.btimer { font-size: 2rem; font-weight: 300; color: var(--gold); font-family: var(--fd); visibility: hidden; }
+.btn-br { background: none; border: 0.5px solid var(--gold); color: var(--gold); padding: 12px 32px; border-radius: 100px; font-size: 14px; cursor: pointer; font-family: var(--fb); -webkit-appearance: none; }
+.btn-br:active { background: var(--gold-p); }
+
+/* ── GRATITUDE ── */
+.glist { display: flex; flex-direction: column; gap: 10px; }
+.grow { display: flex; align-items: center; gap: 10px; }
+.gnum { width: 24px; height: 24px; border-radius: 50%; background: var(--gold-p); border: 0.5px solid var(--gold-l); display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--gold); flex-shrink: 0; font-family: var(--fd); }
+.gin { flex: 1; padding: 12px 14px; border: 0.5px solid var(--line); border-radius: 10px; background: var(--bg-w); font-family: var(--fd); font-size: 1rem; font-style: italic; font-weight: 300; color: var(--ink); -webkit-appearance: none; outline: none; transition: border-color .2s; }
+.gin:focus { border-color: var(--gold); background: var(--gold-p); }
+.gin::placeholder { color: var(--ink-s); }
+
+/* ── HABITS ── */
+.hgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.hcard { border: 0.5px solid var(--line); border-radius: 12px; padding: 14px 12px; background: var(--bg-w); cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all .15s; -webkit-appearance: none; width: 100%; text-align: left; }
+.hcard:active { opacity: .7; }
+.hcard.done { border-color: var(--green); background: var(--gbg); border-width: 1.5px; }
+.hchk { width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(--ink-s); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 11px; transition: all .15s; }
+.hcard.done .hchk { border-color: var(--green); background: var(--green); color: #fff; }
+.hnm { font-size: 13px; font-weight: 500; color: var(--ink); }
+.hcard.done .hnm { color: var(--green); }
+
+/* ── AI BUBBLE ── */
+.ai-bub { background: var(--gold-p); border: 0.5px solid var(--gold-l); border-radius: 0 var(--r) var(--r) var(--r); padding: 14px 16px; font-family: var(--fd); font-size: .95rem; font-weight: 300; line-height: 1.7; color: var(--ink-m); font-style: italic; animation: fu .4s ease; position: relative; }
+.ai-bub::before { content: ''; position: absolute; top: 0; left: -.5px; width: 2px; height: 100%; background: var(--gold); border-radius: 1px; }
+.ald { display: flex; gap: 6px; align-items: center; padding: 4px 0; }
+.ald span { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); animation: dot 1.2s ease infinite; }
+.ald span:nth-child(2) { animation-delay: .2s; }
+.ald span:nth-child(3) { animation-delay: .4s; }
+@keyframes dot { 0%,80%,100% { opacity:.2; transform:scale(.8); } 40% { opacity:1; transform:scale(1); } }
+
+/* ── SESSION FOOTER ── */
+.session-footer { display: flex; justify-content: space-between; align-items: center; padding: 12px 20px calc(var(--safe-bot) + 12px); border-top: 0.5px solid var(--line); background: var(--bg); flex-shrink: 0; }
+.btn-bk { background: none; border: none; color: var(--ink-s); font-size: 13px; cursor: pointer; padding: 10px 4px; font-family: var(--fb); }
+.btn-nx { background: var(--ink); color: var(--gold-l); border: none; padding: 12px 28px; border-radius: 100px; font-family: var(--fb); font-size: 14px; cursor: pointer; -webkit-appearance: none; }
+.btn-nx:active { background: var(--ink-m); }
+.btn-nx:disabled { opacity: .35; }
+
+/* ── SUMMARY ── */
+.sum-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+.schips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.schip { background: #fff; border: 0.5px solid rgba(59,109,17,.3); border-radius: 100px; padding: 5px 12px; font-size: 12px; color: var(--green); }
+.schip.miss { background: var(--bg-w); border-color: var(--line); color: var(--ink-s); text-decoration: line-through; }
+.icard { background: var(--gold-p); border: 0.5px solid var(--gold-l); border-radius: var(--r); padding: 14px 16px; position: relative; overflow: hidden; }
+.icard::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--gold), transparent); }
+.ilbl { font-size: 10px; letter-spacing: .13em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+.itxt { font-family: var(--fd); font-size: .9rem; font-style: italic; font-weight: 300; color: var(--ink-m); line-height: 1.7; }
+.status-msg { text-align: center; padding: 10px; font-family: var(--fd); font-style: italic; font-size: .9rem; color: var(--ink-s); display: none; }
+.status-msg.vis { display: block; }
+.status-msg.ok { color: var(--green); }
+.status-msg.err { color: #A32D2D; }
+
+/* ── WEEKLY ── */
+.week-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 5px; margin-bottom: 16px; }
+.wday { border-radius: 8px; padding: 8px 4px; text-align: center; background: var(--bg-w); border: 0.5px solid var(--line); }
+.wday.has { border-color: var(--gold-l); }
+.wday-n { font-size: 9px; color: var(--ink-s); margin-bottom: 3px; }
+.wday-em { font-size: 1rem; height: 22px; display: flex; align-items: center; justify-content: center; }
+.wday-st { font-size: 8px; color: var(--gold); min-height: 12px; }
+.wstats { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 16px; }
+.wstat { background: var(--bg-w); border: 0.5px solid var(--line); border-radius: 12px; padding: 12px 8px; text-align: center; }
+.wstat-n { font-family: var(--fd); font-size: 1.5rem; font-weight: 300; color: var(--ink); }
+.wstat-l { font-size: 9px; color: var(--ink-s); margin-top: 2px; }
+.wentries { display: flex; flex-direction: column; gap: 8px; }
+.wentry { background: var(--bg-w); border: 0.5px solid var(--line); border-radius: 12px; padding: 12px 14px; }
+.wentry-hd { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+.wentry-date { font-size: 12px; font-weight: 500; color: var(--ink); }
+.wentry-r { font-size: 11px; color: var(--gold); }
+.wentry-txt { font-family: var(--fd); font-size: .85rem; font-style: italic; color: var(--ink-m); line-height: 1.5; }
+
+/* ── EXPORT ── */
+.month-sel { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.msel-btn { background: var(--bg-w); border: 0.5px solid var(--line); border-radius: 100px; padding: 8px 16px; font-size: 12px; color: var(--ink-m); cursor: pointer; -webkit-appearance: none; transition: all .2s; }
+.msel-btn.act { border-color: var(--gold); background: var(--gold-p); color: var(--ink); }
+.exp-preview { background: var(--bg-w); border: 0.5px solid var(--line); border-radius: var(--r); padding: 14px 16px; margin-bottom: 16px; }
+.exp-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 0.5px solid var(--line); font-size: .85rem; }
+.exp-row:last-child { border-bottom: none; }
+.exp-lbl { color: var(--ink-s); }
+.exp-val { color: var(--ink); font-weight: 500; }
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- ── HOME ── -->
+<div id="shome" class="screen active">
+  <div style="background:var(--bg);border-bottom:0.5px solid var(--line);padding:calc(var(--safe-top) + 16px) 20px 14px;flex-shrink:0">
+    <div class="eyebrow">Evening Reflection</div>
+    <h1 class="hero">Come stai<br><em>stasera?</em></h1>
+    <p class="sub" id="hdate"></p>
+    <div class="streak-row">
+      <div class="badge">🔥 <span id="stk-txt">Caricamento…</span></div>
+      <div class="badge" id="last-b" style="display:none"></div>
+    </div>
+  </div>
+  <div class="scroll-body">
+    <div class="modes">
+      <button class="mcard sel" data-mode="reflection" onclick="selM(this)">
+        <div class="mi">✦</div>
+        <div><div class="ml">Riflessione guidata</div><div class="md">Domande AI adattive · 5 min</div></div>
+      </button>
+      <button class="mcard" data-mode="mindfulness" onclick="selM(this)">
+        <div class="mi">◌</div>
+        <div><div class="ml">Mindfulness + respiro</div><div class="md">Tecnica 4-7-8 · 4 min</div></div>
+      </button>
+      <button class="mcard" data-mode="gratitude" onclick="selM(this)">
+        <div class="mi">◇</div>
+        <div><div class="ml">Gratitudine strutturata</div><div class="md">3 elementi + highlight · 3 min</div></div>
+      </button>
+    </div>
+    <button class="btn-primary" onclick="startSession()">Inizia la sessione →</button>
+  </div>
+  <div class="bottom-nav">
+    <button class="nav-item act" onclick="goScreen('home')"><div class="nav-icon">◈</div><div class="nav-lbl">Home</div></button>
+    <button class="nav-item" onclick="goScreen('week')"><div class="nav-icon">◉</div><div class="nav-lbl">Settimana</div></button>
+    <button class="nav-item" onclick="goScreen('export')"><div class="nav-icon">◎</div><div class="nav-lbl">Export</div></button>
+  </div>
+</div>
+
+<!-- ── SESSION ── -->
+<div id="ss" class="screen">
+  <div class="app-header">
+    <button class="icon-btn" onclick="goScreen('home')">✕</button>
+    <span class="app-header-title" id="slbl">Riflessione</span>
+    <span style="font-size:12px;color:var(--ink-s)" id="scnt">1/6</span>
+  </div>
+  <div class="pbar-w"><div class="pbar-f" id="pbar" style="width:0%"></div></div>
+  <div class="scroll-body" id="sbody"></div>
+  <div class="session-footer">
+    <button class="btn-bk" id="btn-bk" onclick="prevStep()">← Indietro</button>
+    <button class="btn-nx" id="btn-nx" onclick="nextStep()">Avanti →</button>
+  </div>
+</div>
+
+<!-- ── SUMMARY ── -->
+<div id="ssum" class="screen">
+  <div class="app-header">
+    <button class="icon-btn" onclick="goScreen('home')">←</button>
+    <span class="app-header-title">Sessione completata</span>
+    <div style="width:32px"></div>
+  </div>
+  <div class="scroll-body">
+    <div class="eyebrow" style="margin-bottom:.5rem">Riepilogo serata</div>
+    <h2 class="hero" style="font-size:2rem;margin-bottom:16px">La tua <em>serata</em></h2>
+    <div id="sum-cards"></div>
+    <div id="hsum" style="display:none;margin-top:10px" class="card">
+      <div class="clbl">Habits del giorno</div>
+      <div class="schips" id="hchips"></div>
+    </div>
+    <div class="divider"></div>
+    <div class="icard" id="icard" style="display:none;margin-bottom:16px">
+      <div class="ilbl">Riflessione AI</div>
+      <div class="itxt" id="itxt"><div class="ald"><span></span><span></span><span></span></div></div>
+    </div>
+    <div class="sum-actions">
+      <button class="btn-primary" id="btn-save" onclick="saveNotion()">Salva su Notion →</button>
+      <button class="btn-ghost" onclick="goScreen('home')">Scarta</button>
+    </div>
+    <div class="status-msg" id="save-st"></div>
+  </div>
+</div>
+
+<!-- ── WEEKLY ── -->
+<div id="sweek" class="screen">
+  <div style="background:var(--bg);border-bottom:0.5px solid var(--line);padding:calc(var(--safe-top)+16px) 20px 14px;flex-shrink:0">
+    <div class="eyebrow">Questa settimana</div>
+    <h2 class="hero" style="font-size:2rem">Riepilogo <em>settimanale</em></h2>
+  </div>
+  <div class="scroll-body">
+    <div id="week-content"><div class="ald" style="justify-content:center;padding:2rem 0"><span></span><span></span><span></span></div></div>
+  </div>
+  <div class="bottom-nav">
+    <button class="nav-item" onclick="goScreen('home')"><div class="nav-icon">◈</div><div class="nav-lbl">Home</div></button>
+    <button class="nav-item act" onclick="goScreen('week')"><div class="nav-icon">◉</div><div class="nav-lbl">Settimana</div></button>
+    <button class="nav-item" onclick="goScreen('export')"><div class="nav-icon">◎</div><div class="nav-lbl">Export</div></button>
+  </div>
+</div>
+
+<!-- ── EXPORT ── -->
+<div id="sexport" class="screen">
+  <div style="background:var(--bg);border-bottom:0.5px solid var(--line);padding:calc(var(--safe-top)+16px) 20px 14px;flex-shrink:0">
+    <div class="eyebrow">Export mensile</div>
+    <h2 class="hero" style="font-size:2rem">Journal <em>PDF</em></h2>
+  </div>
+  <div class="scroll-body">
+    <p class="sub" style="margin-bottom:16px">Seleziona il mese da esportare</p>
+    <div class="month-sel" id="month-sel"></div>
+    <div class="exp-preview" id="exp-prev" style="display:none"></div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <button class="btn-primary" id="btn-pdf" onclick="generatePDF()" disabled>Genera e scarica PDF →</button>
+      <div class="status-msg" id="pdf-st"></div>
+    </div>
+  </div>
+  <div class="bottom-nav">
+    <button class="nav-item" onclick="goScreen('home')"><div class="nav-icon">◈</div><div class="nav-lbl">Home</div></button>
+    <button class="nav-item" onclick="goScreen('week')"><div class="nav-icon">◉</div><div class="nav-lbl">Settimana</div></button>
+    <button class="nav-item act" onclick="goScreen('export')"><div class="nav-icon">◎</div><div class="nav-lbl">Export</div></button>
+  </div>
+</div>
+
+</div><!-- #app -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+// ─── CONSTANTS ───────────────────────────────────────────
+const JDS = '1aadac0a-f6b2-8320-adc4-0767f76264b7';
+const MCP_URL = 'https://mcp.notion.com/mcp';
+const AI_URL  = '/api/proxy';  // Vercel serverless proxy (aggiunge API key server-side)
+const AI_MODEL = 'claude-sonnet-4-20250514';
+
+// Habits — nomi esatti come su Notion
+const HL  = ['Vitamins','Fotografia/Video','Reading','Allenamento','Stretching'];
+const HI  = {'Vitamins':'💊','Fotografia/Video':'📸','Reading':'📖','Allenamento':'🏋️','Stretching':'🧘'};
+const HIT = {'Vitamins':'Vitamins','Fotografia/Video':'Fotografia/Video','Reading':'Reading','Allenamento':'Allenamento','Stretching':'Stretching'};
+
+// Mood emoji → Notion multi_select name (rispetta i valori validi nel DB)
+const MM = {'😄':'😄 Happy','☹️':'☹️ Sad','😠':'😠 Angry','😊':'😊 Excited','😐':'😐 Neutral','😰':'😰Anxious'};
+const ML = {'😄':'Felice','☹️':'Triste','😠':'Arrabbiato','😊':'Entusiasta','😐':'Neutro','😰':'Ansioso'};
+const RM = {1:'⭐',2:'⭐⭐',3:'⭐⭐⭐',4:'⭐⭐⭐⭐',5:'⭐⭐⭐⭐⭐'};
+
+// Full mood-word grid (47 parole, 3 categorie)
+const MOOD_WORDS = [
+  {w:'Positive',g:'+'},{w:'Happy',g:'+'},{w:'Hopeful',g:'+'},{w:'Glad',g:'+'},{w:'Excited',g:'+'},{w:'Inspired',g:'+'},
+  {w:'Energetic',g:'+'},{w:'Confident',g:'+'},{w:'Grateful',g:'+'},{w:'Content',g:'+'},{w:'Calm',g:'+'},{w:'Strong',g:'+'},
+  {w:'Determined',g:'+'},{w:'Alive',g:'+'},{w:'Relieved',g:'+'},{w:'Proud',g:'+'},
+  {w:'Surprised',g:'~'},{w:'Neutral',g:'~'},
+  {w:'Stressed',g:'-'},{w:'Nervous',g:'-'},{w:'Tense',g:'-'},{w:'Anxious',g:'-'},{w:'Worried',g:'-'},{w:'Insecure',g:'-'},
+  {w:'Confused',g:'-'},{w:'Bored',g:'-'},{w:'Tired',g:'-'},{w:'Hurt',g:'-'},{w:'Angry',g:'-'},{w:'Irritated',g:'-'},
+  {w:'Disappointed',g:'-'},{w:'Negative',g:'-'},{w:'Annoyed',g:'-'},{w:'Frustrated',g:'-'},{w:'Furious',g:'-'},
+  {w:'Unhappy',g:'-'},{w:'Regretful',g:'-'},{w:'Lonely',g:'-'},{w:'Low',g:'-'},{w:'Restless',g:'-'},
+  {w:'Overwhelmed',g:'-'},{w:'Sad',g:'-'},{w:'Scared',g:'-'},{w:'Trapped',g:'-'},{w:'Guilty',g:'-'},
+  {w:'Bitter',g:'-'},{w:'Shocked',g:'-'},{w:'Unsure',g:'-'},
+];
+
+// Rotating prompts
+const PR = {
+  refl:["Cos'è rimasto con te di questa giornata?","Cosa hai imparato su te stesso oggi?","Quale momento ti ha sorpreso?","Se potessi rivivere un momento di oggi, quale sarebbe?","Cosa ti ha dato più energia? Cosa te l'ha tolta?","C'è qualcosa che avresti fatto diversamente?","Qual è stata la conversazione più significativa?","Come ti senti rispetto al tuo percorso?"],
+  hi:["Qual è stato il momento migliore di oggi?","Cosa ti ha fatto sorridere oggi?","Qual è stata la tua piccola vittoria?","Cosa hai fatto oggi di cui sei soddisfatto?","Chi o cosa ti ha dato forza oggi?"],
+  rel:["Cosa vuoi lasciare andare di questa giornata?","Cosa ti pesa ancora?","Quale pensiero non ti serve più?","Cosa hai portato oggi che non ti serve nel domani?"],
+  mg:["Una cosa per cui sei grato oggi","Cosa hai avuto oggi che non dai per scontato?","Chi ti ha supportato di recente?"]
+};
+function gp(p){return p[new Date().getDate()%p.length];}
+
+// Biweekly deep reflection
+const DEEP_REFLECTIONS = [
+  {id:'relationships',lbl:'Riflessione profonda',title:'Rifletti sulle tue relazioni',q:'Pensa alle relazioni che hai avuto nella tua vita. Come ti hanno influenzato? Cosa hai imparato da ciascuna?',placeholder:'Le relazioni che mi hanno formato di più…'},
+  {id:'stress_bucket',lbl:'Riflessione profonda',title:'Il tuo secchio dello stress',q:'Elenca tutto ciò che ti causa stress. Poi: cosa ti aiuta a svuotare il secchio? Come potresti reagire in modo più positivo?',placeholder:'Cosa mi riempie il secchio… cosa lo svuota…'},
+  {id:'missing',lbl:'Riflessione profonda',title:'Cosa manca nella tua vita?',q:'Potrebbe essere senso di scopo, passione, significato, divertimento o avventura. Cosa potresti fare per trovarne di più? Cosa ti trattiene?',placeholder:'Ciò che sento mancare…'}
+];
+function getBiweeklyDeepReflection(){
+  const doy=Math.floor((new Date()-new Date(new Date().getFullYear(),0,0))/86400000);
+  return DEEP_REFLECTIONS[Math.floor(doy/14)%DEEP_REFLECTIONS.length];
+}
+function isBiweeklyDay(){
+  const doy=Math.floor((new Date()-new Date(new Date().getFullYear(),0,0))/86400000);
+  return doy%14===0;
+}
+
+const STEPS = {
+  reflection:[
+    {t:'moodw',id:'moodw',lbl:'Come ti senti',q:'Come ti senti adesso?'},
+    {t:'ta',id:'refl',lbl:'Riflessione',q:()=>gp(PR.refl)},
+    {t:'aif',id:'air',lbl:'AI',q:''},
+    {t:'hab',id:'hab',lbl:'Habits',q:'Come sono andati gli habit di oggi?'},
+    {t:'rat',id:'rat',lbl:'Giornata',q:'Come valuti questa giornata?'},
+    {t:'ta',id:'hi',lbl:'Highlight',q:()=>gp(PR.hi)},
+  ],
+  mindfulness:[
+    {t:'br',id:'br',lbl:'Respiro',q:'Tecnica 4–7–8 per scaricare la tensione'},
+    {t:'moodw',id:'moodw',lbl:'Come ti senti',q:'Dopo il respiro, come ti senti?'},
+    {t:'ta',id:'refl',lbl:'Rilascio',q:()=>gp(PR.rel)},
+    {t:'hab',id:'hab',lbl:'Habits',q:'Come sono andati gli habit di oggi?'},
+    {t:'rat',id:'rat',lbl:'Giornata',q:'Come valuti questa giornata?'},
+    {t:'ta',id:'hi',lbl:'Highlight',q:()=>gp(PR.mg)},
+  ],
+  gratitude:[
+    {t:'grat',id:'grat',lbl:'Gratitudine',q:'Tre cose per cui sei grato oggi'},
+    {t:'moodw',id:'moodw',lbl:'Come ti senti',q:'Come ti senti?'},
+    {t:'hab',id:'hab',lbl:'Habits',q:'Come sono andati gli habit?'},
+    {t:'ta',id:'hi',lbl:'Highlight',q:()=>gp(PR.hi)},
+    {t:'rat',id:'rat',lbl:'Giornata',q:'Come valuti questa giornata?'},
+    {t:'aif',id:'air',lbl:'AI',q:''},
+  ]
+};
+
+// ─── STATE ───────────────────────────────────────────────
+let selM_='reflection', step=0, sd={}, steps=[], breathInt=null;
+let exportEntries=[], selMonth=null;
+
+// ─── NAVIGATION ──────────────────────────────────────────
+function goScreen(name){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  const map={home:'shome',week:'sweek',export:'sexport',session:'ss',summary:'ssum'};
+  document.getElementById(map[name]||('s'+name)).classList.add('active');
+  if(name==='week') loadWeek();
+  if(name==='export') initExport();
+}
+
+// ─── STREAK ──────────────────────────────────────────────
+function lsG(k){try{return localStorage.getItem(k)}catch{return null}}
+function lsS(k,v){try{localStorage.setItem(k,v)}catch{}}
+function loadStreak(){try{const r=lsG('er_sk');return r?JSON.parse(r):{count:0,last:null}}catch{return{count:0,last:null}}}
+function saveStreakDay(){
+  const today=new Date().toISOString().split('T')[0];
+  let s=loadStreak();if(s.last===today)return;
+  const yest=new Date(Date.now()-86400000).toISOString().split('T')[0];
+  s.count=s.last===yest?s.count+1:1;s.last=today;lsS('er_sk',JSON.stringify(s));
+}
+function renderStreak(){
+  const s=loadStreak();
+  document.getElementById('stk-txt').textContent=s.count===0?'Inizia la tua streak':s.count===1?'1 giorno di fila':s.count+' giorni di fila';
+  const lb=document.getElementById('last-b');
+  if(s.last){const d=new Date(s.last+'T12:00:00');lb.textContent='Ultima: '+d.toLocaleDateString('it-IT',{day:'numeric',month:'short'});lb.style.display='inline-flex';}
+}
+
+// ─── MODE SELECTION ──────────────────────────────────────
+function selM(el){
+  document.querySelectorAll('.mcard').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');selM_=el.dataset.mode;
+}
+
+// ─── SESSION ─────────────────────────────────────────────
+function startSession(){
+  // Inject biweekly deep reflection for "reflection" mode if today is the day
+  let baseSteps = STEPS[selM_].map(s=>({...s,q:typeof s.q==='function'?s.q():s.q}));
+  if(selM_==='reflection' && isBiweeklyDay()){
+    const dr=getBiweeklyDeepReflection();
+    baseSteps.splice(2,0,{...dr,t:'deep'});
+  }
+  steps=baseSteps;
+  step=0;sd={mode:selM_,date:new Date(),hab:{},moodWords:[]};
+  document.getElementById('slbl').textContent=selM_==='reflection'?'Riflessione':selM_==='mindfulness'?'Mindfulness':'Gratitudine';
+  goScreen('session');renderStep();
+}
+
+function renderStep(){
+  const s=steps[step],tot=steps.length;
+  document.getElementById('pbar').style.width=((step/tot)*100)+'%';
+  document.getElementById('scnt').textContent=(step+1)+'/'+tot;
+  document.getElementById('btn-bk').style.visibility=step===0?'hidden':'visible';
+  document.getElementById('btn-nx').disabled=false;
+  const body=document.getElementById('sbody');body.innerHTML='';
+  const bl=document.createElement('div');bl.className='step-block';
+
+  if(s.t==='ta'){
+    bl.innerHTML=`<div class="tlbl">${s.lbl}</div><div class="q">${s.q}</div>
+    <textarea class="jta" id="f-${s.id}" placeholder="Scrivi qui…" rows="5">${sd[s.id]||''}</textarea>`;
+  } else if(s.t==='moodw'){
+    const pos=MOOD_WORDS.filter(m=>m.g==='+');
+    const neu=MOOD_WORDS.filter(m=>m.g==='~');
+    const neg=MOOD_WORDS.filter(m=>m.g==='-');
+    const cur=sd.moodWords||[];
+    const wordBtn=m=>`<button class="mword ${cur.includes(m.w)?'sel':''}" onclick="toggleMoodWord('${m.w}',this)">${m.w}</button>`;
+    bl.innerHTML=`<div class="tlbl">${s.lbl}</div><div class="q" style="font-size:1.4rem">${s.q}</div>
+    <p style="font-size:12px;color:var(--ink-s);margin-bottom:8px;font-family:var(--fd);font-style:italic">Seleziona tutto ciò che senti (anche più di uno)</p>
+    <div class="mood-section-lbl">✦ Positivo</div>
+    <div class="mood-words">${pos.map(wordBtn).join('')}</div>
+    <div class="mood-section-lbl">— Neutro / misto</div>
+    <div class="mood-words">${neu.map(wordBtn).join('')}</div>
+    <div class="mood-section-lbl">↓ Difficile</div>
+    <div class="mood-words">${neg.map(wordBtn).join('')}</div>`;
+  } else if(s.t==='deep'){
+    bl.innerHTML=`<div class="tlbl" style="color:var(--ink-m)">${s.lbl} · ogni 2 settimane</div>
+    <div class="q" style="font-size:1.35rem">${s.title}</div>
+    <p style="font-family:var(--fd);font-size:.95rem;font-style:italic;color:var(--ink-m);margin-bottom:14px;line-height:1.6">${s.q}</p>
+    <textarea class="jta" id="f-${s.id}" placeholder="${s.placeholder}" rows="6">${sd[s.id]||''}</textarea>`;
+  } else if(s.t==='rat'){
+    const cur=sd.rat||0;
+    bl.innerHTML=`<div class="tlbl">${s.lbl}</div><div class="q">${s.q}</div>
+    <div class="rrow">${[1,2,3,4,5].map(n=>`<button class="sbtn ${n<=cur?'lit':''}" onclick="setRat(${n})" data-s="${n}">★</button>`).join('')}</div>`;
+  } else if(s.t==='br'){
+    bl.innerHTML=`<div class="tlbl">${s.lbl}</div><div class="q" style="font-size:1.4rem">${s.q}</div>
+    <div class="bwrap"><div class="bcircle" id="bc">pronto</div><div class="binstr" id="bi">Premi per iniziare</div><div class="btimer" id="bt">4</div><button class="btn-br" id="bbs" onclick="startBr()">Inizia respirazione</button></div>`;
+  } else if(s.t==='grat'){
+    const pv=sd.grat||['','',''];
+    bl.innerHTML=`<div class="tlbl">${s.lbl}</div><div class="q">${s.q}</div>
+    <div class="glist">${[1,2,3].map(n=>`<div class="grow"><div class="gnum">${n}</div><input class="gin" id="g-${n}" placeholder="Sono grato per…" value="${pv[n-1]}"></div>`).join('')}</div>`;
+  } else if(s.t==='hab'){
+    const ch=sd.hab||{};
+    bl.innerHTML=`<div class="tlbl">${s.lbl}</div><div class="q">${s.q}</div>
+    <div class="hgrid">${HL.map(h=>`<button class="hcard ${ch[h]?'done':''}" onclick="togH('${h}',this)"><div class="hchk">${ch[h]?'✓':''}</div><div class="hnm">${HI[h]} ${HIT[h]}</div></button>`).join('')}</div>`;
+  } else if(s.t==='aif'){
+    bl.innerHTML=`<div class="tlbl">AI</div><div class="q" style="font-size:1.3rem">Un pensiero per te…</div>
+    <div class="ai-bub" id="ai-r"><div class="ald"><span></span><span></span><span></span></div></div>`;
+    document.getElementById('btn-nx').disabled=true;
+    fetchAI();
+  }
+  body.appendChild(bl);
+  body.scrollTop=0;
+}
+
+function toggleMoodWord(w,el){
+  sd.moodWords=sd.moodWords||[];
+  if(sd.moodWords.includes(w)){sd.moodWords=sd.moodWords.filter(x=>x!==w);el.classList.remove('sel');}
+  else{sd.moodWords.push(w);el.classList.add('sel');}
+}
+function setRat(n){sd.rat=n;document.querySelectorAll('.sbtn').forEach(b=>b.classList.toggle('lit',parseInt(b.dataset.s)<=n));}
+function togH(h,el){sd.hab=sd.hab||{};sd.hab[h]=!sd.hab[h];el.classList.toggle('done',sd.hab[h]);el.querySelector('.hchk').textContent=sd.hab[h]?'✓':'';}
+
+function startBr(){
+  const ph=[{l:'Inspira',d:4},{l:'Trattieni',d:7},{l:'Espira',d:8}];
+  let p=0,secs=4,c=0;
+  document.getElementById('bbs').style.display='none';
+  document.getElementById('bt').style.visibility='visible';
+  function tick(){
+    const pp=ph[p];const pct=1-(secs-1)/pp.d;const sz=80+pct*55;
+    const bc=document.getElementById('bc');if(!bc){clearInterval(breathInt);return;}
+    bc.style.width=sz+'px';bc.style.height=sz+'px';
+    bc.textContent=p===0?'↑':p===2?'↓':'—';
+    const bt=document.getElementById('bt'),bi=document.getElementById('bi');
+    if(bt)bt.textContent=secs;if(bi)bi.textContent=pp.l+'…';
+    secs--;if(secs<=0){p=(p+1)%3;if(p===0)c++;if(c>=3){clearInterval(breathInt);const bc2=document.getElementById('bc'),bi2=document.getElementById('bi'),bt2=document.getElementById('bt');if(bc2)bc2.textContent='✓';if(bi2)bi2.textContent='Ottimo — respira normalmente';if(bt2)bt2.style.visibility='hidden';sd.br=true;return;}secs=ph[p].d;}
+  }
+  breathInt=setInterval(tick,1000);tick();
+}
+
+async function fetchAI(){
+  const ctx=buildCtx();
+  const p=`Sei un coach personale empatico. Sessione serale (${sd.mode}).\n\n${ctx}\n\nScrivi 1 pensiero riflessivo (max 3 frasi) in italiano, tu. Caldo, diretto, specifico. Niente consigli generici.`;
+  try{
+    const r=await fetch(AI_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:AI_MODEL,max_tokens:1000,messages:[{role:'user',content:p}]})});
+    const d=await r.json();const txt=d.content?.[0]?.text||'Non disponibile.';
+    sd.air=txt;const el=document.getElementById('ai-r');if(el)el.innerHTML=txt;
+    const nb=document.getElementById('btn-nx');if(nb)nb.disabled=false;
+  }catch{const el=document.getElementById('ai-r');if(el)el.textContent='Non disponibile.';const nb=document.getElementById('btn-nx');if(nb)nb.disabled=false;}
+}
+
+function buildCtx(){
+  const p=[];
+  if(sd.moodWords&&sd.moodWords.length)p.push('Come mi sento: '+sd.moodWords.join(', '));
+  if(sd.refl)p.push('Riflessione: "'+sd.refl+'"');
+  if(sd.hi)p.push('Highlight: "'+sd.hi+'"');
+  if(sd.grat&&sd.grat.some(Boolean))p.push('Gratitudine: '+sd.grat.filter(Boolean).join(', '));
+  if(sd.rat)p.push('Voto: '+sd.rat+'/5');
+  if(sd.hab){const dn=HL.filter(h=>sd.hab[h]).map(h=>HIT[h]);const ms=HL.filter(h=>!sd.hab[h]).map(h=>HIT[h]);if(dn.length)p.push('Habit OK: '+dn.join(', '));if(ms.length)p.push('Habit miss: '+ms.join(', '));}
+  return p.join('\n')||'Nessun dato';
+}
+
+function saveSd(){
+  const s=steps[step];
+  if(s.t==='ta'||s.t==='deep'){const el=document.getElementById('f-'+s.id);if(el)sd[s.id]=el.value.trim();}
+  else if(s.t==='grat')sd.grat=[1,2,3].map(n=>{const el=document.getElementById('g-'+n);return el?el.value.trim():'';});
+}
+function nextStep(){saveSd();if(step<steps.length-1){step++;renderStep();}else showSum();}
+function prevStep(){saveSd();if(step>0){step--;renderStep();}}
+
+// ─── SUMMARY ─────────────────────────────────────────────
+function showSum(){
+  goScreen('summary');
+  const c=document.getElementById('sum-cards');c.innerHTML='';
+  const items=[];
+  if(sd.moodWords&&sd.moodWords.length)items.push({l:'Come mi sento',v:sd.moodWords.join(' · ')});
+  if(sd.rat)items.push({l:'Rating',v:RM[sd.rat]});
+  if(sd.hi)items.push({l:'Highlight',v:sd.hi.length>100?sd.hi.slice(0,100)+'…':sd.hi});
+  if(sd.refl)items.push({l:'Riflessione',v:sd.refl.length>110?sd.refl.slice(0,110)+'…':sd.refl});
+  if(sd.grat&&sd.grat.some(Boolean))items.push({l:'Gratitudine',v:sd.grat.filter(Boolean).join(' · ')});
+  items.forEach(i=>{const d=document.createElement('div');d.className='card';d.innerHTML=`<div class="clbl">${i.l}</div><div class="cval">${i.v}</div>`;c.appendChild(d);});
+  const hsum=document.getElementById('hsum');
+  if(sd.hab&&Object.keys(sd.hab).length){
+    hsum.style.display='block';const chips=document.getElementById('hchips');chips.innerHTML='';
+    HL.forEach(h=>{const done=!!sd.hab[h];const ch=document.createElement('span');ch.className='schip'+(done?'':' miss');ch.textContent=(done?'✓ ':'')+HIT[h];chips.appendChild(ch);});
+  }
+  const ic=document.getElementById('icard');ic.style.display='block';fetchInsight();
+}
+
+async function fetchInsight(){
+  const p=`Analizza questa sessione serale, dai 1 insight breve (max 3 frasi) in italiano:\n\n${buildCtx()}\n\nOsservazione genuina, non ovvia.`;
+  try{
+    const r=await fetch(AI_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:AI_MODEL,max_tokens:1000,messages:[{role:'user',content:p}]})});
+    const d=await r.json();const el=document.getElementById('itxt');if(el)el.textContent=d.content?.[0]?.text||'';
+  }catch{const el=document.getElementById('itxt');if(el)el.textContent='Non disponibile.';}
+}
+
+// ─── SAVE TO NOTION (via Anthropic API + MCP) ─────────────
+async function saveNotion(){
+  const btn=document.getElementById('btn-save');
+  const st=document.getElementById('save-st');
+  btn.disabled=true;btn.textContent='Salvataggio…';
+  st.className='status-msg vis';st.textContent='Connessione a Notion…';
+
+  const today=new Date();
+  const ds=today.toISOString().split('T')[0];
+  const nm=today.toLocaleDateString('it-IT',{day:'numeric',month:'long',year:'numeric'});
+
+  // Mood: usa il primo mood-word positivo mappabile, altrimenti primo word generico
+  // Per compatibilità con Notion DB usiamo il campo mood emoji se selezionato, altrimenti il primo word
+  const moodWordList = sd.moodWords||[];
+  // Mappa parole → emoji per trovare un MM valido
+  const wordToEmoji = {Happy:'😄',Excited:'😊',Neutral:'😐',Sad:'☹️',Angry:'😠',Anxious:'😰'};
+  let moodEmoji = null;
+  for(const w of moodWordList){if(wordToEmoji[w]){moodEmoji=w;break;}}
+  const mN = moodEmoji ? MM[wordToEmoji[moodEmoji]] : null;
+  const rN = sd.rat ? RM[sd.rat] : null;
+
+  // Costruisci body testuale
+  let body='';
+  if(moodWordList.length) body+=`## Come mi sentivo\n${moodWordList.join(', ')}\n\n`;
+  if(sd.refl)   body+=`## Riflessione\n${sd.refl}\n\n`;
+  if(sd.hi)     body+=`## Highlight del giorno\n${sd.hi}\n\n`;
+  if(sd.grat&&sd.grat.some(Boolean)) body+=`## Gratitudine\n${sd.grat.filter(Boolean).map((g,i)=>`${i+1}. ${g}`).join('\n')}\n\n`;
+  if(sd.hab){
+    const dn=HL.filter(h=>sd.hab[h]).map(h=>HIT[h]);
+    const ms=HL.filter(h=>!sd.hab[h]).map(h=>HIT[h]);
+    body+=`## Habits\n`;
+    if(dn.length)body+=`✓ ${dn.join(', ')}\n`;
+    if(ms.length)body+=`✗ ${ms.join(', ')}\n`;
+    body+='\n';
+  }
+  if(sd.air) body+=`## Riflessione AI\n${sd.air}`;
+
+  // Habits come proprietà checkbox (nomi esatti Notion)
+  const habLines = HL.map(h=>`- ${h}: ${sd.hab&&sd.hab[h]?'__YES__':'__NO__'}`).join('\n');
+
+  const prompt=`Hai accesso al database Notion Daily Journal (data source ID: ${JDS}).
+Crea una nuova pagina con queste proprietà esatte:
+- Name: "${nm}"
+- Date of Entry: "${ds}"
+- Mood (multi_select): ${mN?`["${mN}"]`:'null (non impostare)'}
+- Rate The Day (select): ${rN?`"${rN}"`:'null (non impostare)'}
+Habits (proprietà checkbox, usa i nomi esatti):
+${habLines}
+
+Body della pagina:
+"""
+${body}
+"""
+
+Usa notion-create-pages con parent { type: "data_source_id", data_source_id: "${JDS}" }.
+Includi tutte le proprietà e il body in una sola chiamata.
+Al termine rispondi SOLO con: SAVED_OK`;
+
+  try{
+    const r=await fetch(AI_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:AI_MODEL,
+        max_tokens:2000,
+        mcp_servers:[{type:'url',url:MCP_URL,name:'notion-mcp'}],
+        messages:[{role:'user',content:prompt}]
+      })
+    });
+    const d=await r.json();
+    const allTxt=(d.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('');
+    const toolUsed=(d.content||[]).some(b=>b.type==='mcp_tool_use'||b.type==='tool_use');
+    if(allTxt.includes('SAVED_OK')||toolUsed){
+      saveStreakDay();renderStreak();
+      st.className='status-msg vis ok';st.textContent='✓ Salvato nel Daily Journal su Notion';
+      btn.textContent='Salvato ✓';
+    } else {
+      throw new Error(allTxt.slice(0,120)||'Nessuna conferma dal server');
+    }
+  }catch(e){
+    st.className='status-msg vis err';
+    st.textContent='Errore: '+e.message+'. Riprova.';
+    btn.disabled=false;btn.textContent='Salva su Notion →';
+  }
+}
+
+// ─── WEEKLY (via Anthropic API + MCP) ────────────────────
+async function loadWeek(){
+  const wc=document.getElementById('week-content');
+  wc.innerHTML='<div class="ald" style="justify-content:center;padding:2rem 0"><span></span><span></span><span></span></div>';
+  const startOfWeek=new Date();startOfWeek.setDate(startOfWeek.getDate()-6);
+  const startStr=startOfWeek.toISOString().split('T')[0];
+
+  const prompt=`Hai accesso al database Notion Daily Journal (data source ID: ${JDS}).
+Recupera tutte le entries degli ultimi 7 giorni (da ${startStr} ad oggi).
+Per ogni entry estrai: date (YYYY-MM-DD), name (titolo), mood (primo valore multi_select), rating (numero 1-5 da Rate The Day), snippet (prime 80 parole dal body della pagina se disponibile).
+Rispondi SOLO con un JSON array valido, senza testo prima o dopo:
+[{"date":"2026-04-01","name":"1 aprile 2026","mood":"😄 Happy","rating":4,"snippet":"testo..."}]
+Se non ci sono entries rispondi: []`;
+
+  try{
+    const r=await fetch(AI_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:AI_MODEL,
+        max_tokens:2000,
+        mcp_servers:[{type:'url',url:MCP_URL,name:'notion-mcp'}],
+        messages:[{role:'user',content:prompt}]
+      })
+    });
+    const d=await r.json();
+    const allTxt=(d.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('');
+    let entries=[];
+    try{
+      const cleaned=allTxt.replace(/```json|```/g,'').trim();
+      const m=cleaned.match(/\[[\s\S]*\]/);
+      if(m)entries=JSON.parse(m[0]);
+    }catch(pe){console.warn('Parse week JSON:',pe);}
+    renderWeek(entries,startOfWeek);
+  }catch(e){
+    wc.innerHTML=`<p style="font-family:var(--fd);font-style:italic;color:var(--ink-s);padding:1rem">Errore caricamento: ${e.message}</p>`;
+  }
+}
+
+function moodToEmoji(m){
+  if(!m)return'';
+  if(m.includes('Happy'))return'😄';
+  if(m.includes('Excited'))return'😊';
+  if(m.includes('Neutral'))return'😐';
+  if(m.includes('Sad'))return'☹️';
+  if(m.includes('Angry'))return'😠';
+  if(m.includes('Anxious'))return'😰';
+  return m.split(' ')[0]||'';
+}
+
+function renderWeek(entries,start){
+  const wc=document.getElementById('week-content');
+  const dn=['Dom','Lun','Mar','Mer','Gio','Ven','Sab'];
+  const days=Array.from({length:7},(_,i)=>{const d=new Date(start);d.setDate(start.getDate()+i);return d;});
+  let dwd=0,tr=0,rc=0,mc={};
+  entries.forEach(e=>{dwd++;if(e.rating){tr+=e.rating;rc++;}if(e.mood){const em=moodToEmoji(e.mood);mc[em]=(mc[em]||0)+1;}});
+  const avg=rc?Math.round(tr/rc):0;
+  const tm=Object.entries(mc).sort((a,b)=>b[1]-a[1])[0];
+  let html=`<div class="week-grid">`;
+  days.forEach(d=>{
+    const ds=d.toISOString().split('T')[0];
+    const e=entries.find(x=>x.date===ds);
+    html+=`<div class="wday ${e?'has':''}"><div class="wday-n">${dn[d.getDay()]}</div><div class="wday-em">${e&&e.mood?moodToEmoji(e.mood):'·'}</div><div class="wday-st">${e&&e.rating?'★'.repeat(e.rating):''}</div></div>`;
+  });
+  html+=`</div><div class="wstats">
+    <div class="wstat"><div class="wstat-n">${dwd}</div><div class="wstat-l">sessioni</div></div>
+    <div class="wstat"><div class="wstat-n">${avg?'★'.repeat(avg):'—'}</div><div class="wstat-l">media</div></div>
+    <div class="wstat"><div class="wstat-n">${tm?tm[0]:'—'}</div><div class="wstat-l">mood freq.</div></div>
+  </div>`;
+  if(dwd>0){html+=`<div class="icard" style="margin-bottom:16px"><div class="ilbl">Insight settimanale</div><div class="itxt" id="wins"><div class="ald"><span></span><span></span><span></span></div></div></div>`;}
+  if(entries.length>0){
+    html+=`<div class="wentries">`;
+    entries.slice().reverse().forEach(e=>{
+      const em=moodToEmoji(e.mood||'');const rs=e.rating?'★'.repeat(e.rating):'';
+      html+=`<div class="wentry"><div class="wentry-hd"><span class="wentry-date">${e.name||e.date}</span><span>${em} <span class="wentry-r">${rs}</span></span></div>${e.snippet?`<div class="wentry-txt">${e.snippet.slice(0,100)}${e.snippet.length>100?'…':''}</div>`:''}</div>`;
+    });
+    html+=`</div>`;
+  } else {
+    html+=`<p style="font-family:var(--fd);font-style:italic;color:var(--ink-s);text-align:center;padding:1.5rem">Nessuna sessione questa settimana</p>`;
+  }
+  wc.innerHTML=html;
+  if(dwd>0)fetchWeekInsight(entries);
+}
+
+async function fetchWeekInsight(entries){
+  const ctx=entries.map(e=>`${e.date}: mood:${e.mood||'?'} rating:${e.rating||'?'} ${e.snippet||''}`).join('\n');
+  try{
+    const r=await fetch(AI_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:AI_MODEL,max_tokens:1000,messages:[{role:'user',content:`Analizza questa settimana di journaling (2-3 frasi in italiano):\n\n${ctx}\n\nPattern, progressi, aree attenzione. Diretto.`}]})});
+    const d=await r.json();const el=document.getElementById('wins');if(el)el.textContent=d.content?.[0]?.text||'';
+  }catch{const el=document.getElementById('wins');if(el)el.textContent='Non disponibile.';}
+}
+
+// ─── EXPORT PDF (via Anthropic API + MCP) ────────────────
+function initExport(){
+  const ms=document.getElementById('month-sel');ms.innerHTML='';
+  const now=new Date();
+  for(let i=0;i<6;i++){
+    const d=new Date(now.getFullYear(),now.getMonth()-i,1);
+    const lbl=d.toLocaleDateString('it-IT',{month:'long',year:'numeric'});
+    const btn=document.createElement('button');
+    btn.className='msel-btn'+(i===0?' act':'');btn.textContent=lbl;
+    btn.dataset.year=d.getFullYear();btn.dataset.month=d.getMonth();
+    btn.onclick=()=>{document.querySelectorAll('.msel-btn').forEach(b=>b.classList.remove('act'));btn.classList.add('act');selMonth={year:d.getFullYear(),month:d.getMonth()};loadExportPreview(selMonth);};
+    ms.appendChild(btn);
+  }
+  selMonth={year:now.getFullYear(),month:now.getMonth()};
+  loadExportPreview(selMonth);
+}
+
+async function loadExportPreview(sm){
+  document.getElementById('btn-pdf').disabled=true;
+  const prev=document.getElementById('exp-prev');
+  prev.style.display='block';
+  prev.innerHTML='<div class="ald" style="justify-content:center"><span></span><span></span><span></span></div>';
+  const startDate=new Date(sm.year,sm.month,1).toISOString().split('T')[0];
+  const endDate=new Date(sm.year,sm.month+1,0).toISOString().split('T')[0];
+  const mname=new Date(sm.year,sm.month,1).toLocaleDateString('it-IT',{month:'long',year:'numeric'});
+
+  const prompt=`Hai accesso al database Notion Daily Journal (data source ID: ${JDS}).
+Recupera tutte le entries del mese di ${mname} (date tra ${startDate} e ${endDate}).
+Per ogni entry estrai: date (YYYY-MM-DD), name (titolo), mood (primo multi_select name), rating (numero 1-5), content (prime 150 parole dal body).
+Calcola anche: count totale, avgRating (media), topMood (mood più frequente).
+Rispondi SOLO con JSON valido in questo formato:
+{"month":"${mname}","count":N,"avgRating":N.N,"topMood":"...","entries":[{"date":"...","name":"...","mood":"...","rating":N,"content":"..."}]}
+Se nessuna entry: {"month":"${mname}","count":0,"avgRating":0,"topMood":"","entries":[]}`;
+
+  try{
+    const r=await fetch(AI_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:AI_MODEL,
+        max_tokens:3000,
+        mcp_servers:[{type:'url',url:MCP_URL,name:'notion-mcp'}],
+        messages:[{role:'user',content:prompt}]
+      })
+    });
+    const d=await r.json();
+    const allTxt=(d.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('');
+    let data={month:mname,count:0,avgRating:0,topMood:'',entries:[]};
+    try{
+      const cleaned=allTxt.replace(/```json|```/g,'').trim();
+      const m=cleaned.match(/\{[\s\S]*\}/);
+      if(m)data=JSON.parse(m[0]);
+    }catch(pe){console.warn('Parse export JSON:',pe);}
+    exportEntries=data.entries||[];
+    prev.innerHTML=`
+      <h3 style="font-family:var(--fd);font-size:1.1rem;font-weight:400;margin-bottom:10px">${data.month||mname}</h3>
+      <div class="exp-row"><span class="exp-lbl">Sessioni</span><span class="exp-val">${data.count||exportEntries.length}</span></div>
+      <div class="exp-row"><span class="exp-lbl">Rating medio</span><span class="exp-val">${data.avgRating?'★'.repeat(Math.round(data.avgRating)):'—'}</span></div>
+      <div class="exp-row"><span class="exp-lbl">Mood prevalente</span><span class="exp-val">${data.topMood||'—'}</span></div>`;
+    document.getElementById('btn-pdf').disabled=exportEntries.length===0;
+  }catch(e){
+    prev.innerHTML=`<p style="color:var(--ink-s);font-size:.85rem;font-family:var(--fd);font-style:italic">Errore caricamento: ${e.message}</p>`;
+    document.getElementById('btn-pdf').disabled=true;
+  }
+}
+
+async function generatePDF(){
+  const btn=document.getElementById('btn-pdf');
+  const st=document.getElementById('pdf-st');
+  btn.disabled=true;btn.textContent='Generazione…';
+  st.className='status-msg vis';st.textContent='Generando PDF…';
+  const sm=selMonth||{year:new Date().getFullYear(),month:new Date().getMonth()};
+  const mname=new Date(sm.year,sm.month,1).toLocaleDateString('it-IT',{month:'long',year:'numeric'});
+
+  // AI summary
+  let aiSum='';
+  if(exportEntries.length>0){
+    const ctx=exportEntries.map(e=>`${e.date}: mood:${e.mood||'?'} rating:${e.rating||'?'} ${(e.content||'').slice(0,100)}`).join('\n');
+    try{
+      const r=await fetch(AI_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:AI_MODEL,max_tokens:1000,messages:[{role:'user',content:`Sintesi mensile (4-5 frasi) in italiano di questo journal di ${mname}:\n\n${ctx}\n\nPattern emotivi, progressi, temi principali.`}]})});
+      const d=await r.json();aiSum=d.content?.[0]?.text||'';
+    }catch{}
+  }
+
+  try{
+    const {jsPDF}=window.jspdf;
+    const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+    const W=210,M=18;let y=M;
+
+    // Header
+    doc.setFillColor(247,240,227);doc.rect(0,0,W,38,'F');
+    doc.setFontSize(8);doc.setTextColor(138,129,120);doc.text('EVENING REFLECTION · JOURNAL',M,13);
+    doc.setFontSize(20);doc.setTextColor(28,26,23);doc.text(mname.toUpperCase(),M,26);
+    doc.setFontSize(9);doc.setTextColor(201,169,110);doc.text(exportEntries.length+' sessioni',M,34);
+    y=48;
+
+    // AI Summary
+    if(aiSum){
+      doc.setFontSize(8);doc.setTextColor(201,169,110);doc.text('SINTESI AI',M,y);y+=4;
+      doc.setDrawColor(201,169,110);doc.setLineWidth(.3);doc.line(M,y,W-M,y);y+=5;
+      doc.setFont('helvetica','italic');doc.setFontSize(9);doc.setTextColor(74,69,64);
+      const lines=doc.splitTextToSize(aiSum,W-M*2);doc.text(lines.slice(0,5),M,y);y+=Math.min(lines.length,5)*4+8;
+    }
+
+    // Stats bar
+    const avg=exportEntries.filter(e=>e.rating).reduce((a,b)=>a+(b.rating||0),0)/(exportEntries.filter(e=>e.rating).length||1);
+    doc.setFillColor(245,240,232);doc.rect(M,y,W-M*2,16,'F');
+    doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(138,129,120);
+    doc.text('SESSIONI',M+4,y+5);doc.text('RATING MEDIO',M+45,y+5);
+    doc.setFont('helvetica','bold');doc.setFontSize(13);doc.setTextColor(28,26,23);
+    doc.text(String(exportEntries.length),M+4,y+13);doc.text(avg?'★'.repeat(Math.round(avg)):'-',M+45,y+13);
+    y+=24;
+
+    // Entries
+    exportEntries.forEach(e=>{
+      if(y>265){doc.addPage();y=M;}
+      doc.setDrawColor(228,213,176);doc.setLineWidth(.3);doc.line(M,y,W-M,y);y+=4;
+      doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(28,26,23);doc.text(e.name||e.date,M,y);
+      if(e.rating){doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(201,169,110);doc.text('★'.repeat(e.rating),W-M-12,y);}
+      y+=4;
+      if(e.content){
+        doc.setFont('helvetica','italic');doc.setFontSize(8);doc.setTextColor(74,69,64);
+        const snip=e.content.replace(/##[^\n]*/g,'').replace(/\n+/g,' ').trim().slice(0,250);
+        const lines=doc.splitTextToSize(snip,W-M*2);doc.text(lines.slice(0,3),M,y);y+=Math.min(lines.length,3)*3.5+5;
+      } else {y+=3;}
+    });
+
+    // Footer
+    const pgs=doc.internal.getNumberOfPages();
+    for(let i=1;i<=pgs;i++){
+      doc.setPage(i);doc.setDrawColor(201,169,110);doc.setLineWidth(.3);doc.line(M,287,W-M,287);
+      doc.setFontSize(7);doc.setTextColor(138,129,120);
+      doc.text('Evening Reflection · '+new Date().toLocaleDateString('it-IT'),M,291);
+      doc.text(i+'/'+pgs,W-M,291,'right');
+    }
+    doc.save('journal-'+mname.replace(/ /g,'-')+'.pdf');
+    st.className='status-msg vis ok';st.textContent='✓ PDF scaricato';
+    btn.disabled=false;btn.textContent='Genera e scarica PDF →';
+  }catch(e){
+    st.className='status-msg vis err';st.textContent='Errore PDF: '+e.message;
+    btn.disabled=false;btn.textContent='Genera e scarica PDF →';
+  }
+}
+
+// ─── INIT ─────────────────────────────────────────────────
+document.getElementById('hdate').textContent=new Date().toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+renderStreak();
+
+// Service Worker (esclude API calls dal cache)
+if('serviceWorker' in navigator){
+  const swCode=`
+const CACHE='er-v2';
+const ASSETS=[self.location.href];
+self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS))));
+self.addEventListener('fetch',e=>{
+  const u=e.request.url;
+  if(u.includes('api.anthropic.com')||u.includes('mcp.notion.com')||u.includes('notion.com')||u.includes('fonts.googleapis.com')||u.includes('cdnjs'))return;
+  e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request)));
+});`;
+  const swBlob=new Blob([swCode],{type:'application/javascript'});
+  const swURL=URL.createObjectURL(swBlob);
+  navigator.serviceWorker.register(swURL,{scope:'./'}).catch(()=>{});
+}
+</script>
+</body>
+</html>
