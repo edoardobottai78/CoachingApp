@@ -299,7 +299,7 @@ body { font-family: var(--fb); background: var(--bg); color: var(--ink); height:
       <div class="itxt" id="itxt"><div class="ald"><span></span><span></span><span></span></div></div>
     </div>
     <div class="sum-actions">
-      <button class="btn-primary" id="btn-save" onclick="saveNotion()">Salva su Notion →</button>
+      <button class="btn-primary" id="btn-save" onclick="saveNotion()">📋 Copia per Claude →</button>
       <button class="btn-ghost" onclick="goScreen('home')">Scarta</button>
     </div>
     <div class="status-msg" id="save-st"></div>
@@ -349,9 +349,8 @@ body { font-family: var(--fb); background: var(--bg); color: var(--ink); height:
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
 // ─── CONSTANTS ───────────────────────────────────────────
-const JDS        = '1d6dac0a-f6b2-825a-912d-814f7b0cc22f';
+const JDS        = '777dac0a-f6b2-82dc-ac82-812fd7db3035';
 const AI_URL     = '/api/ai';      // Anthropic via Vercel proxy
-const NOTION_URL = '/api/notion';  // Notion diretto via Vercel proxy
 const AI_MODEL   = 'claude-sonnet-4-20250514';
 
 // Habits — nomi esatti come su Notion
@@ -617,118 +616,85 @@ async function fetchInsight(){
   }catch{const el=document.getElementById('itxt');if(el)el.textContent='Non disponibile.';}
 }
 
-// ─── NOTION HELPER ───────────────────────────────────────
-async function notionCall(path, method, body){
-  const r = await fetch(NOTION_URL, {
-    method: 'POST',
-    headers: {'Content-Type':'application/json'},
-    body: JSON.stringify({notionPath: path, notionMethod: method, notionBody: body})
-  });
-  const d = await r.json();
-  if(!r.ok) throw new Error(d.message || d.error || 'Notion error '+r.status);
-  return d;
+// ─── LOCAL STORAGE SESSIONS ──────────────────────────────
+function lsSessions(){
+  try{const r=lsG('er_sessions');return r?JSON.parse(r):[];}catch{return[];}
+}
+function saveSession(entry){
+  try{
+    const sessions=lsSessions();
+    const filtered=sessions.filter(e=>e.date!==entry.date);
+    filtered.push(entry);
+    const cutoff=new Date();cutoff.setDate(cutoff.getDate()-90);
+    const trimmed=filtered.filter(e=>new Date(e.date)>=cutoff);
+    lsS('er_sessions',JSON.stringify(trimmed));
+  }catch(e){console.warn('saveSession error',e);}
 }
 
-// ─── SAVE TO NOTION (chiamata diretta API Notion) ─────────
-async function saveNotion(){
+// ─── SAVE: localStorage + Copia per Claude ────────────────
+function saveNotion(){
   const btn=document.getElementById('btn-save');
   const st=document.getElementById('save-st');
-  btn.disabled=true; btn.textContent='Salvataggio…';
-  st.className='status-msg vis'; st.textContent='Connessione a Notion…';
 
   const today=new Date();
   const ds=today.toISOString().split('T')[0];
   const nm=today.toLocaleDateString('it-IT',{day:'numeric',month:'long',year:'numeric'});
 
-  // Mood: mappa mood-words → valore Notion multi_select
   const moodWordList=sd.moodWords||[];
   const wordToNotionMood={Happy:'😄 Happy',Excited:'😊 Excited',Neutral:'😐 Neutral',Sad:'☹️ Sad',Angry:'😠 Angry',Anxious:'😰Anxious'};
   let mN=null;
   for(const w of moodWordList){if(wordToNotionMood[w]){mN=wordToNotionMood[w];break;}}
   const rN=sd.rat?RM[sd.rat]:null;
 
-  // Proprietà Notion
-  const props={
-    'Name':       {title:[{type:'text',text:{content:nm}}]},
-    'Date of Entry': {date:{start:ds}},
+  // Salva in localStorage
+  const entry={
+    date:ds, name:nm,
+    mood:mN||'', moodWords:moodWordList,
+    rating:sd.rat||0,
+    refl:sd.refl||'', hi:sd.hi||'',
+    grat:sd.grat||[],
+    hab:sd.hab||{},
+    air:sd.air||''
   };
-  if(mN) props['Mood']={multi_select:[{name:mN}]};
-  if(rN) props['Rate The Day']={select:{name:rN}};
-  // Habits checkbox
-  if(sd.hab){
-    HL.forEach(h=>{
-      props[h]={checkbox: !!(sd.hab[h])};
-    });
-  }
+  saveSession(entry);
+  saveStreakDay();renderStreak();
 
-  // Blocchi body pagina
-  const children=[];
-  const addH2=(t)=>children.push({object:'block',type:'heading_2',heading_2:{rich_text:[{type:'text',text:{content:t}}]}});
-  const addPar=(t)=>{if(t)children.push({object:'block',type:'paragraph',paragraph:{rich_text:[{type:'text',text:{content:t}}]}});};
-
-  if(moodWordList.length){addH2('Come mi sentivo');addPar(moodWordList.join(', '));}
-  if(sd.refl){addH2('Riflessione');addPar(sd.refl);}
-  if(sd.hi){addH2('Highlight del giorno');addPar(sd.hi);}
-  if(sd.grat&&sd.grat.some(Boolean)){
-    addH2('Gratitudine');
-    sd.grat.filter(Boolean).forEach((g,i)=>children.push({object:'block',type:'numbered_list_item',numbered_list_item:{rich_text:[{type:'text',text:{content:g}}]}}));
-  }
+  // Costruisci testo per Claude
+  let text='SALVA_JOURNAL\n';
+  text+='Data: '+nm+' ('+ds+')\n';
+  if(mN) text+='Mood: '+mN+'\n';
+  if(moodWordList.length) text+='Come mi sento: '+moodWordList.join(', ')+'\n';
+  if(rN) text+='Rating: '+rN+'\n';
+  if(sd.refl) text+='Riflessione: '+sd.refl+'\n';
+  if(sd.hi)   text+='Highlight: '+sd.hi+'\n';
+  if(sd.grat&&sd.grat.some(Boolean)) text+='Gratitudine: '+sd.grat.filter(Boolean).join(' | ')+'\n';
   if(sd.hab){
     const dn=HL.filter(h=>sd.hab[h]).map(h=>HIT[h]);
     const ms=HL.filter(h=>!sd.hab[h]).map(h=>HIT[h]);
-    addH2('Habits');
-    if(dn.length)addPar('✓ '+dn.join(', '));
-    if(ms.length)addPar('✗ '+ms.join(', '));
+    if(dn.length) text+='Habits OK: '+dn.join(', ')+'\n';
+    if(ms.length) text+='Habits miss: '+ms.join(', ')+'\n';
   }
-  if(sd.air){addH2('Riflessione AI');addPar(sd.air);}
+  if(sd.air) text+='Riflessione AI: '+sd.air+'\n';
 
-  try{
-    const result=await notionCall('/pages','POST',{
-      parent:{database_id:JDS},
-      properties:props,
-      children:children
-    });
-    if(result.id){
-      saveStreakDay();renderStreak();
-      st.className='status-msg vis ok';st.textContent='✓ Salvato nel Daily Journal su Notion';
-      btn.textContent='Salvato ✓';
-    } else {
-      throw new Error(result.message||'ID pagina non ricevuto');
-    }
-  }catch(e){
-    st.className='status-msg vis err';
-    st.textContent='Errore: '+e.message;
-    btn.disabled=false; btn.textContent='Salva su Notion →';
-  }
+  navigator.clipboard.writeText(text).then(()=>{
+    btn.textContent='✓ Copiato!';
+    st.className='status-msg vis ok';
+    st.textContent='Sessione salvata 🌙 Incolla in chat con Claude per salvare su Notion';
+  }).catch(()=>{
+    window.prompt('Copia questo testo e incollalo in chat con Claude:',text);
+    st.className='status-msg vis ok';
+    st.textContent='Sessione salvata 🌙';
+  });
 }
 
-// ─── WEEKLY (chiamata diretta Notion API) ────────────────
-async function loadWeek(){
+// ─── WEEKLY (da localStorage) ───────────────────────────
+function loadWeek(){
   const wc=document.getElementById('week-content');
-  wc.innerHTML='<div class="ald" style="justify-content:center;padding:2rem 0"><span></span><span></span><span></span></div>';
   const startOfWeek=new Date();startOfWeek.setDate(startOfWeek.getDate()-6);
   const startStr=startOfWeek.toISOString().split('T')[0];
-
-  try{
-    const data=await notionCall('/databases/'+JDS+'/query','POST',{
-      filter:{property:'Date of Entry',date:{on_or_after:startStr}},
-      sorts:[{property:'Date of Entry',direction:'ascending'}]
-    });
-    const entries=(data.results||[]).map(p=>{
-      const props=p.properties;
-      const dateVal=props['Date of Entry']?.date?.start||'';
-      const moodArr=props['Mood']?.multi_select||[];
-      const moodRaw=moodArr[0]?.name||'';
-      const ratingRaw=props['Rate The Day']?.select?.name||'';
-      const ratingNum={'⭐':1,'⭐⭐':2,'⭐⭐⭐':3,'⭐⭐⭐⭐':4,'⭐⭐⭐⭐⭐':5}[ratingRaw]||0;
-      const titleArr=props['Name']?.title||[];
-      const nameStr=titleArr.map(t=>t.plain_text).join('')||dateVal;
-      return {date:dateVal,name:nameStr,mood:moodRaw,rating:ratingNum,snippet:''};
-    });
-    renderWeek(entries,startOfWeek);
-  }catch(e){
-    wc.innerHTML=`<p style="font-family:var(--fd);font-style:italic;color:var(--ink-s);padding:1rem">Errore caricamento: ${e.message}</p>`;
-  }
+  const all=lsSessions();
+  const entries=all.filter(e=>e.date>=startStr).sort((a,b)=>a.date.localeCompare(b.date));
+  renderWeek(entries,startOfWeek);
 }
 
 function moodToEmoji(m){
@@ -801,47 +767,29 @@ function initExport(){
   loadExportPreview(selMonth);
 }
 
-// ─── EXPORT PDF (chiamata diretta Notion API) ────────────
+// ─── EXPORT PDF (da localStorage) ───────────────────────
 async function loadExportPreview(sm){
   document.getElementById('btn-pdf').disabled=true;
   const prev=document.getElementById('exp-prev');
   prev.style.display='block';
-  prev.innerHTML='<div class="ald" style="justify-content:center"><span></span><span></span><span></span></div>';
   const startDate=new Date(sm.year,sm.month,1).toISOString().split('T')[0];
   const endDate=new Date(sm.year,sm.month+1,0).toISOString().split('T')[0];
   const mname=new Date(sm.year,sm.month,1).toLocaleDateString('it-IT',{month:'long',year:'numeric'});
 
-  try{
-    const data=await notionCall('/databases/'+JDS+'/query','POST',{
-      filter:{and:[
-        {property:'Date of Entry',date:{on_or_after:startDate}},
-        {property:'Date of Entry',date:{on_or_before:endDate}}
-      ]},
-      sorts:[{property:'Date of Entry',direction:'ascending'}]
-    });
-    exportEntries=(data.results||[]).map(p=>{
-      const props=p.properties;
-      const dateVal=props['Date of Entry']?.date?.start||'';
-      const moodArr=props['Mood']?.multi_select||[];
-      const moodRaw=moodArr[0]?.name||'';
-      const ratingRaw=props['Rate The Day']?.select?.name||'';
-      const ratingNum={'⭐':1,'⭐⭐':2,'⭐⭐⭐':3,'⭐⭐⭐⭐':4,'⭐⭐⭐⭐⭐':5}[ratingRaw]||0;
-      const titleArr=props['Name']?.title||[];
-      return {date:dateVal,name:titleArr.map(t=>t.plain_text).join('')||dateVal,mood:moodRaw,rating:ratingNum,content:''};
-    });
-    const count=exportEntries.length;
-    const avgR=count?exportEntries.filter(e=>e.rating).reduce((a,b)=>a+b.rating,0)/(exportEntries.filter(e=>e.rating).length||1):0;
-    const mc={};exportEntries.forEach(e=>{if(e.mood)mc[e.mood]=(mc[e.mood]||0)+1;});
-    const topMood=Object.entries(mc).sort((a,b)=>b[1]-a[1])[0];
-    prev.innerHTML=`
-      <h3 style="font-family:var(--fd);font-size:1.1rem;font-weight:400;margin-bottom:10px">${mname}</h3>
-      <div class="exp-row"><span class="exp-lbl">Sessioni</span><span class="exp-val">${count}</span></div>
-      <div class="exp-row"><span class="exp-lbl">Rating medio</span><span class="exp-val">${avgR?'★'.repeat(Math.round(avgR)):'—'}</span></div>
-      <div class="exp-row"><span class="exp-lbl">Mood prevalente</span><span class="exp-val">${topMood?topMood[0]:'—'}</span></div>`;
-    document.getElementById('btn-pdf').disabled=count===0;
-  }catch(e){
-    prev.innerHTML=`<p style="color:var(--ink-s);font-size:.85rem;font-family:var(--fd);font-style:italic">Errore caricamento: ${e.message}</p>`;
-    document.getElementById('btn-pdf').disabled=true;
+  const all=lsSessions();
+  exportEntries=all.filter(e=>e.date>=startDate&&e.date<=endDate).sort((a,b)=>a.date.localeCompare(b.date));
+  const count=exportEntries.length;
+  const avgR=count?exportEntries.filter(e=>e.rating).reduce((a,b)=>a+b.rating,0)/(exportEntries.filter(e=>e.rating).length||1):0;
+  const mc={};exportEntries.forEach(e=>{if(e.mood)mc[e.mood]=(mc[e.mood]||0)+1;});
+  const topMood=Object.entries(mc).sort((a,b)=>b[1]-a[1])[0];
+  prev.innerHTML=`
+    <h3 style="font-family:var(--fd);font-size:1.1rem;font-weight:400;margin-bottom:10px">${mname}</h3>
+    <div class="exp-row"><span class="exp-lbl">Sessioni</span><span class="exp-val">${count}</span></div>
+    <div class="exp-row"><span class="exp-lbl">Rating medio</span><span class="exp-val">${avgR?'★'.repeat(Math.round(avgR)):'—'}</span></div>
+    <div class="exp-row"><span class="exp-lbl">Mood prevalente</span><span class="exp-val">${topMood?topMood[0]:'—'}</span></div>`;
+  document.getElementById('btn-pdf').disabled=count===0;
+  if(count===0){
+    prev.innerHTML+=`<p style="font-size:.8rem;color:var(--ink-s);margin-top:8px;font-family:var(--fd);font-style:italic">Nessuna sessione salvata localmente per questo mese.</p>`;
   }
 }
 
