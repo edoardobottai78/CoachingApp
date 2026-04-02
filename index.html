@@ -349,10 +349,10 @@ body { font-family: var(--fb); background: var(--bg); color: var(--ink); height:
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
 // ─── CONSTANTS ───────────────────────────────────────────
-const JDS = '1aadac0a-f6b2-8320-adc4-0767f76264b7';
-const MCP_URL = 'https://mcp.notion.com/mcp';
-const AI_URL  = '/api/proxy';  // Vercel serverless proxy (aggiunge API key server-side)
-const AI_MODEL = 'claude-sonnet-4-20250514';
+const JDS        = '1aadac0a-f6b2-8320-adc4-0767f76264b7';
+const AI_URL     = '/api/proxy?target=ai';      // Anthropic via Vercel proxy
+const NOTION_URL = '/api/proxy?target=notion';  // Notion diretto via Vercel proxy
+const AI_MODEL   = 'claude-sonnet-4-20250514';
 
 // Habits — nomi esatti come su Notion
 const HL  = ['Vitamins','Fotografia/Video','Reading','Allenamento','Stretching'];
@@ -617,125 +617,114 @@ async function fetchInsight(){
   }catch{const el=document.getElementById('itxt');if(el)el.textContent='Non disponibile.';}
 }
 
-// ─── SAVE TO NOTION (via Anthropic API + MCP) ─────────────
+// ─── NOTION HELPER ───────────────────────────────────────
+async function notionCall(path, method, body){
+  const r = await fetch(NOTION_URL, {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({notionPath: path, notionMethod: method, notionBody: body})
+  });
+  const d = await r.json();
+  if(!r.ok) throw new Error(d.message || d.error || 'Notion error '+r.status);
+  return d;
+}
+
+// ─── SAVE TO NOTION (chiamata diretta API Notion) ─────────
 async function saveNotion(){
   const btn=document.getElementById('btn-save');
   const st=document.getElementById('save-st');
-  btn.disabled=true;btn.textContent='Salvataggio…';
-  st.className='status-msg vis';st.textContent='Connessione a Notion…';
+  btn.disabled=true; btn.textContent='Salvataggio…';
+  st.className='status-msg vis'; st.textContent='Connessione a Notion…';
 
   const today=new Date();
   const ds=today.toISOString().split('T')[0];
   const nm=today.toLocaleDateString('it-IT',{day:'numeric',month:'long',year:'numeric'});
 
-  // Mood: usa il primo mood-word positivo mappabile, altrimenti primo word generico
-  // Per compatibilità con Notion DB usiamo il campo mood emoji se selezionato, altrimenti il primo word
-  const moodWordList = sd.moodWords||[];
-  // Mappa parole → emoji per trovare un MM valido
-  const wordToEmoji = {Happy:'😄',Excited:'😊',Neutral:'😐',Sad:'☹️',Angry:'😠',Anxious:'😰'};
-  let moodEmoji = null;
-  for(const w of moodWordList){if(wordToEmoji[w]){moodEmoji=w;break;}}
-  const mN = moodEmoji ? MM[wordToEmoji[moodEmoji]] : null;
-  const rN = sd.rat ? RM[sd.rat] : null;
+  // Mood: mappa mood-words → valore Notion multi_select
+  const moodWordList=sd.moodWords||[];
+  const wordToNotionMood={Happy:'😄 Happy',Excited:'😊 Excited',Neutral:'😐 Neutral',Sad:'☹️ Sad',Angry:'😠 Angry',Anxious:'😰Anxious'};
+  let mN=null;
+  for(const w of moodWordList){if(wordToNotionMood[w]){mN=wordToNotionMood[w];break;}}
+  const rN=sd.rat?RM[sd.rat]:null;
 
-  // Costruisci body testuale
-  let body='';
-  if(moodWordList.length) body+=`## Come mi sentivo\n${moodWordList.join(', ')}\n\n`;
-  if(sd.refl)   body+=`## Riflessione\n${sd.refl}\n\n`;
-  if(sd.hi)     body+=`## Highlight del giorno\n${sd.hi}\n\n`;
-  if(sd.grat&&sd.grat.some(Boolean)) body+=`## Gratitudine\n${sd.grat.filter(Boolean).map((g,i)=>`${i+1}. ${g}`).join('\n')}\n\n`;
+  // Proprietà Notion
+  const props={
+    'Name':       {title:[{type:'text',text:{content:nm}}]},
+    'Date of Entry': {date:{start:ds}},
+  };
+  if(mN) props['Mood']={multi_select:[{name:mN}]};
+  if(rN) props['Rate The Day']={select:{name:rN}};
+  // Habits checkbox
+  if(sd.hab){
+    HL.forEach(h=>{
+      props[h]={checkbox: !!(sd.hab[h])};
+    });
+  }
+
+  // Blocchi body pagina
+  const children=[];
+  const addH2=(t)=>children.push({object:'block',type:'heading_2',heading_2:{rich_text:[{type:'text',text:{content:t}}]}});
+  const addPar=(t)=>{if(t)children.push({object:'block',type:'paragraph',paragraph:{rich_text:[{type:'text',text:{content:t}}]}});};
+
+  if(moodWordList.length){addH2('Come mi sentivo');addPar(moodWordList.join(', '));}
+  if(sd.refl){addH2('Riflessione');addPar(sd.refl);}
+  if(sd.hi){addH2('Highlight del giorno');addPar(sd.hi);}
+  if(sd.grat&&sd.grat.some(Boolean)){
+    addH2('Gratitudine');
+    sd.grat.filter(Boolean).forEach((g,i)=>children.push({object:'block',type:'numbered_list_item',numbered_list_item:{rich_text:[{type:'text',text:{content:g}}]}}));
+  }
   if(sd.hab){
     const dn=HL.filter(h=>sd.hab[h]).map(h=>HIT[h]);
     const ms=HL.filter(h=>!sd.hab[h]).map(h=>HIT[h]);
-    body+=`## Habits\n`;
-    if(dn.length)body+=`✓ ${dn.join(', ')}\n`;
-    if(ms.length)body+=`✗ ${ms.join(', ')}\n`;
-    body+='\n';
+    addH2('Habits');
+    if(dn.length)addPar('✓ '+dn.join(', '));
+    if(ms.length)addPar('✗ '+ms.join(', '));
   }
-  if(sd.air) body+=`## Riflessione AI\n${sd.air}`;
-
-  // Habits come proprietà checkbox (nomi esatti Notion)
-  const habLines = HL.map(h=>`- ${h}: ${sd.hab&&sd.hab[h]?'__YES__':'__NO__'}`).join('\n');
-
-  const prompt=`Hai accesso al database Notion Daily Journal (data source ID: ${JDS}).
-Crea una nuova pagina con queste proprietà esatte:
-- Name: "${nm}"
-- Date of Entry: "${ds}"
-- Mood (multi_select): ${mN?`["${mN}"]`:'null (non impostare)'}
-- Rate The Day (select): ${rN?`"${rN}"`:'null (non impostare)'}
-Habits (proprietà checkbox, usa i nomi esatti):
-${habLines}
-
-Body della pagina:
-"""
-${body}
-"""
-
-Usa notion-create-pages con parent { type: "data_source_id", data_source_id: "${JDS}" }.
-Includi tutte le proprietà e il body in una sola chiamata.
-Al termine rispondi SOLO con: SAVED_OK`;
+  if(sd.air){addH2('Riflessione AI');addPar(sd.air);}
 
   try{
-    const r=await fetch(AI_URL,{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        model:AI_MODEL,
-        max_tokens:2000,
-        mcp_servers:[{type:'url',url:MCP_URL,name:'notion-mcp'}],
-        messages:[{role:'user',content:prompt}]
-      })
+    const result=await notionCall('/pages','POST',{
+      parent:{database_id:JDS},
+      properties:props,
+      children:children
     });
-    const d=await r.json();
-    const allTxt=(d.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('');
-    const toolUsed=(d.content||[]).some(b=>b.type==='mcp_tool_use'||b.type==='tool_use');
-    if(allTxt.includes('SAVED_OK')||toolUsed){
+    if(result.id){
       saveStreakDay();renderStreak();
       st.className='status-msg vis ok';st.textContent='✓ Salvato nel Daily Journal su Notion';
       btn.textContent='Salvato ✓';
     } else {
-      throw new Error(allTxt.slice(0,120)||'Nessuna conferma dal server');
+      throw new Error(result.message||'ID pagina non ricevuto');
     }
   }catch(e){
     st.className='status-msg vis err';
-    st.textContent='Errore: '+e.message+'. Riprova.';
-    btn.disabled=false;btn.textContent='Salva su Notion →';
+    st.textContent='Errore: '+e.message;
+    btn.disabled=false; btn.textContent='Salva su Notion →';
   }
 }
 
-// ─── WEEKLY (via Anthropic API + MCP) ────────────────────
+// ─── WEEKLY (chiamata diretta Notion API) ────────────────
 async function loadWeek(){
   const wc=document.getElementById('week-content');
   wc.innerHTML='<div class="ald" style="justify-content:center;padding:2rem 0"><span></span><span></span><span></span></div>';
   const startOfWeek=new Date();startOfWeek.setDate(startOfWeek.getDate()-6);
   const startStr=startOfWeek.toISOString().split('T')[0];
 
-  const prompt=`Hai accesso al database Notion Daily Journal (data source ID: ${JDS}).
-Recupera tutte le entries degli ultimi 7 giorni (da ${startStr} ad oggi).
-Per ogni entry estrai: date (YYYY-MM-DD), name (titolo), mood (primo valore multi_select), rating (numero 1-5 da Rate The Day), snippet (prime 80 parole dal body della pagina se disponibile).
-Rispondi SOLO con un JSON array valido, senza testo prima o dopo:
-[{"date":"2026-04-01","name":"1 aprile 2026","mood":"😄 Happy","rating":4,"snippet":"testo..."}]
-Se non ci sono entries rispondi: []`;
-
   try{
-    const r=await fetch(AI_URL,{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        model:AI_MODEL,
-        max_tokens:2000,
-        mcp_servers:[{type:'url',url:MCP_URL,name:'notion-mcp'}],
-        messages:[{role:'user',content:prompt}]
-      })
+    const data=await notionCall('/databases/'+JDS+'/query','POST',{
+      filter:{property:'Date of Entry',date:{on_or_after:startStr}},
+      sorts:[{property:'Date of Entry',direction:'ascending'}]
     });
-    const d=await r.json();
-    const allTxt=(d.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('');
-    let entries=[];
-    try{
-      const cleaned=allTxt.replace(/```json|```/g,'').trim();
-      const m=cleaned.match(/\[[\s\S]*\]/);
-      if(m)entries=JSON.parse(m[0]);
-    }catch(pe){console.warn('Parse week JSON:',pe);}
+    const entries=(data.results||[]).map(p=>{
+      const props=p.properties;
+      const dateVal=props['Date of Entry']?.date?.start||'';
+      const moodArr=props['Mood']?.multi_select||[];
+      const moodRaw=moodArr[0]?.name||'';
+      const ratingRaw=props['Rate The Day']?.select?.name||'';
+      const ratingNum={'⭐':1,'⭐⭐':2,'⭐⭐⭐':3,'⭐⭐⭐⭐':4,'⭐⭐⭐⭐⭐':5}[ratingRaw]||0;
+      const titleArr=props['Name']?.title||[];
+      const nameStr=titleArr.map(t=>t.plain_text).join('')||dateVal;
+      return {date:dateVal,name:nameStr,mood:moodRaw,rating:ratingNum,snippet:''};
+    });
     renderWeek(entries,startOfWeek);
   }catch(e){
     wc.innerHTML=`<p style="font-family:var(--fd);font-style:italic;color:var(--ink-s);padding:1rem">Errore caricamento: ${e.message}</p>`;
@@ -812,6 +801,7 @@ function initExport(){
   loadExportPreview(selMonth);
 }
 
+// ─── EXPORT PDF (chiamata diretta Notion API) ────────────
 async function loadExportPreview(sm){
   document.getElementById('btn-pdf').disabled=true;
   const prev=document.getElementById('exp-prev');
@@ -821,40 +811,34 @@ async function loadExportPreview(sm){
   const endDate=new Date(sm.year,sm.month+1,0).toISOString().split('T')[0];
   const mname=new Date(sm.year,sm.month,1).toLocaleDateString('it-IT',{month:'long',year:'numeric'});
 
-  const prompt=`Hai accesso al database Notion Daily Journal (data source ID: ${JDS}).
-Recupera tutte le entries del mese di ${mname} (date tra ${startDate} e ${endDate}).
-Per ogni entry estrai: date (YYYY-MM-DD), name (titolo), mood (primo multi_select name), rating (numero 1-5), content (prime 150 parole dal body).
-Calcola anche: count totale, avgRating (media), topMood (mood più frequente).
-Rispondi SOLO con JSON valido in questo formato:
-{"month":"${mname}","count":N,"avgRating":N.N,"topMood":"...","entries":[{"date":"...","name":"...","mood":"...","rating":N,"content":"..."}]}
-Se nessuna entry: {"month":"${mname}","count":0,"avgRating":0,"topMood":"","entries":[]}`;
-
   try{
-    const r=await fetch(AI_URL,{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        model:AI_MODEL,
-        max_tokens:3000,
-        mcp_servers:[{type:'url',url:MCP_URL,name:'notion-mcp'}],
-        messages:[{role:'user',content:prompt}]
-      })
+    const data=await notionCall('/databases/'+JDS+'/query','POST',{
+      filter:{and:[
+        {property:'Date of Entry',date:{on_or_after:startDate}},
+        {property:'Date of Entry',date:{on_or_before:endDate}}
+      ]},
+      sorts:[{property:'Date of Entry',direction:'ascending'}]
     });
-    const d=await r.json();
-    const allTxt=(d.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('');
-    let data={month:mname,count:0,avgRating:0,topMood:'',entries:[]};
-    try{
-      const cleaned=allTxt.replace(/```json|```/g,'').trim();
-      const m=cleaned.match(/\{[\s\S]*\}/);
-      if(m)data=JSON.parse(m[0]);
-    }catch(pe){console.warn('Parse export JSON:',pe);}
-    exportEntries=data.entries||[];
+    exportEntries=(data.results||[]).map(p=>{
+      const props=p.properties;
+      const dateVal=props['Date of Entry']?.date?.start||'';
+      const moodArr=props['Mood']?.multi_select||[];
+      const moodRaw=moodArr[0]?.name||'';
+      const ratingRaw=props['Rate The Day']?.select?.name||'';
+      const ratingNum={'⭐':1,'⭐⭐':2,'⭐⭐⭐':3,'⭐⭐⭐⭐':4,'⭐⭐⭐⭐⭐':5}[ratingRaw]||0;
+      const titleArr=props['Name']?.title||[];
+      return {date:dateVal,name:titleArr.map(t=>t.plain_text).join('')||dateVal,mood:moodRaw,rating:ratingNum,content:''};
+    });
+    const count=exportEntries.length;
+    const avgR=count?exportEntries.filter(e=>e.rating).reduce((a,b)=>a+b.rating,0)/(exportEntries.filter(e=>e.rating).length||1):0;
+    const mc={};exportEntries.forEach(e=>{if(e.mood)mc[e.mood]=(mc[e.mood]||0)+1;});
+    const topMood=Object.entries(mc).sort((a,b)=>b[1]-a[1])[0];
     prev.innerHTML=`
-      <h3 style="font-family:var(--fd);font-size:1.1rem;font-weight:400;margin-bottom:10px">${data.month||mname}</h3>
-      <div class="exp-row"><span class="exp-lbl">Sessioni</span><span class="exp-val">${data.count||exportEntries.length}</span></div>
-      <div class="exp-row"><span class="exp-lbl">Rating medio</span><span class="exp-val">${data.avgRating?'★'.repeat(Math.round(data.avgRating)):'—'}</span></div>
-      <div class="exp-row"><span class="exp-lbl">Mood prevalente</span><span class="exp-val">${data.topMood||'—'}</span></div>`;
-    document.getElementById('btn-pdf').disabled=exportEntries.length===0;
+      <h3 style="font-family:var(--fd);font-size:1.1rem;font-weight:400;margin-bottom:10px">${mname}</h3>
+      <div class="exp-row"><span class="exp-lbl">Sessioni</span><span class="exp-val">${count}</span></div>
+      <div class="exp-row"><span class="exp-lbl">Rating medio</span><span class="exp-val">${avgR?'★'.repeat(Math.round(avgR)):'—'}</span></div>
+      <div class="exp-row"><span class="exp-lbl">Mood prevalente</span><span class="exp-val">${topMood?topMood[0]:'—'}</span></div>`;
+    document.getElementById('btn-pdf').disabled=count===0;
   }catch(e){
     prev.innerHTML=`<p style="color:var(--ink-s);font-size:.85rem;font-family:var(--fd);font-style:italic">Errore caricamento: ${e.message}</p>`;
     document.getElementById('btn-pdf').disabled=true;
