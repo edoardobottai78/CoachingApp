@@ -10,7 +10,6 @@
 <meta name="description" content="Daily evening reflection & journaling">
 <title>Evening Reflection</title>
 
-<!-- PWA Manifest inline -->
 <script>
 const manifestData = {
   name: "Evening Reflection",
@@ -42,6 +41,7 @@ document.write('<link rel="manifest" href="'+manifestURL+'">');
   --ink: #1C1A17; --ink-m: #4A4540; --ink-s: #8A8178;
   --bg: #FDFBF7; --bg-w: #F5F0E8; --line: rgba(201,169,110,.22);
   --green: #3B6D11; --gbg: #EAF3DE;
+  --blue: #185FA5; --bluebg: #E6F1FB;
   --r: 16px; --r-sm: 12px;
   --fd: 'Cormorant Garamond', Georgia, serif;
   --fb: 'DM Sans', system-ui, sans-serif;
@@ -99,6 +99,35 @@ body { font-family: var(--fb); background: var(--bg); color: var(--ink); height:
 .btn-secondary:active { background: var(--gold-p); }
 .btn-ghost { width: 100%; background: none; border: 0.5px solid var(--line); color: var(--ink-s); padding: 14px 24px; border-radius: 100px; font-family: var(--fb); font-size: 14px; cursor: pointer; -webkit-appearance: none; }
 
+/* ── ALERT BANNER ── */
+.alert-banner {
+  background: var(--bluebg); border: 1px solid rgba(24,95,165,.25);
+  border-radius: 12px; padding: 12px 14px; margin-bottom: 14px;
+  display: flex; align-items: flex-start; gap: 10px;
+}
+.alert-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+.alert-text { font-size: 12.5px; color: var(--blue); line-height: 1.5; }
+.alert-text strong { font-weight: 600; display: block; margin-bottom: 2px; }
+
+/* ── CHECK-IN MATTUTINO ── */
+.morning-field { margin-bottom: 16px; }
+.morning-label { font-size: 10px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; display: block; }
+.morning-input {
+  width: 100%; padding: 13px 16px; border: 0.5px solid var(--line);
+  border-radius: 12px; background: var(--bg-w); font-family: var(--fd);
+  font-size: 1rem; font-weight: 300; color: var(--ink); -webkit-appearance: none;
+  outline: none; transition: border-color .2s;
+}
+.morning-input:focus { border-color: var(--gold); background: var(--gold-p); }
+.morning-input::placeholder { color: var(--ink-s); font-style: italic; }
+.morning-num { width: 100%; padding: 13px 16px; border: 0.5px solid var(--line); border-radius: 12px; background: var(--bg-w); font-family: var(--fd); font-size: 1.1rem; font-weight: 300; color: var(--ink); -webkit-appearance: none; outline: none; transition: border-color .2s; -moz-appearance: textfield; }
+.morning-num::-webkit-outer-spin-button, .morning-num::-webkit-inner-spin-button { -webkit-appearance: none; }
+.morning-num:focus { border-color: var(--gold); background: var(--gold-p); }
+.energy-row { display: flex; gap: 8px; }
+.energy-btn { flex: 1; padding: 14px 8px; border: 0.5px solid var(--line); border-radius: 12px; background: var(--bg-w); font-size: 13px; font-weight: 500; color: var(--ink-m); cursor: pointer; text-align: center; -webkit-appearance: none; transition: all .15s; }
+.energy-btn.sel { border-color: var(--gold); background: var(--gold-p); color: var(--ink); border-width: 1.5px; }
+.hume-badge { background: var(--bluebg); border: 0.5px solid rgba(24,95,165,.2); border-radius: 8px; padding: 8px 12px; font-size: 11px; color: var(--blue); margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+
 /* ── HOME ── */
 .streak-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0 20px; }
 .badge { background: var(--gold-p); border: 0.5px solid var(--gold-l); border-radius: 100px; padding: 7px 14px; font-size: 12px; color: var(--ink-m); display: inline-flex; align-items: center; gap: 5px; }
@@ -119,15 +148,18 @@ body { font-family: var(--fb); background: var(--bg); color: var(--ink); height:
 .jta:focus { border-color: var(--gold); background: var(--gold-p); }
 .jta::placeholder { color: var(--ink-s); }
 
-/* ── MOOD ── */
-.mood-g { display: grid; grid-template-columns: repeat(3,1fr); gap: 7px; }
-.mbtn { border: 0.5px solid var(--line); border-radius: 10px; padding: 9px 6px; background: var(--bg-w); cursor: pointer; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 3px; -webkit-appearance: none; transition: all .15s; }
-.mbtn:active, .mbtn.sel { border-color: var(--gold); background: var(--gold-p); }
-.mbtn.sel { border-width: 1.5px; }
-.mem { font-size: 1.35rem; }
-.mlb { font-size: 10px; color: var(--ink-m); }
+/* ── WIN DEL GIORNO ── */
+.win-grid { display: flex; flex-direction: column; gap: 12px; }
+.win-card { background: var(--bg-w); border: 0.5px solid var(--line); border-radius: 12px; padding: 14px 16px; }
+.win-lbl { font-size: 10px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; margin-bottom: 8px; }
+.win-lbl.phys { color: var(--green); }
+.win-lbl.ment { color: var(--gold); }
+.win-lbl.rel  { color: var(--blue); }
+.win-input { width: 100%; padding: 10px 12px; border: 0.5px solid var(--line); border-radius: 8px; background: var(--bg); font-family: var(--fd); font-size: .95rem; font-style: italic; font-weight: 300; color: var(--ink); -webkit-appearance: none; outline: none; transition: border-color .2s; }
+.win-input:focus { border-color: var(--gold); background: var(--gold-p); }
+.win-input::placeholder { color: var(--ink-s); }
 
-/* word-mood grid */
+/* ── MOOD ── */
 .mood-words { display: grid; grid-template-columns: repeat(3,1fr); gap: 6px; margin-bottom: 8px; }
 .mword { border: 0.5px solid var(--line); border-radius: 8px; padding: 8px 4px; background: var(--bg-w); cursor: pointer; text-align: center; font-size: 12px; font-weight: 400; color: var(--ink-m); -webkit-appearance: none; transition: all .15s; line-height: 1.2; }
 .mword:active, .mword.sel { border-color: var(--gold); background: var(--gold-p); color: var(--ink); font-weight: 500; }
@@ -158,6 +190,7 @@ body { font-family: var(--fb); background: var(--bg); color: var(--ink); height:
 
 /* ── HABITS ── */
 .hgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.hgrid .hcard:last-child:nth-child(odd) { grid-column: span 2; }
 .hcard { border: 0.5px solid var(--line); border-radius: 12px; padding: 14px 12px; background: var(--bg-w); cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all .15s; -webkit-appearance: none; width: 100%; text-align: left; }
 .hcard:active { opacity: .7; }
 .hcard.done { border-color: var(--green); background: var(--gbg); border-width: 1.5px; }
@@ -228,8 +261,20 @@ body { font-family: var(--fb); background: var(--bg); color: var(--ink); height:
 <body>
 <div id="app">
 
+<!-- ── CHECK-IN MATTUTINO ── -->
+<div id="smorning" class="screen">
+  <div style="background:var(--bg);border-bottom:0.5px solid var(--line);padding:calc(var(--safe-top) + 16px) 20px 14px;flex-shrink:0">
+    <div class="eyebrow">Check-in mattutino</div>
+    <h1 class="hero">Buongiorno<br><em>Edoardo</em></h1>
+    <p class="sub" id="mdate"></p>
+  </div>
+  <div class="scroll-body" id="morning-body">
+    <!-- Contenuto generato da JS: alert + campi -->
+  </div>
+</div>
+
 <!-- ── HOME ── -->
-<div id="shome" class="screen active">
+<div id="shome" class="screen">
   <div style="background:var(--bg);border-bottom:0.5px solid var(--line);padding:calc(var(--safe-top) + 16px) 20px 14px;flex-shrink:0">
     <div class="eyebrow">Evening Reflection</div>
     <h1 class="hero">Come stai<br><em>stasera?</em></h1>
@@ -241,15 +286,15 @@ body { font-family: var(--fb); background: var(--bg); color: var(--ink); height:
   </div>
   <div class="scroll-body">
     <div class="modes">
-      <button class="mcard sel" data-mode="reflection" onclick="selM(this)">
+      <button class="mcard sel" data-mode="reflection" onclick="selMode(this)">
         <div class="mi">✦</div>
         <div><div class="ml">Riflessione guidata</div><div class="md">Domande AI adattive · 5 min</div></div>
       </button>
-      <button class="mcard" data-mode="mindfulness" onclick="selM(this)">
+      <button class="mcard" data-mode="mindfulness" onclick="selMode(this)">
         <div class="mi">◌</div>
         <div><div class="ml">Mindfulness + respiro</div><div class="md">Tecnica 4-7-8 · 4 min</div></div>
       </button>
-      <button class="mcard" data-mode="gratitude" onclick="selM(this)">
+      <button class="mcard" data-mode="gratitude" onclick="selMode(this)">
         <div class="mi">◇</div>
         <div><div class="ml">Gratitudine strutturata</div><div class="md">3 elementi + highlight · 3 min</div></div>
       </button>
@@ -287,7 +332,7 @@ body { font-family: var(--fb); background: var(--bg); color: var(--ink); height:
   </div>
   <div class="scroll-body">
     <div class="eyebrow" style="margin-bottom:.5rem">Riepilogo serata</div>
-    <h2 class="hero" style="font-size:2rem;margin-bottom:16px">La tua <em>serata</em></h2>
+    <h2 class="hero" style="font-size:2rem">La tua <em>serata</em></h2>
     <div id="sum-cards"></div>
     <div id="hsum" style="display:none;margin-top:10px" class="card">
       <div class="clbl">Habits del giorno</div>
@@ -299,7 +344,7 @@ body { font-family: var(--fb); background: var(--bg); color: var(--ink); height:
       <div class="itxt" id="itxt"><div class="ald"><span></span><span></span><span></span></div></div>
     </div>
     <div class="sum-actions">
-      <button class="btn-primary" id="btn-save" onclick="saveNotion()">📋 Copia per Claude →</button>
+      <button class="btn-primary" id="btn-save" onclick="copyForClaude()">📋 Copia per Claude →</button>
       <button class="btn-ghost" onclick="goScreen('home')">Scarta</button>
     </div>
     <div class="status-msg" id="save-st"></div>
@@ -349,21 +394,14 @@ body { font-family: var(--fb); background: var(--bg); color: var(--ink); height:
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
 // ─── CONSTANTS ───────────────────────────────────────────
-const JDS        = '777dac0a-f6b2-82dc-ac82-812fd7db3035';
-const AI_URL     = '/api/ai';      // Anthropic via Vercel proxy
-const AI_MODEL   = 'claude-sonnet-4-20250514';
+const AI_URL   = '/api/ai';
+const AI_MODEL = 'claude-sonnet-4-20250514';
 
-// Habits — nomi esatti come su Notion
 const HL  = ['Vitamins','Fotografia/Video','Reading','Allenamento','Stretching'];
 const HI  = {'Vitamins':'💊','Fotografia/Video':'📸','Reading':'📖','Allenamento':'🏋️','Stretching':'🧘'};
 const HIT = {'Vitamins':'Vitamins','Fotografia/Video':'Fotografia/Video','Reading':'Reading','Allenamento':'Allenamento','Stretching':'Stretching'};
+const RM  = {1:'⭐',2:'⭐⭐',3:'⭐⭐⭐',4:'⭐⭐⭐⭐',5:'⭐⭐⭐⭐⭐'};
 
-// Mood emoji → Notion multi_select name (rispetta i valori validi nel DB)
-const MM = {'😄':'😄 Happy','☹️':'☹️ Sad','😠':'😠 Angry','😊':'😊 Excited','😐':'😐 Neutral','😰':'😰Anxious'};
-const ML = {'😄':'Felice','☹️':'Triste','😠':'Arrabbiato','😊':'Entusiasta','😐':'Neutro','😰':'Ansioso'};
-const RM = {1:'⭐',2:'⭐⭐',3:'⭐⭐⭐',4:'⭐⭐⭐⭐',5:'⭐⭐⭐⭐⭐'};
-
-// Full mood-word grid (47 parole, 3 categorie)
 const MOOD_WORDS = [
   {w:'Positive',g:'+'},{w:'Happy',g:'+'},{w:'Hopeful',g:'+'},{w:'Glad',g:'+'},{w:'Excited',g:'+'},{w:'Inspired',g:'+'},
   {w:'Energetic',g:'+'},{w:'Confident',g:'+'},{w:'Grateful',g:'+'},{w:'Content',g:'+'},{w:'Calm',g:'+'},{w:'Strong',g:'+'},
@@ -377,7 +415,6 @@ const MOOD_WORDS = [
   {w:'Bitter',g:'-'},{w:'Shocked',g:'-'},{w:'Unsure',g:'-'},
 ];
 
-// Rotating prompts
 const PR = {
   refl:["Cos'è rimasto con te di questa giornata?","Cosa hai imparato su te stesso oggi?","Quale momento ti ha sorpreso?","Se potessi rivivere un momento di oggi, quale sarebbe?","Cosa ti ha dato più energia? Cosa te l'ha tolta?","C'è qualcosa che avresti fatto diversamente?","Qual è stata la conversazione più significativa?","Come ti senti rispetto al tuo percorso?"],
   hi:["Qual è stato il momento migliore di oggi?","Cosa ti ha fatto sorridere oggi?","Qual è stata la tua piccola vittoria?","Cosa hai fatto oggi di cui sei soddisfatto?","Chi o cosa ti ha dato forza oggi?"],
@@ -386,7 +423,6 @@ const PR = {
 };
 function gp(p){return p[new Date().getDate()%p.length];}
 
-// Biweekly deep reflection
 const DEEP_REFLECTIONS = [
   {id:'relationships',lbl:'Riflessione profonda',title:'Rifletti sulle tue relazioni',q:'Pensa alle relazioni che hai avuto nella tua vita. Come ti hanno influenzato? Cosa hai imparato da ciascuna?',placeholder:'Le relazioni che mi hanno formato di più…'},
   {id:'stress_bucket',lbl:'Riflessione profonda',title:'Il tuo secchio dello stress',q:'Elenca tutto ciò che ti causa stress. Poi: cosa ti aiuta a svuotare il secchio? Come potresti reagire in modo più positivo?',placeholder:'Cosa mi riempie il secchio… cosa lo svuota…'},
@@ -401,52 +437,94 @@ function isBiweeklyDay(){
   return doy%14===0;
 }
 
+// Soglie alert contestuali
+const ALERT_THRESHOLDS = {
+  deepSleepPct: 15,   // % deep sleep sotto cui scatta alert
+  hrv: 45,            // ms HRV sotto cui scatta alert
+  biocharge: 40,      // % biocharge sotto cui scatta alert
+  stressLevel: 7,     // livello stress (1-10) sopra cui scatta alert
+  habitStreakMiss: 3  // giorni consecutivi senza habit
+};
+
 const STEPS = {
   reflection:[
-    {t:'moodw',id:'moodw',lbl:'Come ti senti',q:'Come ti senti adesso?'},
-    {t:'ta',id:'refl',lbl:'Riflessione',q:()=>gp(PR.refl)},
-    {t:'aif',id:'air',lbl:'AI',q:''},
-    {t:'hab',id:'hab',lbl:'Habits',q:'Come sono andati gli habit di oggi?'},
-    {t:'rat',id:'rat',lbl:'Giornata',q:'Come valuti questa giornata?'},
-    {t:'ta',id:'hi',lbl:'Highlight',q:()=>gp(PR.hi)},
+    {t:'moodw', id:'moodw', lbl:'Come ti senti',    q:'Come ti senti adesso?'},
+    {t:'ta',    id:'refl',  lbl:'Riflessione',       q:()=>gp(PR.refl)},
+    {t:'aif',   id:'air',   lbl:'AI',                q:''},
+    {t:'win',   id:'win',   lbl:'Win del giorno',    q:'Le tue vittorie di oggi'},
+    {t:'hab',   id:'hab',   lbl:'Habits',            q:'Come sono andati gli habit di oggi?'},
+    {t:'rat',   id:'rat',   lbl:'Giornata',          q:'Come valuti questa giornata?'},
+    {t:'ta',    id:'hi',    lbl:'Highlight',         q:()=>gp(PR.hi)},
   ],
   mindfulness:[
-    {t:'br',id:'br',lbl:'Respiro',q:'Tecnica 4–7–8 per scaricare la tensione'},
-    {t:'moodw',id:'moodw',lbl:'Come ti senti',q:'Dopo il respiro, come ti senti?'},
-    {t:'ta',id:'refl',lbl:'Rilascio',q:()=>gp(PR.rel)},
-    {t:'hab',id:'hab',lbl:'Habits',q:'Come sono andati gli habit di oggi?'},
-    {t:'rat',id:'rat',lbl:'Giornata',q:'Come valuti questa giornata?'},
-    {t:'ta',id:'hi',lbl:'Highlight',q:()=>gp(PR.mg)},
+    {t:'br',    id:'br',    lbl:'Respiro',           q:'Tecnica 4–7–8 per scaricare la tensione'},
+    {t:'moodw', id:'moodw', lbl:'Come ti senti',    q:'Dopo il respiro, come ti senti?'},
+    {t:'ta',    id:'refl',  lbl:'Rilascio',          q:()=>gp(PR.rel)},
+    {t:'win',   id:'win',   lbl:'Win del giorno',    q:'Le tue vittorie di oggi'},
+    {t:'hab',   id:'hab',   lbl:'Habits',            q:'Come sono andati gli habit di oggi?'},
+    {t:'rat',   id:'rat',   lbl:'Giornata',          q:'Come valuti questa giornata?'},
+    {t:'ta',    id:'hi',    lbl:'Highlight',         q:()=>gp(PR.mg)},
   ],
   gratitude:[
-    {t:'grat',id:'grat',lbl:'Gratitudine',q:'Tre cose per cui sei grato oggi'},
-    {t:'moodw',id:'moodw',lbl:'Come ti senti',q:'Come ti senti?'},
-    {t:'hab',id:'hab',lbl:'Habits',q:'Come sono andati gli habit?'},
-    {t:'ta',id:'hi',lbl:'Highlight',q:()=>gp(PR.hi)},
-    {t:'rat',id:'rat',lbl:'Giornata',q:'Come valuti questa giornata?'},
-    {t:'aif',id:'air',lbl:'AI',q:''},
+    {t:'grat',  id:'grat',  lbl:'Gratitudine',       q:'Tre cose per cui sei grato oggi'},
+    {t:'moodw', id:'moodw', lbl:'Come ti senti',    q:'Come ti senti?'},
+    {t:'win',   id:'win',   lbl:'Win del giorno',    q:'Le tue vittorie di oggi'},
+    {t:'hab',   id:'hab',   lbl:'Habits',            q:'Come sono andati gli habit?'},
+    {t:'ta',    id:'hi',    lbl:'Highlight',         q:()=>gp(PR.hi)},
+    {t:'rat',   id:'rat',   lbl:'Giornata',          q:'Come valuti questa giornata?'},
+    {t:'aif',   id:'air',   lbl:'AI',                q:''},
   ]
 };
 
 // ─── STATE ───────────────────────────────────────────────
-let selM_='reflection', step=0, sd={}, steps=[], breathInt=null;
-let exportEntries=[], selMonth=null;
+let selMode_ = 'reflection', step = 0, sd = {}, steps = [], breathInt = null;
+let exportEntries = [], selMonth = null;
+let morningData = {};   // dati check-in mattutino del giorno
+
+// ─── UTILS localStorage ──────────────────────────────────
+function lsG(k){try{return localStorage.getItem(k)}catch{return null}}
+function lsS(k,v){try{localStorage.setItem(k,v)}catch{}}
+function lsSessions(){try{const r=lsG('er_sessions');return r?JSON.parse(r):[];}catch{return[];}}
+function lsMornings(){try{const r=lsG('er_mornings');return r?JSON.parse(r):[];}catch{return[];}}
+
+function saveSession(entry){
+  try{
+    const sessions=lsSessions();
+    const filtered=sessions.filter(e=>e.date!==entry.date);
+    filtered.push(entry);
+    const cutoff=new Date();cutoff.setDate(cutoff.getDate()-90);
+    const trimmed=filtered.filter(e=>new Date(e.date)>=cutoff);
+    lsS('er_sessions',JSON.stringify(trimmed));
+  }catch(e){console.warn('saveSession error',e);}
+}
+
+function saveMorning(entry){
+  try{
+    const mornings=lsMornings();
+    const filtered=mornings.filter(e=>e.date!==entry.date);
+    filtered.push(entry);
+    const cutoff=new Date();cutoff.setDate(cutoff.getDate()-90);
+    const trimmed=filtered.filter(e=>new Date(e.date)>=cutoff);
+    lsS('er_mornings',JSON.stringify(trimmed));
+  }catch(e){console.warn('saveMorning error',e);}
+}
+
+function todayStr(){return new Date().toISOString().split('T')[0];}
+function isMonday(){return new Date().getDay()===1;}
 
 // ─── NAVIGATION ──────────────────────────────────────────
 function goScreen(name){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  const map={home:'shome',week:'sweek',export:'sexport',session:'ss',summary:'ssum'};
+  const map={home:'shome',morning:'smorning',week:'sweek',export:'sexport',session:'ss',summary:'ssum'};
   document.getElementById(map[name]||('s'+name)).classList.add('active');
-  if(name==='week') loadWeek();
+  if(name==='week')   loadWeek();
   if(name==='export') initExport();
 }
 
 // ─── STREAK ──────────────────────────────────────────────
-function lsG(k){try{return localStorage.getItem(k)}catch{return null}}
-function lsS(k,v){try{localStorage.setItem(k,v)}catch{}}
 function loadStreak(){try{const r=lsG('er_sk');return r?JSON.parse(r):{count:0,last:null}}catch{return{count:0,last:null}}}
 function saveStreakDay(){
-  const today=new Date().toISOString().split('T')[0];
+  const today=todayStr();
   let s=loadStreak();if(s.last===today)return;
   const yest=new Date(Date.now()-86400000).toISOString().split('T')[0];
   s.count=s.last===yest?s.count+1:1;s.last=today;lsS('er_sk',JSON.stringify(s));
@@ -459,22 +537,206 @@ function renderStreak(){
 }
 
 // ─── MODE SELECTION ──────────────────────────────────────
-function selM(el){
+function selMode(el){
   document.querySelectorAll('.mcard').forEach(c=>c.classList.remove('sel'));
-  el.classList.add('sel');selM_=el.dataset.mode;
+  el.classList.add('sel');selMode_=el.dataset.mode;
+}
+
+// ─── CHECK-IN MATTUTINO ──────────────────────────────────
+function shouldShowMorning(){
+  const today=todayStr();
+  const mornings=lsMornings();
+  return !mornings.find(m=>m.date===today);
+}
+
+function buildAlerts(lastMorning){
+  const alerts=[];
+  if(!lastMorning) return alerts;
+
+  // Deep sleep alert
+  if(lastMorning.deepSleepPct && lastMorning.deepSleepPct < ALERT_THRESHOLDS.deepSleepPct){
+    alerts.push({
+      icon:'🌙',
+      title:'Deep sleep basso ieri: '+lastMorning.deepSleepPct+'%',
+      body:'Target: 20-25%. Questa sera l\'app ti chiederà informazioni sulla routine pre-sonno.'
+    });
+  }
+  // HRV alert
+  if(lastMorning.hrv && lastMorning.hrv < ALERT_THRESHOLDS.hrv){
+    alerts.push({
+      icon:'💓',
+      title:'HRV sotto baseline: '+lastMorning.hrv+' ms',
+      body:'Il tuo sistema nervoso è sotto stress. Considera un allenamento leggero oggi.'
+    });
+  }
+  // Biocharge alert
+  if(lastMorning.biocharge && lastMorning.biocharge < ALERT_THRESHOLDS.biocharge){
+    alerts.push({
+      icon:'⚡',
+      title:'Biocharge basso: '+lastMorning.biocharge+'%',
+      body:'Corpo in recupero. Privilegia qualità sul volume oggi.'
+    });
+  }
+  // Habit streak miss
+  const sessions=lsSessions();
+  const last3=sessions.slice(-3);
+  if(last3.length===3){
+    HL.forEach(h=>{
+      const miss=last3.every(s=>s.hab&&!s.hab[h]);
+      if(miss) alerts.push({icon:'📋',title:HIT[h]+' mancante da 3 giorni',body:'Vuoi riprendere oggi?'});
+    });
+  }
+  return alerts;
+}
+
+function renderMorning(){
+  const today=todayStr();
+  const mornings=lsMornings();
+  const yesterday=new Date(Date.now()-86400000).toISOString().split('T')[0];
+  const lastMorning=mornings.find(m=>m.date===yesterday)||mornings[mornings.length-1];
+
+  document.getElementById('mdate').textContent=new Date().toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long'});
+
+  const alerts=buildAlerts(lastMorning);
+  const isMonday_=isMonday();
+
+  let html='';
+
+  // Alert banner
+  if(alerts.length>0){
+    html+='<div style="margin-bottom:20px">';
+    alerts.forEach(a=>{
+      html+=`<div class="alert-banner">
+        <div class="alert-icon">${a.icon}</div>
+        <div class="alert-text"><strong>${a.title}</strong>${a.body}</div>
+      </div>`;
+    });
+    html+='</div>';
+  }
+
+  // Campo energia
+  html+=`<div class="morning-field">
+    <span class="morning-label">⚡ Energia mattutina</span>
+    <div class="energy-row">
+      ${[1,2,3,4,5].map(n=>`<button class="energy-btn" data-e="${n}" onclick="setEnergy(${n},this)">${n}</button>`).join('')}
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-top:4px;padding:0 2px">
+      <span style="font-size:10px;color:var(--ink-s)">Esausto</span>
+      <span style="font-size:10px;color:var(--ink-s)">Carico</span>
+    </div>
+  </div>`;
+
+  // Intenzione del giorno
+  html+=`<div class="morning-field">
+    <span class="morning-label">🎯 Intenzione del giorno</span>
+    <input class="morning-input" id="m-intention" type="text" placeholder="Oggi voglio…" maxlength="120">
+  </div>`;
+
+  // Divisore biometrico
+  html+=`<div style="margin:20px 0 14px">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+      <div style="flex:1;height:0.5px;background:var(--line)"></div>
+      <span style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-s)">Dati biometrici</span>
+      <div style="flex:1;height:0.5px;background:var(--line)"></div>
+    </div>
+    <p style="font-size:11px;color:var(--ink-s);font-family:var(--fd);font-style:italic;margin-bottom:12px">Guarda Zepp e Hume, inserisci i valori di stamattina</p>
+  </div>`;
+
+  // Biocharge Zepp
+  html+=`<div class="morning-field">
+    <span class="morning-label">⚡ Biocharge Zepp (%)</span>
+    <input class="morning-num" id="m-biocharge" type="number" min="0" max="100" placeholder="es. 72">
+  </div>`;
+
+  // HRV
+  html+=`<div class="morning-field">
+    <span class="morning-label">💓 HRV mattutino (ms)</span>
+    <input class="morning-num" id="m-hrv" type="number" min="0" max="200" placeholder="es. 54">
+  </div>`;
+
+  // Slancio Hume
+  html+=`<div class="morning-field">
+    <div class="hume-badge">📘 Hume Health</div>
+    <span class="morning-label">🔋 Slancio metabolico Hume</span>
+    <input class="morning-num" id="m-slancio" type="number" min="0" max="100" placeholder="es. 68">
+  </div>`;
+
+  // Deep sleep (da Zepp, inserito manualmente la mattina)
+  html+=`<div class="morning-field">
+    <span class="morning-label">🌙 Deep sleep ieri (%)</span>
+    <input class="morning-num" id="m-deepsleep" type="number" min="0" max="100" placeholder="es. 13">
+    <p style="font-size:10px;color:var(--ink-s);margin-top:4px">Trovi il dato in Zepp → Sonno di ieri</p>
+  </div>`;
+
+  // Score Hume settimanale — solo il lunedì
+  if(isMonday_){
+    html+=`<div class="morning-field" style="background:var(--bluebg);border:0.5px solid rgba(24,95,165,.2);border-radius:12px;padding:14px 16px">
+      <div class="hume-badge" style="margin-bottom:8px">📘 Solo lunedì</div>
+      <span class="morning-label" style="color:var(--blue)">🏅 Score salute Hume (settimana)</span>
+      <input class="morning-num" id="m-hume-score" type="number" min="0" max="100" placeholder="es. 78" style="border-color:rgba(24,95,165,.3)">
+      <p style="font-size:10px;color:var(--blue);margin-top:4px;opacity:.8">Hume pubblica lo score ogni lunedì mattina</p>
+    </div>`;
+  }
+
+  // Pulsante salva
+  html+=`<div style="margin-top:24px;padding-bottom:8px">
+    <button class="btn-primary" onclick="saveMorningData()">Inizia la giornata →</button>
+    <button class="btn-ghost" style="margin-top:10px" onclick="skipMorning()">Salta per oggi</button>
+  </div>`;
+
+  document.getElementById('morning-body').innerHTML=html;
+}
+
+let morningEnergy=0;
+function setEnergy(n,el){
+  morningEnergy=n;
+  document.querySelectorAll('.energy-btn').forEach(b=>b.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+function saveMorningData(){
+  const today=todayStr();
+  const isMonday_=isMonday();
+  const entry={
+    date: today,
+    energy: morningEnergy||null,
+    intention: document.getElementById('m-intention')?.value.trim()||'',
+    biocharge: parseFloat(document.getElementById('m-biocharge')?.value)||null,
+    hrv: parseFloat(document.getElementById('m-hrv')?.value)||null,
+    slancio: parseFloat(document.getElementById('m-slancio')?.value)||null,
+    deepSleepPct: parseFloat(document.getElementById('m-deepsleep')?.value)||null,
+    humeScore: isMonday_ ? (parseFloat(document.getElementById('m-hume-score')?.value)||null) : null
+  };
+  saveMorning(entry);
+  morningData=entry;
+  goScreen('home');
+}
+
+function skipMorning(){
+  // Salva un record vuoto per oggi così non riappare
+  const today=todayStr();
+  saveMorning({date:today,skipped:true});
+  goScreen('home');
 }
 
 // ─── SESSION ─────────────────────────────────────────────
 function startSession(){
-  // Inject biweekly deep reflection for "reflection" mode if today is the day
-  let baseSteps = STEPS[selM_].map(s=>({...s,q:typeof s.q==='function'?s.q():s.q}));
-  if(selM_==='reflection' && isBiweeklyDay()){
+  let baseSteps=STEPS[selMode_].map(s=>({...s,q:typeof s.q==='function'?s.q():s.q}));
+  if(selMode_==='reflection' && isBiweeklyDay()){
     const dr=getBiweeklyDeepReflection();
     baseSteps.splice(2,0,{...dr,t:'deep'});
   }
+  // Se deep sleep ieri era basso, inietta domanda specifica
+  const today=todayStr();
+  const mornings=lsMornings();
+  const todayMorning=mornings.find(m=>m.date===today);
+  if(todayMorning && todayMorning.deepSleepPct && todayMorning.deepSleepPct < ALERT_THRESHOLDS.deepSleepPct){
+    baseSteps.splice(1,0,{t:'ta',id:'sleep_ctx',lbl:'Deep sleep basso',q:'Cosa hai fatto nelle 2 ore prima di dormire ieri sera?'});
+  }
+
   steps=baseSteps;
-  step=0;sd={mode:selM_,date:new Date(),hab:{},moodWords:[]};
-  document.getElementById('slbl').textContent=selM_==='reflection'?'Riflessione':selM_==='mindfulness'?'Mindfulness':'Gratitudine';
+  step=0;sd={mode:selMode_,date:new Date(),hab:{},moodWords:[],wins:{}};
+  document.getElementById('slbl').textContent=selMode_==='reflection'?'Riflessione':selMode_==='mindfulness'?'Mindfulness':'Gratitudine';
   goScreen('session');renderStep();
 }
 
@@ -497,13 +759,31 @@ function renderStep(){
     const cur=sd.moodWords||[];
     const wordBtn=m=>`<button class="mword ${cur.includes(m.w)?'sel':''}" onclick="toggleMoodWord('${m.w}',this)">${m.w}</button>`;
     bl.innerHTML=`<div class="tlbl">${s.lbl}</div><div class="q" style="font-size:1.4rem">${s.q}</div>
-    <p style="font-size:12px;color:var(--ink-s);margin-bottom:8px;font-family:var(--fd);font-style:italic">Seleziona tutto ciò che senti (anche più di uno)</p>
+    <p style="font-size:12px;color:var(--ink-s);margin-bottom:8px;font-family:var(--fd);font-style:italic">Seleziona tutto ciò che senti</p>
     <div class="mood-section-lbl">✦ Positivo</div>
     <div class="mood-words">${pos.map(wordBtn).join('')}</div>
     <div class="mood-section-lbl">— Neutro / misto</div>
     <div class="mood-words">${neu.map(wordBtn).join('')}</div>
     <div class="mood-section-lbl">↓ Difficile</div>
     <div class="mood-words">${neg.map(wordBtn).join('')}</div>`;
+  } else if(s.t==='win'){
+    const w=sd.wins||{};
+    bl.innerHTML=`<div class="tlbl">${s.lbl}</div><div class="q" style="font-size:1.5rem">${s.q}</div>
+    <p style="font-size:12px;color:var(--ink-s);margin-bottom:14px;font-family:var(--fd);font-style:italic">Anche piccole. Una per categoria.</p>
+    <div class="win-grid">
+      <div class="win-card">
+        <div class="win-lbl phys">🏋️ Fisico</div>
+        <input class="win-input" id="win-phys" placeholder="Es: allenamento completato, camminata…" value="${w.phys||''}">
+      </div>
+      <div class="win-card">
+        <div class="win-lbl ment">🧠 Mentale</div>
+        <input class="win-input" id="win-ment" placeholder="Es: focus su un task difficile…" value="${w.ment||''}">
+      </div>
+      <div class="win-card">
+        <div class="win-lbl rel">🤝 Relazionale</div>
+        <input class="win-input" id="win-rel" placeholder="Es: chiamata con un amico…" value="${w.rel||''}">
+      </div>
+    </div>`;
   } else if(s.t==='deep'){
     bl.innerHTML=`<div class="tlbl" style="color:var(--ink-m)">${s.lbl} · ogni 2 settimane</div>
     <div class="q" style="font-size:1.35rem">${s.title}</div>
@@ -530,8 +810,7 @@ function renderStep(){
     document.getElementById('btn-nx').disabled=true;
     fetchAI();
   }
-  body.appendChild(bl);
-  body.scrollTop=0;
+  body.appendChild(bl);body.scrollTop=0;
 }
 
 function toggleMoodWord(w,el){
@@ -561,7 +840,7 @@ function startBr(){
 
 async function fetchAI(){
   const ctx=buildCtx();
-  const p=`Sei un coach personale empatico. Sessione serale (${sd.mode}).\n\n${ctx}\n\nScrivi 1 pensiero riflessivo (max 3 frasi) in italiano, tu. Caldo, diretto, specifico. Niente consigli generici.`;
+  const p=`Sei un coach personale empatico. Sessione serale (${sd.mode}).\n\n${ctx}\n\nScrivi 1 pensiero riflessivo (max 3 frasi) in italiano. Caldo, diretto, specifico. Niente consigli generici.`;
   try{
     const r=await fetch(AI_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:AI_MODEL,max_tokens:1000,messages:[{role:'user',content:p}]})});
     const d=await r.json();const txt=d.content?.[0]?.text||'Non disponibile.';
@@ -572,12 +851,38 @@ async function fetchAI(){
 
 function buildCtx(){
   const p=[];
+  // Dati mattutini
+  const today=todayStr();
+  const mornings=lsMornings();
+  const todayM=mornings.find(m=>m.date===today);
+  if(todayM && !todayM.skipped){
+    if(todayM.energy)   p.push('Energia mattutina: '+todayM.energy+'/5');
+    if(todayM.intention)p.push('Intenzione del giorno: "'+todayM.intention+'"');
+    if(todayM.biocharge)p.push('Biocharge Zepp: '+todayM.biocharge+'%');
+    if(todayM.hrv)      p.push('HRV: '+todayM.hrv+' ms');
+    if(todayM.slancio)  p.push('Slancio metabolico Hume: '+todayM.slancio);
+    if(todayM.deepSleepPct) p.push('Deep sleep ieri: '+todayM.deepSleepPct+'%');
+    if(todayM.humeScore)p.push('Score salute Hume (settimana): '+todayM.humeScore);
+  }
+  // Dati sessione serale
   if(sd.moodWords&&sd.moodWords.length)p.push('Come mi sento: '+sd.moodWords.join(', '));
-  if(sd.refl)p.push('Riflessione: "'+sd.refl+'"');
-  if(sd.hi)p.push('Highlight: "'+sd.hi+'"');
+  if(sd.refl)  p.push('Riflessione: "'+sd.refl+'"');
+  if(sd.hi)    p.push('Highlight: "'+sd.hi+'"');
+  if(sd.sleep_ctx) p.push('Routine pre-sonno ieri: "'+sd.sleep_ctx+'"');
   if(sd.grat&&sd.grat.some(Boolean))p.push('Gratitudine: '+sd.grat.filter(Boolean).join(', '));
-  if(sd.rat)p.push('Voto: '+sd.rat+'/5');
-  if(sd.hab){const dn=HL.filter(h=>sd.hab[h]).map(h=>HIT[h]);const ms=HL.filter(h=>!sd.hab[h]).map(h=>HIT[h]);if(dn.length)p.push('Habit OK: '+dn.join(', '));if(ms.length)p.push('Habit miss: '+ms.join(', '));}
+  if(sd.rat)   p.push('Voto giornata: '+sd.rat+'/5');
+  if(sd.wins&&(sd.wins.phys||sd.wins.ment||sd.wins.rel)){
+    const ws=[];
+    if(sd.wins.phys)p.push('Win fisico: "'+sd.wins.phys+'"');
+    if(sd.wins.ment)p.push('Win mentale: "'+sd.wins.ment+'"');
+    if(sd.wins.rel) p.push('Win relazionale: "'+sd.wins.rel+'"');
+  }
+  if(sd.hab){
+    const dn=HL.filter(h=>sd.hab[h]).map(h=>HIT[h]);
+    const ms=HL.filter(h=>!sd.hab[h]).map(h=>HIT[h]);
+    if(dn.length)p.push('Habit OK: '+dn.join(', '));
+    if(ms.length)p.push('Habit miss: '+ms.join(', '));
+  }
   return p.join('\n')||'Nessun dato';
 }
 
@@ -585,6 +890,13 @@ function saveSd(){
   const s=steps[step];
   if(s.t==='ta'||s.t==='deep'){const el=document.getElementById('f-'+s.id);if(el)sd[s.id]=el.value.trim();}
   else if(s.t==='grat')sd.grat=[1,2,3].map(n=>{const el=document.getElementById('g-'+n);return el?el.value.trim():'';});
+  else if(s.t==='win'){
+    sd.wins={
+      phys: document.getElementById('win-phys')?.value.trim()||'',
+      ment: document.getElementById('win-ment')?.value.trim()||'',
+      rel:  document.getElementById('win-rel')?.value.trim()||''
+    };
+  }
 }
 function nextStep(){saveSd();if(step<steps.length-1){step++;renderStep();}else showSum();}
 function prevStep(){saveSd();if(step>0){step--;renderStep();}}
@@ -596,10 +908,15 @@ function showSum(){
   const items=[];
   if(sd.moodWords&&sd.moodWords.length)items.push({l:'Come mi sento',v:sd.moodWords.join(' · ')});
   if(sd.rat)items.push({l:'Rating',v:RM[sd.rat]});
+  if(sd.wins&&(sd.wins.phys||sd.wins.ment||sd.wins.rel)){
+    const wl=[sd.wins.phys,sd.wins.ment,sd.wins.rel].filter(Boolean).join(' · ');
+    items.push({l:'Win del giorno',v:wl.length>100?wl.slice(0,100)+'…':wl});
+  }
   if(sd.hi)items.push({l:'Highlight',v:sd.hi.length>100?sd.hi.slice(0,100)+'…':sd.hi});
   if(sd.refl)items.push({l:'Riflessione',v:sd.refl.length>110?sd.refl.slice(0,110)+'…':sd.refl});
   if(sd.grat&&sd.grat.some(Boolean))items.push({l:'Gratitudine',v:sd.grat.filter(Boolean).join(' · ')});
   items.forEach(i=>{const d=document.createElement('div');d.className='card';d.innerHTML=`<div class="clbl">${i.l}</div><div class="cval">${i.v}</div>`;c.appendChild(d);});
+
   const hsum=document.getElementById('hsum');
   if(sd.hab&&Object.keys(sd.hab).length){
     hsum.style.display='block';const chips=document.getElementById('hchips');chips.innerHTML='';
@@ -616,45 +933,35 @@ async function fetchInsight(){
   }catch{const el=document.getElementById('itxt');if(el)el.textContent='Non disponibile.';}
 }
 
-// ─── LOCAL STORAGE SESSIONS ──────────────────────────────
-function lsSessions(){
-  try{const r=lsG('er_sessions');return r?JSON.parse(r):[];}catch{return[];}
-}
-function saveSession(entry){
-  try{
-    const sessions=lsSessions();
-    const filtered=sessions.filter(e=>e.date!==entry.date);
-    filtered.push(entry);
-    const cutoff=new Date();cutoff.setDate(cutoff.getDate()-90);
-    const trimmed=filtered.filter(e=>new Date(e.date)>=cutoff);
-    lsS('er_sessions',JSON.stringify(trimmed));
-  }catch(e){console.warn('saveSession error',e);}
-}
-
-// ─── SAVE: localStorage + Copia per Claude ────────────────
-function saveNotion(){
+// ─── COPIA PER CLAUDE (sessione serale) ──────────────────
+function copyForClaude(){
   const btn=document.getElementById('btn-save');
   const st=document.getElementById('save-st');
-
   const today=new Date();
   const ds=today.toISOString().split('T')[0];
   const nm=today.toLocaleDateString('it-IT',{day:'numeric',month:'long',year:'numeric'});
 
-  const moodWordList=sd.moodWords||[];
+  // Mood → Notion multi_select
   const wordToNotionMood={Happy:'😄 Happy',Excited:'😊 Excited',Neutral:'😐 Neutral',Sad:'☹️ Sad',Angry:'😠 Angry',Anxious:'😰Anxious'};
+  const moodWordList=sd.moodWords||[];
   let mN=null;
   for(const w of moodWordList){if(wordToNotionMood[w]){mN=wordToNotionMood[w];break;}}
   const rN=sd.rat?RM[sd.rat]:null;
 
   // Salva in localStorage
+  const mornings=lsMornings();
+  const todayM=mornings.find(m=>m.date===ds);
   const entry={
     date:ds, name:nm,
     mood:mN||'', moodWords:moodWordList,
     rating:sd.rat||0,
     refl:sd.refl||'', hi:sd.hi||'',
+    sleep_ctx:sd.sleep_ctx||'',
+    wins:sd.wins||{},
     grat:sd.grat||[],
     hab:sd.hab||{},
-    air:sd.air||''
+    air:sd.air||'',
+    morning:todayM||null
   };
   saveSession(entry);
   saveStreakDay();renderStreak();
@@ -662,11 +969,31 @@ function saveNotion(){
   // Costruisci testo per Claude
   let text='SALVA_JOURNAL\n';
   text+='Data: '+nm+' ('+ds+')\n';
-  if(mN) text+='Mood: '+mN+'\n';
+  if(mN)  text+='Mood: '+mN+'\n';
   if(moodWordList.length) text+='Come mi sento: '+moodWordList.join(', ')+'\n';
-  if(rN) text+='Rating: '+rN+'\n';
+  if(rN)  text+='Rating: '+rN+'\n';
+
+  // Dati mattutini
+  if(todayM && !todayM.skipped){
+    text+='\n--- Check-in mattutino ---\n';
+    if(todayM.energy)    text+='Energia: '+todayM.energy+'/5\n';
+    if(todayM.intention) text+='Intenzione: '+todayM.intention+'\n';
+    if(todayM.biocharge) text+='Biocharge Zepp: '+todayM.biocharge+'%\n';
+    if(todayM.hrv)       text+='HRV: '+todayM.hrv+' ms\n';
+    if(todayM.slancio)   text+='Slancio Hume: '+todayM.slancio+'\n';
+    if(todayM.deepSleepPct) text+='Deep sleep ieri: '+todayM.deepSleepPct+'%\n';
+    if(todayM.humeScore) text+='Score salute Hume (settimana): '+todayM.humeScore+'\n';
+    text+='\n';
+  }
+
   if(sd.refl) text+='Riflessione: '+sd.refl+'\n';
+  if(sd.sleep_ctx) text+='Routine pre-sonno: '+sd.sleep_ctx+'\n';
   if(sd.hi)   text+='Highlight: '+sd.hi+'\n';
+  if(sd.wins){
+    if(sd.wins.phys)text+='Win fisico: '+sd.wins.phys+'\n';
+    if(sd.wins.ment)text+='Win mentale: '+sd.wins.ment+'\n';
+    if(sd.wins.rel) text+='Win relazionale: '+sd.wins.rel+'\n';
+  }
   if(sd.grat&&sd.grat.some(Boolean)) text+='Gratitudine: '+sd.grat.filter(Boolean).join(' | ')+'\n';
   if(sd.hab){
     const dn=HL.filter(h=>sd.hab[h]).map(h=>HIT[h]);
@@ -716,6 +1043,7 @@ function renderWeek(entries,start){
   entries.forEach(e=>{dwd++;if(e.rating){tr+=e.rating;rc++;}if(e.mood){const em=moodToEmoji(e.mood);mc[em]=(mc[em]||0)+1;}});
   const avg=rc?Math.round(tr/rc):0;
   const tm=Object.entries(mc).sort((a,b)=>b[1]-a[1])[0];
+
   let html=`<div class="week-grid">`;
   days.forEach(d=>{
     const ds=d.toISOString().split('T')[0];
@@ -727,30 +1055,113 @@ function renderWeek(entries,start){
     <div class="wstat"><div class="wstat-n">${avg?'★'.repeat(avg):'—'}</div><div class="wstat-l">media</div></div>
     <div class="wstat"><div class="wstat-n">${tm?tm[0]:'—'}</div><div class="wstat-l">mood freq.</div></div>
   </div>`;
-  if(dwd>0){html+=`<div class="icard" style="margin-bottom:16px"><div class="ilbl">Insight settimanale</div><div class="itxt" id="wins"><div class="ald"><span></span><span></span><span></span></div></div></div>`;}
+
+  if(dwd>0){
+    html+=`<div class="icard" style="margin-bottom:16px">
+      <div class="ilbl">Insight settimanale AI</div>
+      <div class="itxt" id="wins"><div class="ald"><span></span><span></span><span></span></div></div>
+    </div>`;
+    // Pulsante export settimanale
+    html+=`<div style="margin-bottom:16px">
+      <button class="btn-secondary" onclick="copyWeeklyForClaude()">📋 Export settimanale per Claude →</button>
+      <div class="status-msg" id="weekly-st" style="margin-top:8px"></div>
+    </div>`;
+  }
+
   if(entries.length>0){
     html+=`<div class="wentries">`;
     entries.slice().reverse().forEach(e=>{
       const em=moodToEmoji(e.mood||'');const rs=e.rating?'★'.repeat(e.rating):'';
-      html+=`<div class="wentry"><div class="wentry-hd"><span class="wentry-date">${e.name||e.date}</span><span>${em} <span class="wentry-r">${rs}</span></span></div>${e.snippet?`<div class="wentry-txt">${e.snippet.slice(0,100)}${e.snippet.length>100?'…':''}</div>`:''}</div>`;
+      const snip=e.refl||e.hi||'';
+      html+=`<div class="wentry"><div class="wentry-hd"><span class="wentry-date">${e.name||e.date}</span><span>${em} <span class="wentry-r">${rs}</span></span></div>${snip?`<div class="wentry-txt">${snip.slice(0,100)}${snip.length>100?'…':''}</div>`:''}</div>`;
     });
     html+=`</div>`;
   } else {
     html+=`<p style="font-family:var(--fd);font-style:italic;color:var(--ink-s);text-align:center;padding:1.5rem">Nessuna sessione questa settimana</p>`;
   }
   wc.innerHTML=html;
-  if(dwd>0)fetchWeekInsight(entries);
+  if(dwd>0) fetchWeekInsight(entries);
 }
 
 async function fetchWeekInsight(entries){
-  const ctx=entries.map(e=>`${e.date}: mood:${e.mood||'?'} rating:${e.rating||'?'} ${e.snippet||''}`).join('\n');
+  const ctx=entries.map(e=>`${e.date}: mood:${e.mood||'?'} rating:${e.rating||'?'} ${[e.refl,e.hi].filter(Boolean).join(' ').slice(0,80)}`).join('\n');
   try{
     const r=await fetch(AI_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:AI_MODEL,max_tokens:1000,messages:[{role:'user',content:`Analizza questa settimana di journaling (2-3 frasi in italiano):\n\n${ctx}\n\nPattern, progressi, aree attenzione. Diretto.`}]})});
     const d=await r.json();const el=document.getElementById('wins');if(el)el.textContent=d.content?.[0]?.text||'';
   }catch{const el=document.getElementById('wins');if(el)el.textContent='Non disponibile.';}
 }
 
-// ─── EXPORT PDF (via Anthropic API + MCP) ────────────────
+// ─── EXPORT SETTIMANALE PER CLAUDE → NOTION ──────────────
+function copyWeeklyForClaude(){
+  const startOfWeek=new Date();startOfWeek.setDate(startOfWeek.getDate()-6);
+  const startStr=startOfWeek.toISOString().split('T')[0];
+  const endStr=todayStr();
+  const all=lsSessions();
+  const entries=all.filter(e=>e.date>=startStr).sort((a,b)=>a.date.localeCompare(b.date));
+  const mornings=lsMornings();
+  const weekMornings=mornings.filter(m=>m.date>=startStr&&!m.skipped);
+
+  if(entries.length===0){
+    const st=document.getElementById('weekly-st');
+    if(st){st.className='status-msg vis err';st.textContent='Nessuna sessione questa settimana';}
+    return;
+  }
+
+  // Calcola medie biometriche
+  const biocharges=weekMornings.map(m=>m.biocharge).filter(Boolean);
+  const hrvs=weekMornings.map(m=>m.hrv).filter(Boolean);
+  const slanci=weekMornings.map(m=>m.slancio).filter(Boolean);
+  const deepSleeps=weekMornings.map(m=>m.deepSleepPct).filter(Boolean);
+  const avg=(arr)=>arr.length?Math.round(arr.reduce((a,b)=>a+b,0)/arr.length):null;
+  const humeScoreEntry=weekMornings.find(m=>m.humeScore);
+
+  const avgRating=entries.filter(e=>e.rating).reduce((a,b)=>a+b.rating,0)/(entries.filter(e=>e.rating).length||1);
+  const moodList=entries.map(e=>e.moodWords||[]).flat();
+  const moodFreq={};moodList.forEach(w=>{moodFreq[w]=(moodFreq[w]||0)+1;});
+  const topMoods=Object.entries(moodFreq).sort((a,b)=>b[1]-a[1]).slice(0,5).map(e=>e[0]);
+  const habCount={};HL.forEach(h=>{habCount[h]=entries.filter(e=>e.hab&&e.hab[h]).length;});
+
+  const weekLabel=startOfWeek.toLocaleDateString('it-IT',{day:'numeric',month:'long'})+' – '+new Date().toLocaleDateString('it-IT',{day:'numeric',month:'long',year:'numeric'});
+
+  let text='SALVA_WEEKLY_REPORT\n';
+  text+='Settimana: '+weekLabel+'\n';
+  text+='Periodo: '+startStr+' / '+endStr+'\n\n';
+
+  text+='--- Dati qualitativi ---\n';
+  text+='Sessioni completate: '+entries.length+'/7\n';
+  text+='Rating medio: '+avgRating.toFixed(1)+'/5\n';
+  text+='Mood prevalenti: '+topMoods.join(', ')+'\n';
+  text+='Habits (giorni su '+entries.length+'): '+HL.map(h=>HIT[h]+' '+habCount[h]).join(', ')+'\n\n';
+
+  if(weekMornings.length>0){
+    text+='--- Dati biometrici (medie settimana) ---\n';
+    if(avg(biocharges)) text+='Biocharge Zepp medio: '+avg(biocharges)+'%\n';
+    if(avg(hrvs))       text+='HRV medio: '+avg(hrvs)+' ms\n';
+    if(avg(slanci))     text+='Slancio metabolico Hume medio: '+avg(slanci)+'\n';
+    if(avg(deepSleeps)) text+='Deep sleep medio: '+avg(deepSleeps)+'%\n';
+    if(humeScoreEntry)  text+='Score salute Hume: '+humeScoreEntry.humeScore+'\n';
+    text+='\n';
+  }
+
+  text+='--- Dettaglio giorni ---\n';
+  entries.forEach(e=>{
+    text+=e.date+': rating '+e.rating+'/5, mood: '+(e.moodWords||[]).join(',')||e.mood||'?';
+    if(e.wins&&(e.wins.phys||e.wins.ment||e.wins.rel)){
+      text+=' | win: '+[e.wins.phys,e.wins.ment,e.wins.rel].filter(Boolean).join(' / ');
+    }
+    if(e.morning&&e.morning.deepSleepPct) text+=' | deep sleep: '+e.morning.deepSleepPct+'%';
+    text+='\n';
+  });
+
+  navigator.clipboard.writeText(text).then(()=>{
+    const st=document.getElementById('weekly-st');
+    if(st){st.className='status-msg vis ok';st.textContent='✓ Copiato! Incolla in chat con Claude per salvare su Notion';}
+  }).catch(()=>{
+    window.prompt('Copia e incolla in chat con Claude:',text);
+  });
+}
+
+// ─── EXPORT PDF (mensile, da localStorage) ───────────────
 function initExport(){
   const ms=document.getElementById('month-sel');ms.innerHTML='';
   const now=new Date();
@@ -767,7 +1178,6 @@ function initExport(){
   loadExportPreview(selMonth);
 }
 
-// ─── EXPORT PDF (da localStorage) ───────────────────────
 async function loadExportPreview(sm){
   document.getElementById('btn-pdf').disabled=true;
   const prev=document.getElementById('exp-prev');
@@ -775,7 +1185,6 @@ async function loadExportPreview(sm){
   const startDate=new Date(sm.year,sm.month,1).toISOString().split('T')[0];
   const endDate=new Date(sm.year,sm.month+1,0).toISOString().split('T')[0];
   const mname=new Date(sm.year,sm.month,1).toLocaleDateString('it-IT',{month:'long',year:'numeric'});
-
   const all=lsSessions();
   exportEntries=all.filter(e=>e.date>=startDate&&e.date<=endDate).sort((a,b)=>a.date.localeCompare(b.date));
   const count=exportEntries.length;
@@ -789,7 +1198,7 @@ async function loadExportPreview(sm){
     <div class="exp-row"><span class="exp-lbl">Mood prevalente</span><span class="exp-val">${topMood?topMood[0]:'—'}</span></div>`;
   document.getElementById('btn-pdf').disabled=count===0;
   if(count===0){
-    prev.innerHTML+=`<p style="font-size:.8rem;color:var(--ink-s);margin-top:8px;font-family:var(--fd);font-style:italic">Nessuna sessione salvata localmente per questo mese.</p>`;
+    prev.innerHTML+=`<p style="font-size:.8rem;color:var(--ink-s);margin-top:8px;font-family:var(--fd);font-style:italic">Nessuna sessione salvata per questo mese.</p>`;
   }
 }
 
@@ -800,8 +1209,6 @@ async function generatePDF(){
   st.className='status-msg vis';st.textContent='Generando PDF…';
   const sm=selMonth||{year:new Date().getFullYear(),month:new Date().getMonth()};
   const mname=new Date(sm.year,sm.month,1).toLocaleDateString('it-IT',{month:'long',year:'numeric'});
-
-  // AI summary
   let aiSum='';
   if(exportEntries.length>0){
     const ctx=exportEntries.map(e=>`${e.date}: mood:${e.mood||'?'} rating:${e.rating||'?'} ${([e.refl,e.hi].filter(Boolean).join(' ').slice(0,100))}`).join('\n');
@@ -810,28 +1217,21 @@ async function generatePDF(){
       const d=await r.json();aiSum=d.content?.[0]?.text||'';
     }catch{}
   }
-
   try{
     const {jsPDF}=window.jspdf;
     const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
     const W=210,M=18;let y=M;
-
-    // Header
     doc.setFillColor(247,240,227);doc.rect(0,0,W,38,'F');
     doc.setFontSize(8);doc.setTextColor(138,129,120);doc.text('EVENING REFLECTION · JOURNAL',M,13);
     doc.setFontSize(20);doc.setTextColor(28,26,23);doc.text(mname.toUpperCase(),M,26);
     doc.setFontSize(9);doc.setTextColor(201,169,110);doc.text(exportEntries.length+' sessioni',M,34);
     y=48;
-
-    // AI Summary
     if(aiSum){
       doc.setFontSize(8);doc.setTextColor(201,169,110);doc.text('SINTESI AI',M,y);y+=4;
       doc.setDrawColor(201,169,110);doc.setLineWidth(.3);doc.line(M,y,W-M,y);y+=5;
       doc.setFont('helvetica','italic');doc.setFontSize(9);doc.setTextColor(74,69,64);
       const lines=doc.splitTextToSize(aiSum,W-M*2);doc.text(lines.slice(0,5),M,y);y+=Math.min(lines.length,5)*4+8;
     }
-
-    // Stats bar
     const avg=exportEntries.filter(e=>e.rating).reduce((a,b)=>a+(b.rating||0),0)/(exportEntries.filter(e=>e.rating).length||1);
     doc.setFillColor(245,240,232);doc.rect(M,y,W-M*2,16,'F');
     doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(138,129,120);
@@ -839,22 +1239,18 @@ async function generatePDF(){
     doc.setFont('helvetica','bold');doc.setFontSize(13);doc.setTextColor(28,26,23);
     doc.text(String(exportEntries.length),M+4,y+13);doc.text(avg?'★'.repeat(Math.round(avg)):'-',M+45,y+13);
     y+=24;
-
-    // Entries
     exportEntries.forEach(e=>{
       if(y>265){doc.addPage();y=M;}
       doc.setDrawColor(228,213,176);doc.setLineWidth(.3);doc.line(M,y,W-M,y);y+=4;
       doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(28,26,23);doc.text(e.name||e.date,M,y);
       if(e.rating){doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(201,169,110);doc.text('★'.repeat(e.rating),W-M-12,y);}
       y+=4;
-      const snippet=[e.refl,e.hi].filter(Boolean).join(' · ').slice(0,250)||e.content||'';
+      const snippet=[e.refl,e.hi].filter(Boolean).join(' · ').slice(0,250)||'';
       if(snippet){
         doc.setFont('helvetica','italic');doc.setFontSize(8);doc.setTextColor(74,69,64);
         const lines=doc.splitTextToSize(snippet,W-M*2);doc.text(lines.slice(0,3),M,y);y+=Math.min(lines.length,3)*3.5+5;
       } else {y+=3;}
     });
-
-    // Footer
     const pgs=doc.internal.getNumberOfPages();
     for(let i=1;i<=pgs;i++){
       doc.setPage(i);doc.setDrawColor(201,169,110);doc.setLineWidth(.3);doc.line(M,287,W-M,287);
@@ -871,14 +1267,52 @@ async function generatePDF(){
   }
 }
 
+// ─── NOTIFICHE PUSH ──────────────────────────────────────
+async function requestNotifications(){
+  if(!('Notification' in window)) return;
+  if(Notification.permission==='default'){
+    await Notification.requestPermission();
+  }
+}
+
+function scheduleNotification(){
+  if(!('Notification' in window) || Notification.permission!=='granted') return;
+  const now=new Date();
+  const target=new Date();
+  target.setHours(7,30,0,0);
+  if(now>target) target.setDate(target.getDate()+1);
+  const delay=target-now;
+  setTimeout(()=>{
+    // Controlla se il check-in non è già stato fatto oggi
+    if(shouldShowMorning()){
+      new Notification('🌅 Check-in mattutino',{
+        body:'30 secondi per iniziare bene la giornata',
+        icon: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"%3E%3Crect width="64" height="64" fill="%23F7F0E3"/%3E%3Ctext x="32" y="42" text-anchor="middle" font-size="32"%3E✦%3C/text%3E%3C/svg%3E'
+      });
+    }
+    scheduleNotification(); // Reschedula per il giorno dopo
+  }, delay);
+}
+
 // ─── INIT ─────────────────────────────────────────────────
 document.getElementById('hdate').textContent=new Date().toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
 renderStreak();
 
-// Service Worker (esclude API calls dal cache)
+// Determina schermata iniziale: mattino o home?
+if(shouldShowMorning()){
+  renderMorning();
+  goScreen('morning');
+} else {
+  goScreen('home');
+}
+
+// Richiedi permesso notifiche e schedula
+requestNotifications().then(()=>scheduleNotification());
+
+// Service Worker
 if('serviceWorker' in navigator){
   const swCode=`
-const CACHE='er-v2';
+const CACHE='er-v3';
 const ASSETS=[self.location.href];
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS))));
 self.addEventListener('fetch',e=>{
