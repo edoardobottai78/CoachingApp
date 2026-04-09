@@ -1401,7 +1401,35 @@ const PROTOCOL_REGISTRY = {
       {day:14,phase:'Completamento',title:'Closing day',exercise:"Guarda il tuo progresso completo: deep sleep% media settimana 1 vs settimana 2 vs baseline (13.2%). L'AI genera il tuo insight finale personalizzato.",question:"Cosa porti con te di questo protocollo? Quale cambiamento vuoi mantenere definitivamente?",isClosing:true}
     ]
   }
-  // Aggiungere qui: 'stress-7': {...}, 'composizione-21': {...}
+  ,
+  'stress-7': {
+    id: 'stress-7', name: 'Centramento sotto stress', emoji: '⚡', totalDays: 7,
+    tagline: '7 giorni · Regolazione & Focus',
+    description: 'Tecniche evidence-based per mantenere focus e calma nelle settimane ad alta intensità.',
+    days: [
+      {day:1,phase:'Consapevolezza',title:'Mappa il tuo stress',exercise:'Prima di tutto: riconosci cosa ti sta pesando. Fai una lista rapida (3-5 voci) di tutto ciò che ti crea tensione questa settimana — lavoro, fisico, relazioni, incertezze. Non giudicare, solo elencare. Il riconoscimento è il primo passo del controllo.',question:"Guardando la lista: c'è un elemento che pesa più degli altri? È qualcosa su cui hai controllo diretto, parziale o zero?"},
+      {day:2,phase:'Consapevolezza',title:'Separare ciò che controlli',exercise:"Prendi la lista di ieri. Per ogni voce scrivi: C (Controllo diretto), P (Parziale), 0 (Nessun controllo). Poi: per le voci C e P scrivi 1 azione concreta che puoi fare domani. Per le voci 0: pratica il rilascio — non è resa, è efficienza cognitiva.",question:"Quante voci erano davvero fuori dal tuo controllo? Ti ha sorpreso?"},
+      {day:3,phase:'Regolazione',title:'Box breathing pre-stress',exercise:"Il Box Breathing è usato dai Navy SEAL per regolarsi prima di situazioni ad alta pressione. 4 secondi inspira → 4 trattieni → 4 espira → 4 trattieni. Ripeti 4 cicli. Fallo ORA, poi ricordati di applicarlo domani prima di qualsiasi momento ad alta tensione (riunione, WOD pesante, conversazione difficile).",question:"Come ti sei sentito durante i 4 cicli? Dove hai sentito la risposta nel corpo?"},
+      {day:4,phase:'Regolazione',title:'Il segnale fisico dello stress',exercise:"Il corpo segnala lo stress prima della mente. Oggi: identifica il tuo segnale personale. Tensione alle spalle? Mascella stretta? Respiro superficiale? Stomaco? Una volta identificato, diventa il tuo trigger di rientro — quando lo senti, esegui 3 respiri profondi e rilascia consapevolmente quella zona.",question:"Qual è il tuo segnale fisico principale? Hai già iniziato a riconoscerlo automaticamente oggi?"},
+      {day:5,phase:'Ancoraggio',title:'La tecnica 5-4-3-2-1',exercise:"Quando la mente gira, questo grounding immediato la riporta al presente: 5 cose che vedi → 4 che puoi toccare → 3 che senti → 2 che puoi annusare → 1 che puoi assaporare. Praticala adesso per familiarizzare. Poi usala ogni volta che senti la mente che accelera o catastrofizza.",question:"Quanto ci hai messo a 'ritornare'? C'è stato un senso specifico che ti ha ancorato meglio?"},
+      {day:6,phase:'Ancoraggio',title:'Scudo cognitivo: riformulare',exercise:"Lo stress cronico nasce spesso da una narrazione interna catastrofante. Prendi la fonte di stress principale di questa settimana e riscrivila con questi filtri: (1) Qual è il worst case realistico — non immaginario? (2) Qual è il best case? (3) Qual è lo scenario più probabile? Scrivere li rende gestibili.",question:"Lo scenario 'più probabile' è davvero così grave come lo stavi vivendo nella testa?"},
+      {day:7,phase:'Integrazione',title:'Il tuo kit anti-stress personale',exercise:"Hai 6 strumenti: mappatura, separazione controllo, box breathing, segnale fisico, 5-4-3-2-1, riformulazione. Scegli i 2-3 che hanno funzionato meglio e costruisci il tuo protocollo personale di 60 secondi per i momenti ad alta tensione. Scrivilo qui sotto — deve essere abbastanza semplice da ricordare sotto pressione.",question:"In quale situazione specifica delle prossime settimane prevedi di usarlo? Come ti prepareresti?",isClosing:true}
+    ]
+  },
+  'relazioni-7': {
+    id: 'relazioni-7', name: 'Relazioni & Centramento Sociale', emoji: '🤝', totalDays: 7,
+    tagline: '7 giorni · Connessione & Confini',
+    description: 'Qualità delle relazioni, energia sociale, confini sani: 7 giorni per allineare vita relazionale e benessere.',
+    days: [
+      {day:1,phase:'Mappa',title:'Audit energetico relazionale',exercise:"Non tutte le relazioni hanno lo stesso peso energetico. Fai una lista delle 5-8 persone con cui interagisci di più (lavoro, famiglia, amici). Per ciascuna: scrivi +, ~ o – in base a come ti senti dopo una conversazione tipica. + = ricarichi, ~ = neutro, – = dreni. Questo non è un giudizio sulla persona — è una mappa della tua energia.",question:"C'è un pattern nella lista? Il rapporto + / – ti ha sorpreso? Hai persone – che però non puoi eliminare dalla tua vita?"},
+      {day:2,phase:'Mappa',title:'La qualità vs la quantità',exercise:"Le relazioni superficiali numerose esauriscono più di 2-3 connessioni profonde. Oggi rifletti: quante interazioni hai avuto questa settimana in cui ti sei sentito davvero visto e ascoltato — non solo funzionale? Anche 5 minuti di conversazione autentica valgono più di un'ora di small talk.",question:"Quando è stata l'ultima volta che hai avuto una conversazione in cui ti sei sentito davvero presente? Con chi?"},
+      {day:3,phase:'Confini',title:'Riconoscere il confine violato',exercise:"Un confine non è un muro — è il perimetro del tuo benessere. Oggi identifica: c'è qualcosa che stai sopportando in una relazione (richiesta, comportamento, dinamica) che ti costa energia ma non hai mai nominato? Non serve 'dire tutto' — serve prima riconoscerlo dentro di te senza razionalizzarlo.",question:"Cosa stai sopportando? È una cosa puntuale o un pattern ripetuto? Cosa temi succederebbe se la nominassi?"},
+      {day:4,phase:'Confini',title:'Dire no come atto di rispetto',exercise:"Dire no non è egoismo — è onestà. Un 'sì' detto per evitare disagio è un debito relazionale che si accumula. Oggi pratica mentalmente (o nella realtà) un 'no' o un 'ora non posso' su una piccola richiesta che normalmente avresti accettato per abitudine. Osserva la reazione interna, non quella dell'altro.",question:"Come ti ha fatto sentire? C'è stata una voce interna che ti diceva che stavi sbagliando? Da dove viene?"},
+      {day:5,phase:'Connessione',title:'Presenza attiva',exercise:"La qualità di una relazione si misura nella qualità della tua attenzione. Oggi, in almeno una conversazione, metti via il telefono, guarda negli occhi, e fai 1 domanda autentica su qualcosa che sta vivendo l'altra persona — senza aspettare il tuo turno per parlare. Ascolta per capire, non per rispondere.",question:"Chi era? Cosa hai scoperto di quella persona che non sapevi o non avevi mai davvero sentito?"},
+      {day:6,phase:'Connessione',title:'Esprimere ciò che vale',exercise:"Nelle relazioni silenziamo spesso gratitudine e apprezzamento perché diamo per scontato che l'altro 'lo sappia'. Oggi: contatta o di' di persona a qualcuno qualcosa di specifico che apprezzi di lui/lei — non generico ('sei un buon amico') ma concreto ('quella cosa che hai fatto/detto la settimana scorsa mi ha dato molto'). Specificità = credibilità.",question:"Come ha reagito? Come ti sei sentito tu dopo averlo detto?"},
+      {day:7,phase:'Integrazione',title:'Il tuo blueprint relazionale',exercise:"Hai esplorato: mappa energetica, qualità vs quantità, confini, il no, presenza attiva, gratitudine espressa. Ora sintetizza: (1) Quale relazione vuoi nutrire di più? (2) Quale dinamica vuoi modificare? (3) Quale abitudine sociale vuoi portare avanti? Scrivile — queste 3 intenzioni sono il tuo punto di riferimento per i prossimi 30 giorni.",question:"C'è una relazione nella tua vita che senti 'in sospeso' — qualcosa di non detto o irrisolto? È il momento giusto per muoverti?",isClosing:true}
+    ]
+  }
 };
 
 // ── STATO PROTOCOLLO ──
@@ -1538,14 +1566,14 @@ function renderProtocol(){
     </div>
     <div class="proto-streak">
       <div class="badge">🔥 ${ap.streakDays||0} giorni streak</div>
-      ${currentDS?`<div class="badge">🌙 Deep sleep ieri: ${currentDS}%</div>`:''}
-      ${ap.baselineDeepSleep?`<div class="badge">📊 Baseline: ${ap.baselineDeepSleep}%</div>`:''}
+      ${ap.id==='deep-sleep-14'&&currentDS?`<div class="badge">🌙 Deep sleep ieri: ${currentDS}%</div>`:''}
+      ${ap.id==='deep-sleep-14'&&ap.baselineDeepSleep?`<div class="badge">📊 Baseline: ${ap.baselineDeepSleep}%</div>`:''}
     </div>
-    <div class="ds-chart-wrap">
+    ${ap.id==='deep-sleep-14'?`<div class="ds-chart-wrap">
       <div class="ds-chart-title">Deep sleep% — progresso protocollo</div>
       ${buildSparkline(ap.id,ap.totalDays,ap.currentDay-1)}
       <div class="ds-target-note">▸ Target: 20-25% · Baseline: ${ap.baselineDeepSleep||13.2}%</div>
-    </div>
+    </div>`:''}
     <div class="day-exercise-card">
       <div class="day-ex-label">Esercizio del giorno</div>
       <div class="day-ex-title">${dayObj.title}</div>`;
@@ -1557,15 +1585,20 @@ function renderProtocol(){
       html+=`<div class="day-ex-body">${exerciseText}</div>`;
       html+=renderRoutineBuilder();
     } else if(dayObj.isClosing){
-      const stats=buildClosingStats(ap);
-      html+=`<div class="closing-stats">
-        <div class="cstat"><div class="cstat-n">${ap.baselineDeepSleep||'?'}%</div><div class="cstat-l">Baseline</div></div>
-        <div class="cstat ${stats.improvement&&stats.improvement>0?'up':''}"><div class="cstat-n">${stats.w2||'?'}%</div><div class="cstat-l">Media settimana 2</div></div>
-        <div class="cstat"><div class="cstat-n">${stats.w1||'?'}%</div><div class="cstat-l">Media settimana 1</div></div>
-        <div class="cstat ${stats.improvement&&stats.improvement>0?'up':''}"><div class="cstat-n">${stats.improvement?'+'+stats.improvement+'%':'?'}</div><div class="cstat-l">Miglioramento</div></div>
-      </div>
-      <div id="closing-ai-insight" class="ai-bub" style="margin-bottom:12px"><div class="ald"><span></span><span></span><span></span></div></div>`;
-      fetchClosingInsight(ap,stats);
+      if(ap.id==='deep-sleep-14'){
+        const stats=buildClosingStats(ap);
+        html+=`<div class="closing-stats">
+          <div class="cstat"><div class="cstat-n">${ap.baselineDeepSleep||'?'}%</div><div class="cstat-l">Baseline</div></div>
+          <div class="cstat ${stats.improvement&&stats.improvement>0?'up':''}"><div class="cstat-n">${stats.w2||'?'}%</div><div class="cstat-l">Media settimana 2</div></div>
+          <div class="cstat"><div class="cstat-n">${stats.w1||'?'}%</div><div class="cstat-l">Media settimana 1</div></div>
+          <div class="cstat ${stats.improvement&&stats.improvement>0?'up':''}"><div class="cstat-n">${stats.improvement?'+'+stats.improvement+'%':'?'}</div><div class="cstat-l">Miglioramento</div></div>
+        </div>
+        <div id="closing-ai-insight" class="ai-bub" style="margin-bottom:12px"><div class="ald"><span></span><span></span><span></span></div></div>`;
+        fetchClosingInsight(ap,stats);
+      } else {
+        html+=`<div id="closing-ai-insight" class="ai-bub" style="margin-bottom:12px"><div class="ald"><span></span><span></span><span></span></div></div>`;
+        fetchGenericClosingInsight(ap);
+      }
     } else {
       html+=`<div class="day-ex-body">${exerciseText}</div>`;
     }
@@ -1594,16 +1627,15 @@ function renderProtocol(){
   }
 
   if(ap&&ap.status==='completed'){
-    const stats=buildClosingStats(ap);
+    const proto=PROTOCOL_REGISTRY[ap.id];
+    let statsHtml='';
+    if(ap.id==='deep-sleep-14'){const stats=buildClosingStats(ap);statsHtml=`<div class="closing-stats"><div class="cstat"><div class="cstat-n">${ap.baselineDeepSleep||'?'}%</div><div class="cstat-l">Baseline</div></div><div class="cstat up"><div class="cstat-n">${stats.w2||'?'}%</div><div class="cstat-l">Media finale</div></div></div>`;}
     pb.innerHTML=`<div class="proto-active-card" style="background:var(--gbg);border-color:rgba(59,109,17,.3)">
       <div class="proto-day-label" style="color:var(--green)">✓ Completato ${ap.endDate||''}</div>
-      <div class="proto-day-title">🌙 Deep Sleep — 14 giorni</div>
-      <div class="closing-stats">
-        <div class="cstat"><div class="cstat-n">${ap.baselineDeepSleep||'?'}%</div><div class="cstat-l">Baseline</div></div>
-        <div class="cstat up"><div class="cstat-n">${stats.w2||'?'}%</div><div class="cstat-l">Media finale</div></div>
-      </div>
+      <div class="proto-day-title">${proto?proto.emoji:''} ${proto?proto.name:ap.id} — ${ap.totalDays} giorni</div>
+      ${statsHtml}
     </div>
-    <div style="margin-top:16px;margin-bottom:20px"><button class="btn-complete" onclick="activateProtocol('deep-sleep-14');renderProtocol()">↺ Rifai Deep Sleep</button></div>
+    <div style="margin-top:16px;margin-bottom:20px"><button class="btn-complete" onclick="activateProtocol('${ap.id}');renderProtocol()">↺ Rifai ${proto?proto.name:ap.id}</button></div>
     <div class="eyebrow" style="margin-bottom:12px">Altri protocolli</div>
     ${renderProtocolList()}${renderHistorySection()}`;
     return;
@@ -1622,7 +1654,8 @@ function renderProtocol(){
 function renderProtocolList(){
   const list=[
     {id:'deep-sleep-14',emoji:'🌙',title:'Deep Sleep 14 giorni',desc:'Porta il deep sleep dal 13% al 20-25% con igiene del sonno, body scan MBSR e protocollo integratori.',tag:'Disponibile',locked:false},
-    {id:'stress-7',emoji:'⚡',title:'Centramento sotto stress 7 giorni',desc:'Tecniche di regolazione per mantenere focus e calma nelle settimane ad alta intensità.',tag:'Prossimamente',locked:true},
+    {id:'stress-7',emoji:'⚡',title:'Centramento sotto stress 7 giorni',desc:'Tecniche di regolazione per mantenere focus e calma nelle settimane ad alta intensità.',tag:'Disponibile',locked:false},
+    {id:'relazioni-7',emoji:'🤝',title:'Relazioni & Centramento Sociale 7 giorni',desc:'Qualità relazioni, energia sociale, confini sani: allinea vita relazionale e benessere.',tag:'Disponibile',locked:false},
     {id:'composizione-21',emoji:'💪',title:'Composizione corporea 21 giorni',desc:'Allineamento nutrizione + recovery + allenamento per aumentare massa mantenendo il peso target.',tag:'Prossimamente',locked:true},
     {id:'energia-10',emoji:'☀️',title:'Energia e focus 10 giorni',desc:'Circadian alignment e pre-WOD mental prep per massimizzare performance e recupero.',tag:'Prossimamente',locked:true},
   ];
@@ -1632,7 +1665,7 @@ function renderProtocolList(){
 function renderHistorySection(){
   const history=getProtocolHistory();
   if(history.length===0) return '';
-  const names={'deep-sleep-14':'Deep Sleep 14gg'};
+  const names={'deep-sleep-14':'Deep Sleep 14gg','stress-7':'Centramento Stress 7gg','relazioni-7':'Relazioni Sociali 7gg'};
   return `<div class="divider"></div><div class="eyebrow" style="margin-bottom:8px">Storico protocolli</div><div class="history-list">${history.slice().reverse().map(h=>`<div class="history-item"><div class="history-hd"><span class="history-name">${names[h.id]||h.id}</span><span class="history-status ${h.status}">${h.status==='completed'?'✓ Completato':'Interrotto'}</span></div><div class="history-dates">${h.startDate} → ${h.endDate||'?'} · Giorno ${h.currentDay||'?'}/${h.totalDays}</div></div>`).join('')}</div>`;
 }
 
@@ -1655,6 +1688,19 @@ async function fetchClosingInsight(ap,stats){
     const r=await fetch(AI_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:AI_MODEL,max_tokens:800,messages:[{role:'user',content:ctx+'\n\nScrivi 3-4 frasi in italiano: celebra il completamento, evidenzia il progresso specifico, suggerisci 1 cosa da mantenere definitivamente. Tono diretto e personale.'}]})});
     const d=await r.json();if(el)el.textContent=d.content?.[0]?.text||'Protocollo completato. Ottimo lavoro.';
   }catch{if(el)el.textContent='Protocollo completato. Analizza i dati nel Monthly Holistic Report.';}
+}
+
+async function fetchGenericClosingInsight(ap){
+  const el=document.getElementById('closing-ai-insight');if(!el)return;
+  const protoNames={'stress-7':'Centramento sotto stress 7 giorni','relazioni-7':'Relazioni & Centramento Sociale 7 giorni'};
+  const name=protoNames[ap.id]||ap.id;
+  const notes=[];
+  for(let i=1;i<=ap.totalDays;i++){const n=localStorage.getItem('proto_note_'+ap.id+'_'+i);if(n)notes.push('Giorno '+i+': '+n);}
+  const ctx=`Edoardo, CrossFit 4-5x/settimana, Milano. Protocollo "${name}" completato in ${ap.totalDays} giorni. Note dai giorni: ${notes.length?notes.join(' | '):'nessuna nota disponibile'}`;
+  try{
+    const r=await fetch(AI_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:AI_MODEL,max_tokens:800,messages:[{role:'user',content:ctx+'\n\nScrivi 3-4 frasi in italiano: celebra il completamento, evidenzia 1-2 insight specifici emersi dalle note, suggerisci 1 comportamento da mantenere definitivamente. Tono diretto, caldo, personale. Niente frasi generiche.'}]})});
+    const d=await r.json();if(el)el.textContent=d.content?.[0]?.text||'Protocollo completato. Ottimo lavoro.';
+  }catch{if(el)el.textContent='Protocollo completato. Rileggi le tue note per trovare i pattern più utili.';}
 }
 
 // ── INIT BADGE PROTOCOLLO HOME ──
@@ -1690,7 +1736,7 @@ function scheduleNotification(){
 (function(){
   const _ap=getActiveProtocol();
   const _pb=document.getElementById('proto-home-badge');
-  if(_ap&&_ap.status==='active'){if(_pb){_pb.textContent='🌙 Giorno '+_ap.currentDay+'/14';_pb.style.display='inline-flex';}}
+  if(_ap&&_ap.status==='active'){if(_pb){_pb.textContent=(PROTOCOL_REGISTRY[_ap.id]?.emoji||'🌙')+' Giorno '+_ap.currentDay+'/'+_ap.totalDays;_pb.style.display='inline-flex';}}
   else{
     const _mornings=lsMornings().filter(m=>!m.skipped&&m.deepSleepPct);
     const _lastM=_mornings[_mornings.length-1];
