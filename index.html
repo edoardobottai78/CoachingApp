@@ -42,6 +42,7 @@ document.write('<link rel="manifest" href="'+manifestURL+'">');
   --bg: #FDFBF7; --bg-w: #F5F0E8; --line: rgba(201,169,110,.22);
   --green: #3B6D11; --gbg: #EAF3DE;
   --blue: #185FA5; --bluebg: #E6F1FB;
+  --purple: #6B3FA0; --purplebg: #F0EAF9;
   --r: 16px; --r-sm: 12px;
   --fd: 'Cormorant Garamond', Georgia, serif;
   --fb: 'DM Sans', system-ui, sans-serif;
@@ -74,7 +75,7 @@ body { font-family: var(--fb); background: var(--bg); color: var(--ink); height:
 .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 10px 8px; background: none; border: none; cursor: pointer; color: var(--ink-s); transition: color .2s; gap: 3px; }
 .nav-item.act { color: var(--gold); }
 .nav-icon { font-size: 18px; line-height: 1; }
-.nav-lbl { font-size: 9px; font-weight: 500; letter-spacing: .05em; text-transform: uppercase; }
+.nav-lbl { font-size: 8px; font-weight: 500; letter-spacing: .04em; text-transform: uppercase; }
 
 .eyebrow { font-size: 10px; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); margin-bottom: .5rem; }
 .hero { font-family: var(--fd); font-size: 2.4rem; font-weight: 300; line-height: 1.1; margin-bottom: .35rem; }
@@ -109,6 +110,9 @@ body { font-family: var(--fb); background: var(--bg); color: var(--ink); height:
 .alert-text { font-size: 12.5px; color: var(--blue); line-height: 1.5; }
 .alert-text strong { font-weight: 600; display: block; margin-bottom: 2px; }
 
+
+.alert-banner.proto { background: var(--purplebg); border-color: rgba(107,63,160,.25); }
+.alert-banner.proto .alert-text { color: var(--purple); }
 /* ── CHECK-IN MATTUTINO ── */
 .morning-field { margin-bottom: 16px; }
 .morning-label { font-size: 10px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; display: block; }
@@ -131,6 +135,7 @@ body { font-family: var(--fb); background: var(--bg); color: var(--ink); height:
 /* ── HOME ── */
 .streak-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0 20px; }
 .badge { background: var(--gold-p); border: 0.5px solid var(--gold-l); border-radius: 100px; padding: 7px 14px; font-size: 12px; color: var(--ink-m); display: inline-flex; align-items: center; gap: 5px; }
+.badge.proto-badge { background: var(--purplebg); border-color: rgba(107,63,160,.3); color: var(--purple); }
 .modes { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
 .mcard { background: var(--bg-w); border: 0.5px solid var(--line); border-radius: var(--r); padding: 14px 16px; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: all .15s; -webkit-appearance: none; width: 100%; text-align: left; }
 .mcard:active, .mcard.sel { border-color: var(--gold); background: var(--gold-p); }
@@ -256,6 +261,63 @@ body { font-family: var(--fb); background: var(--bg); color: var(--ink); height:
 .exp-row:last-child { border-bottom: none; }
 .exp-lbl { color: var(--ink-s); }
 .exp-val { color: var(--ink); font-weight: 500; }
+
+/* ── PROTOCOLLO ── */
+.proto-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+.proto-card { background: var(--bg-w); border: 0.5px solid var(--line); border-radius: var(--r); padding: 16px; cursor: pointer; display: flex; align-items: flex-start; gap: 14px; transition: all .15s; -webkit-appearance: none; width: 100%; text-align: left; }
+.proto-card:active { border-color: var(--purple); background: var(--purplebg); }
+.proto-card.locked { opacity: .45; cursor: default; }
+.proto-icon { font-size: 1.6rem; flex-shrink: 0; width: 34px; text-align: center; }
+.proto-title { font-size: 14px; font-weight: 500; color: var(--ink); margin-bottom: 3px; }
+.proto-desc { font-size: 11px; color: var(--ink-s); line-height: 1.4; }
+.proto-tag { display: inline-block; font-size: 9px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; background: var(--purplebg); color: var(--purple); border-radius: 100px; padding: 3px 8px; margin-top: 5px; }
+.proto-tag.coming { background: var(--bg-w); color: var(--ink-s); border: 0.5px solid var(--line); }
+.proto-active-card { background: var(--purplebg); border: 1.5px solid rgba(107,63,160,.3); border-radius: var(--r); padding: 16px; margin-bottom: 16px; position: relative; overflow: hidden; }
+.proto-active-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--purple), transparent); }
+.proto-day-label { font-size: 10px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: var(--purple); margin-bottom: 4px; }
+.proto-day-title { font-family: var(--fd); font-size: 1.3rem; font-weight: 300; color: var(--ink); margin-bottom: 8px; }
+.proto-progress-bar { height: 4px; background: rgba(107,63,160,.15); border-radius: 2px; margin-bottom: 8px; }
+.proto-progress-fill { height: 100%; background: var(--purple); border-radius: 2px; transition: width .4s; }
+.proto-progress-txt { font-size: 10px; color: var(--purple); display: flex; justify-content: space-between; }
+.ds-chart-wrap { background: var(--bg-w); border: 0.5px solid var(--line); border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; }
+.ds-chart-title { font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-s); margin-bottom: 10px; }
+.ds-target-note { font-size: 10px; color: var(--green); margin-top: 6px; }
+.day-exercise-card { background: var(--bg-w); border: 0.5px solid var(--line); border-radius: var(--r); padding: 16px; margin-bottom: 14px; }
+.day-ex-label { font-size: 10px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+.day-ex-title { font-family: var(--fd); font-size: 1.15rem; font-weight: 300; color: var(--ink); margin-bottom: 8px; line-height: 1.3; }
+.day-ex-body { font-size: 13px; color: var(--ink-m); line-height: 1.6; margin-bottom: 12px; }
+.day-ex-q { font-family: var(--fd); font-size: .95rem; font-style: italic; color: var(--ink-s); padding-top: 10px; border-top: 0.5px solid var(--line); line-height: 1.5; }
+.day-note-area { width: 100%; min-height: 80px; padding: 12px 14px; border: 0.5px solid var(--line); border-radius: 10px; background: var(--bg); font-family: var(--fd); font-size: .95rem; font-style: italic; font-weight: 300; color: var(--ink); resize: none; -webkit-appearance: none; outline: none; transition: border-color .2s; margin-top: 10px; }
+.day-note-area:focus { border-color: var(--gold); background: var(--gold-p); }
+.day-note-area::placeholder { color: var(--ink-s); }
+.btn-complete { width: 100%; background: var(--purple); color: #fff; border: none; padding: 16px 24px; border-radius: 100px; font-family: var(--fb); font-size: 15px; cursor: pointer; transition: all .2s; display: flex; align-items: center; justify-content: center; gap: 8px; -webkit-appearance: none; }
+.btn-complete:active { transform: scale(.98); opacity: .85; }
+.btn-complete.done-today { background: var(--green); }
+.proto-streak { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+.proto-streak .badge { background: var(--purplebg); border-color: rgba(107,63,160,.25); color: var(--purple); }
+.sabotatore-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+.sab-btn { border: 0.5px solid var(--line); border-radius: 12px; padding: 14px 12px; background: var(--bg-w); cursor: pointer; text-align: center; font-size: 12px; font-weight: 500; color: var(--ink-m); -webkit-appearance: none; transition: all .15s; }
+.sab-btn.sel { border-color: var(--purple); background: var(--purplebg); color: var(--purple); border-width: 1.5px; }
+.sab-icon { font-size: 1.4rem; display: block; margin-bottom: 5px; }
+.routine-steps { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+.routine-step-row { display: flex; align-items: center; gap: 10px; }
+.routine-step-num { width: 26px; height: 26px; border-radius: 50%; background: var(--purplebg); border: 0.5px solid rgba(107,63,160,.25); display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--purple); flex-shrink: 0; font-family: var(--fd); }
+.routine-step-in { flex: 1; padding: 11px 14px; border: 0.5px solid var(--line); border-radius: 10px; background: var(--bg-w); font-family: var(--fd); font-size: .95rem; font-style: italic; font-weight: 300; color: var(--ink); -webkit-appearance: none; outline: none; transition: border-color .2s; }
+.routine-step-in:focus { border-color: var(--purple); background: var(--purplebg); }
+.routine-step-in::placeholder { color: var(--ink-s); }
+.closing-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+.cstat { background: var(--bg-w); border: 0.5px solid var(--line); border-radius: 12px; padding: 14px 12px; text-align: center; }
+.cstat-n { font-family: var(--fd); font-size: 1.6rem; font-weight: 300; color: var(--purple); }
+.cstat-l { font-size: 9px; color: var(--ink-s); margin-top: 2px; }
+.cstat.up .cstat-n { color: var(--green); }
+.history-list { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
+.history-item { background: var(--bg-w); border: 0.5px solid var(--line); border-radius: 12px; padding: 12px 14px; }
+.history-hd { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px; }
+.history-name { font-size: 13px; font-weight: 500; color: var(--ink); }
+.history-status { font-size: 10px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; padding: 3px 8px; border-radius: 100px; }
+.history-status.completed { background: var(--gbg); color: var(--green); }
+.history-status.abandoned { background: var(--bg-w); color: var(--ink-s); border: 0.5px solid var(--line); }
+.history-dates { font-size: 10px; color: var(--ink-s); }
 </style>
 </head>
 <body>
@@ -282,9 +344,11 @@ body { font-family: var(--fb); background: var(--bg); color: var(--ink); height:
     <div class="streak-row">
       <div class="badge">🔥 <span id="stk-txt">Caricamento…</span></div>
       <div class="badge" id="last-b" style="display:none"></div>
+      <div class="badge proto-badge" id="proto-home-badge" style="display:none"></div>
     </div>
   </div>
   <div class="scroll-body">
+    <div id="home-proto-alert"></div>
     <div class="modes">
       <button class="mcard sel" data-mode="reflection" onclick="selMode(this)">
         <div class="mi">✦</div>
@@ -304,6 +368,7 @@ body { font-family: var(--fb); background: var(--bg); color: var(--ink); height:
   <div class="bottom-nav">
     <button class="nav-item act" onclick="goScreen('home')"><div class="nav-icon">◈</div><div class="nav-lbl">Home</div></button>
     <button class="nav-item" onclick="goScreen('week')"><div class="nav-icon">◉</div><div class="nav-lbl">Settimana</div></button>
+    <button class="nav-item" onclick="goScreen('protocol')"><div class="nav-icon">🌙</div><div class="nav-lbl">Protocollo</div></button>
     <button class="nav-item" onclick="goScreen('export')"><div class="nav-icon">◎</div><div class="nav-lbl">Export</div></button>
   </div>
 </div>
@@ -363,6 +428,22 @@ body { font-family: var(--fb); background: var(--bg); color: var(--ink); height:
   <div class="bottom-nav">
     <button class="nav-item" onclick="goScreen('home')"><div class="nav-icon">◈</div><div class="nav-lbl">Home</div></button>
     <button class="nav-item act" onclick="goScreen('week')"><div class="nav-icon">◉</div><div class="nav-lbl">Settimana</div></button>
+    <button class="nav-item" onclick="goScreen('protocol')"><div class="nav-icon">🌙</div><div class="nav-lbl">Protocollo</div></button>
+    <button class="nav-item" onclick="goScreen('export')"><div class="nav-icon">◎</div><div class="nav-lbl">Export</div></button>
+  </div>
+</div>
+
+<!-- ── PROTOCOLLO ── -->
+<div id="sprotocol" class="screen">
+  <div style="background:var(--bg);border-bottom:0.5px solid var(--line);padding:calc(var(--safe-top)+16px) 20px 14px;flex-shrink:0">
+    <div class="eyebrow">Protocolli attivi</div>
+    <h2 class="hero" style="font-size:2rem">Il tuo <em>percorso</em></h2>
+  </div>
+  <div class="scroll-body" id="proto-body"></div>
+  <div class="bottom-nav">
+    <button class="nav-item" onclick="goScreen('home')"><div class="nav-icon">◈</div><div class="nav-lbl">Home</div></button>
+    <button class="nav-item" onclick="goScreen('week')"><div class="nav-icon">◉</div><div class="nav-lbl">Settimana</div></button>
+    <button class="nav-item act" onclick="goScreen('protocol')"><div class="nav-icon">🌙</div><div class="nav-lbl">Protocollo</div></button>
     <button class="nav-item" onclick="goScreen('export')"><div class="nav-icon">◎</div><div class="nav-lbl">Export</div></button>
   </div>
 </div>
@@ -385,6 +466,7 @@ body { font-family: var(--fb); background: var(--bg); color: var(--ink); height:
   <div class="bottom-nav">
     <button class="nav-item" onclick="goScreen('home')"><div class="nav-icon">◈</div><div class="nav-lbl">Home</div></button>
     <button class="nav-item" onclick="goScreen('week')"><div class="nav-icon">◉</div><div class="nav-lbl">Settimana</div></button>
+    <button class="nav-item" onclick="goScreen('protocol')"><div class="nav-icon">🌙</div><div class="nav-lbl">Protocollo</div></button>
     <button class="nav-item act" onclick="goScreen('export')"><div class="nav-icon">◎</div><div class="nav-lbl">Export</div></button>
   </div>
 </div>
@@ -515,10 +597,11 @@ function isMonday(){return new Date().getDay()===1;}
 // ─── NAVIGATION ──────────────────────────────────────────
 function goScreen(name){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  const map={home:'shome',morning:'smorning',week:'sweek',export:'sexport',session:'ss',summary:'ssum'};
+  const map={home:'shome',morning:'smorning',week:'sweek',export:'sexport',session:'ss',summary:'ssum',protocol:'sprotocol'};
   document.getElementById(map[name]||('s'+name)).classList.add('active');
   if(name==='week')   loadWeek();
   if(name==='export') initExport();
+  if(name==='protocol') renderProtocol();
 }
 
 // ─── STREAK ──────────────────────────────────────────────
@@ -534,6 +617,9 @@ function renderStreak(){
   document.getElementById('stk-txt').textContent=s.count===0?'Inizia la tua streak':s.count===1?'1 giorno di fila':s.count+' giorni di fila';
   const lb=document.getElementById('last-b');
   if(s.last){const d=new Date(s.last+'T12:00:00');lb.textContent='Ultima: '+d.toLocaleDateString('it-IT',{day:'numeric',month:'short'});lb.style.display='inline-flex';}
+  const ap=getActiveProtocol();
+  const pb=document.getElementById('proto-home-badge');
+  if(pb){if(ap&&ap.status==='active'){pb.textContent='🌙 Giorno '+ap.currentDay+'/14';pb.style.display='inline-flex';}else{pb.style.display='none';}}
 }
 
 // ─── MODE SELECTION ──────────────────────────────────────
@@ -615,6 +701,11 @@ function renderMorning(){
   }
 
   // Campo energia
+  // Suggerimento protocollo se deep sleep basso
+  const ap_m=getActiveProtocol();
+  if(lastMorning&&lastMorning.deepSleepPct&&lastMorning.deepSleepPct<ALERT_THRESHOLDS.deepSleepPct&&(!ap_m||ap_m.status!=='active')){
+    html+=`<div class="alert-banner proto" style="margin-bottom:16px"><div class="alert-icon">🌙</div><div class="alert-text"><strong>Deep sleep critico (\${lastMorning.deepSleepPct}%)</strong>Vuoi attivare il Protocollo 14 giorni?<button onclick="activateProtocol('deep-sleep-14');goScreen('protocol')" style="display:inline-block;margin-top:6px;background:var(--purple);color:#fff;border:none;padding:6px 14px;border-radius:100px;font-size:11px;cursor:pointer;font-family:var(--fb)">Attiva →</button></div></div>`;
+  }
   html+=`<div class="morning-field">
     <span class="morning-label">⚡ Energia mattutina</span>
     <div class="energy-row">
@@ -709,6 +800,7 @@ function saveMorningData(){
   };
   saveMorning(entry);
   morningData=entry;
+  advanceProtocolDay();
   goScreen('home');
 }
 
@@ -1002,6 +1094,19 @@ function copyForClaude(){
     if(ms.length) text+='Habits miss: '+ms.join(', ')+'\n';
   }
   if(sd.air) text+='Riflessione AI: '+sd.air+'\n';
+  // Protocollo attivo
+  const ap_c=getActiveProtocol();
+  if(ap_c&&ap_c.status==='active'){
+    const proto_c=PROTOCOL_REGISTRY[ap_c.id];
+    const dayObj_c=proto_c&&proto_c.days[ap_c.currentDay-1];
+    text+='\n--- Protocollo Attivo ---\n';
+    text+='Protocollo: '+ap_c.id+'\n';
+    text+='Giorno: '+ap_c.currentDay+'/'+ap_c.totalDays+'\n';
+    if(dayObj_c) text+='Esercizio: '+dayObj_c.title+'\n';
+    const pNote_c=lsG('proto_note_'+ap_c.id+'_'+ap_c.currentDay);
+    if(pNote_c) text+='Nota protocollo: '+pNote_c+'\n';
+    text+='Completato oggi: '+(ap_c.dayCompleted&&ap_c.dayCompleted[ap_c.currentDay-1]?'Si':'No')+'\n';
+  }
 
   navigator.clipboard.writeText(text).then(()=>{
     btn.textContent='✓ Copiato!';
@@ -1267,6 +1372,292 @@ async function generatePDF(){
   }
 }
 
+
+// ═══════════════════════════════════════════════════════
+// ── ARCHITETTURA TEMA ATTIVO + PROTOCOLLO DEEP SLEEP ──
+// ═══════════════════════════════════════════════════════
+
+// ── REGISTRO PROTOCOLLI ──
+// Per aggiungere nuovi protocolli: aggiungere qui. Zero modifiche altrove.
+const PROTOCOL_REGISTRY = {
+  'deep-sleep-14': {
+    id: 'deep-sleep-14', name: 'Deep Sleep', emoji: '🌙', totalDays: 14,
+    tagline: '14 giorni · Sonno profondo',
+    description: 'Porta il deep sleep dal 13% al target 20-25% con tecniche evidence-based giorno per giorno.',
+    days: [
+      {day:1,phase:'Reset',title:'Temperatura corporea',exercise:'Fai una doccia fresca 90 minuti prima di dormire. Abbassa la core temperature: il trigger più potente per il deep sleep. La caffeina ha emivita 5-6 ore — un caffè alle 16 è ancora attivo a mezzanotte.',question:"A che ora sei andato a letto ieri? Hai fatto qualcosa per segnalare al corpo che era ora di dormire?"},
+      {day:2,phase:'Reset',title:'Taglio stimolanti',exercise:'Stop caffè/pre-workout dopo le 14:00. Niente schermi 60 minuti prima del letto. La luce blu sopprime la melatonina anche a bassa intensità.',question:"Qual è stata la tua ultima fonte di stimolazione ieri sera prima di dormire?"},
+      {day:3,phase:'Reset',title:'Orario costante',exercise:"Scegli il tuo orario di coricamento target e rispettalo ±15 minuti per i prossimi 12 giorni. La costanza del ritmo circadiano vale più di qualsiasi supplemento.",question:"A che ora vai a letto solitamente? Quanto varia nei giorni di allenamento vs rest day?"},
+      {day:4,phase:'Reset',title:'Ambiente camera',exercise:'Ottimizza 3 variabili: (1) Temperatura 18-20°C, (2) Oscuramento totale o mascherina, (3) Niente device in carica sul comodino — il LED di ricarica disturba la melatonina.',question:"Descrivi il tuo ambiente di sonno attuale. Quale delle 3 variabili puoi migliorare subito?"},
+      {day:5,phase:'Attivazione',title:'Respiro 4-7-8',exercise:"Esegui 4 cicli 4-7-8: inspira 4 sec → trattieni 7 sec → espira 8 sec. Attiva il parasimpatico, riduce il cortisolo serale. Usa il tab Mindfulness per la guida animata.",question:"Come ti sei sentito dopo l'esercizio? Hai notato differenza nella tensione muscolare?"},
+      {day:6,phase:'Attivazione',title:'Body scan 5 minuti',exercise:"Sdraiato a letto, porta attenzione dai piedi → polpacci → cosce → addome → petto → braccia → testa. Per ogni zona: inspira e con l'espirazione lascia andare la tensione. 5 minuti totali.",question:"Dove hai sentito più tensione nel corpo stasera? C'è una zona che non si rilasciava?"},
+      {day:7,phase:'Attivazione',title:'Svuotamento mentale',exercise:'Prima di dormire: scrivi tutto quello che hai in testa — preoccupazioni, task irrisolti, pensieri ricorrenti. Trasferirli sulla carta riduce l\'arousal cognitivo notturno.',question:"Quanti pensieri attivi stavi portando a letto prima di questo esercizio?"},
+      {day:8,phase:'Attivazione',title:'Timing allenamento',exercise:"CrossFit intenso dopo le 18:00 alza FC e cortisolo per 3-4 ore — diretti sabotatori del deep sleep. Nota l'orario del tuo ultimo WOD e come ti senti fisicamente adesso.",question:"A che ora ti sei allenato oggi? Come te la senti fisicamente in questo momento?"},
+      {day:9,phase:'Attivazione',title:'Magnesio',exercise:'Il magnesio bisglicinato (200-400mg sera) è il supplemento con maggiore evidenza sul deep sleep. Controlla se lo stai già prendendo nelle Vitamins. Se no, valuta di aggiungerlo.',question:"Stai già assumendo magnesio? Hai notato differenze nei giorni in cui prendi le Vitamins vs quelli in cui le salti?"},
+      {day:10,phase:'Consolidamento',title:'Pattern check: giorni 1-9',exercise:"Guarda il grafico del tuo deep sleep% qui sopra. L'AI analizzerà quale azione ha correlato di più con i tuoi risultati migliori.",question:"Guardando il grafico, cosa noti? C'è un giorno in cui il deep sleep è stato meglio? Cosa hai fatto quel giorno di diverso?"},
+      {day:11,phase:'Consolidamento',title:'Il tuo sabotatore principale',exercise:'Identifica il fattore che sabota di più il tuo deep sleep tra i quattro sotto. La tua scelta personalizza l\'esercizio di domani.',question:null,isSabotatore:true},
+      {day:12,phase:'Consolidamento',title:'Ottimizza il sabotatore',exercise:null,question:"Hai applicato la tecnica specifica per il tuo sabotatore? Descrivi come è andata."},
+      {day:13,phase:'Consolidamento',title:'La tua routine pre-sonno',exercise:'Costruisci i tuoi 3 step definitivi pre-sonno — quelli che vuoi mantenere per sempre. Semplici, fattibili ogni sera anche dopo un WOD pesante.',question:"Questi 3 step ti sembrano sostenibili a lungo termine?",isRoutine:true},
+      {day:14,phase:'Completamento',title:'Closing day',exercise:"Guarda il tuo progresso completo: deep sleep% media settimana 1 vs settimana 2 vs baseline (13.2%). L'AI genera il tuo insight finale personalizzato.",question:"Cosa porti con te di questo protocollo? Quale cambiamento vuoi mantenere definitivamente?",isClosing:true}
+    ]
+  }
+  // Aggiungere qui: 'stress-7': {...}, 'composizione-21': {...}
+};
+
+// ── STATO PROTOCOLLO ──
+function getActiveProtocol(){try{const r=lsG('er_active_protocol');return r?JSON.parse(r):null;}catch{return null;}}
+function saveActiveProtocol(data){try{lsS('er_active_protocol',JSON.stringify(data));}catch{}}
+function getProtocolHistory(){try{const r=lsG('er_protocol_history');return r?JSON.parse(r):[];}catch{return[];}}
+function addToHistory(entry){try{const h=getProtocolHistory();h.push(entry);lsS('er_protocol_history',JSON.stringify(h));}catch{}}
+
+function activateProtocol(id){
+  const existing=getActiveProtocol();
+  if(existing&&existing.status==='active') addToHistory({...existing,status:'abandoned',endDate:todayStr()});
+  const proto=PROTOCOL_REGISTRY[id];
+  if(!proto)return;
+  const mornings_bl=lsMornings().filter(m=>!m.skipped&&m.deepSleepPct);
+  let baseline=null;
+  if(mornings_bl.length>0){const last5=mornings_bl.slice(-5);baseline=Math.round(last5.reduce((a,b)=>a+b.deepSleepPct,0)/last5.length*10)/10;}
+  saveActiveProtocol({id,startDate:todayStr(),currentDay:1,lastCheckDate:null,status:'active',totalDays:proto.totalDays,streakDays:0,dayCompleted:Array(proto.totalDays).fill(false),baselineDeepSleep:baseline});
+}
+
+function advanceProtocolDay(){
+  const ap=getActiveProtocol();
+  if(!ap||ap.status!=='active')return;
+  const today=todayStr();
+  if(ap.lastCheckDate===today)return;
+  ap.lastCheckDate=today;
+  saveActiveProtocol(ap);
+}
+
+function completeProtocolDay(note){
+  const ap=getActiveProtocol();
+  if(!ap||ap.status!=='active')return;
+  const today=todayStr();
+  if(note) lsS('proto_note_'+ap.id+'_'+ap.currentDay,note);
+  const mornings_cp=lsMornings();
+  const todayM_cp=mornings_cp.find(m=>m.date===today&&!m.skipped);
+  if(todayM_cp&&todayM_cp.deepSleepPct) lsS('proto_ds_'+ap.id+'_'+ap.currentDay,todayM_cp.deepSleepPct);
+  ap.dayCompleted[ap.currentDay-1]=true;
+  if(ap.lastCheckDate===today||(ap.currentDay>1&&ap.dayCompleted[ap.currentDay-2])) ap.streakDays=(ap.streakDays||0)+1;
+  else ap.streakDays=1;
+  ap.lastCheckDate=today;
+  if(ap.currentDay>=ap.totalDays){ap.status='completed';addToHistory({...ap,endDate:today});}
+  else ap.currentDay++;
+  saveActiveProtocol(ap);
+}
+
+function resumeProtocol(){const ap=getActiveProtocol();if(!ap)return;ap.status='active';saveActiveProtocol(ap);renderProtocol();}
+function abandonProtocol(){if(!confirm('Vuoi mettere in pausa il protocollo?'))return;const ap=getActiveProtocol();if(!ap)return;ap.status='paused';saveActiveProtocol(ap);renderProtocol();}
+function restartProtocol(id){if(!confirm("Vuoi ricominciare dall'inizio?"))return;activateProtocol(id);renderProtocol();}
+
+// ── SPARKLINE DEEP SLEEP ──
+function buildSparkline(protocolId,totalDays,currentDay){
+  const vals=[];
+  const ap_sp=getActiveProtocol();
+  const startDate=ap_sp?new Date(ap_sp.startDate):new Date();
+  for(let i=1;i<=Math.min(currentDay,totalDays);i++){
+    const v=lsG('proto_ds_'+protocolId+'_'+i);
+    if(v){vals.push({i,v:parseFloat(v)});}
+    else{
+      const d=new Date(startDate);d.setDate(startDate.getDate()+i-1);
+      const ds=d.toISOString().split('T')[0];
+      const m=lsMornings().find(x=>x.date===ds&&!x.skipped&&x.deepSleepPct);
+      if(m) vals.push({i,v:m.deepSleepPct});
+    }
+  }
+  if(vals.length===0) return '<p style="font-size:11px;color:var(--ink-s);text-align:center;padding:8px">Nessun dato ancora — inserisci il deep sleep nel check-in mattutino</p>';
+  const allV=vals.map(x=>x.v);
+  const maxV=Math.max(28,...allV);const minV=Math.min(0,...allV);const range=maxV-minV||1;
+  const W=280,H=56,P=4;
+  const px=v=>P+((v.i-1)/(totalDays-1||1))*(W-P*2);
+  const py=v=>H-P-((v.v-minV)/range)*(H-P*2);
+  const targetPct=20;const ty=py({v:targetPct});
+  let path='';let circles='';
+  vals.forEach((pt,idx)=>{path+=(idx===0?'M ':'L ')+px(pt)+' '+py(pt)+' ';const c=pt.v>=20?'var(--green)':pt.v>=15?'var(--gold)':'#A32D2D';circles+=`<circle cx="${px(pt)}" cy="${py(pt)}" r="3" fill="${c}"/>`;});
+  return `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:${H}px">
+    <line x1="${P}" y1="${ty}" x2="${W-P}" y2="${ty}" stroke="var(--green)" stroke-width="1" stroke-dasharray="3,3" opacity=".6"/>
+    <text x="${W-P}" y="${ty-3}" text-anchor="end" font-size="8" fill="var(--green)" font-family="DM Sans,sans-serif">target 20%</text>
+    <path d="${path.trim()}" fill="none" stroke="var(--purple)" stroke-width="1.5" stroke-linejoin="round"/>
+    ${circles}
+  </svg>`;
+}
+
+// ── SABOTATORE (giorno 11) ──
+function renderSabotatore(){
+  const saved=lsG('proto_sabotatore');
+  const opts=[{id:'stress',icon:'🧠',label:'Stress mentale'},{id:'stimolanti',icon:'☕',label:'Stimolanti / schermi'},{id:'orario',icon:'⏰',label:'Orario irregolare'},{id:'ambiente',icon:'🌡️',label:'Ambiente camera'}];
+  return `<div class="sabotatore-grid">${opts.map(o=>`<button class="sab-btn ${saved===o.id?'sel':''}" onclick="selectSabotatore('${o.id}',this)"><span class="sab-icon">${o.icon}</span>${o.label}</button>`).join('')}</div>`;
+}
+function selectSabotatore(id,el){document.querySelectorAll('.sab-btn').forEach(b=>b.classList.remove('sel'));el.classList.add('sel');lsS('proto_sabotatore',id);}
+
+function getDay12Exercise(){
+  const map={stress:"Worry time: dedica 15 minuti nel pomeriggio a scrivere le preoccupazioni e un'azione per ciascuna. A letto, se arriva un pensiero d'ansia dì 'l'ho già trattato' e lascialo passare.",stimolanti:"Stop caffè alle 13:00, niente schermi dopo le 21:00, attiva modalità notte su tutti i device dalle 20:00. Anche pochi minuti di telefono a letto azzerano la melatonina.",orario:"Imposta una sveglia-reminder alle 22:30 come segnale di inizio routine. Rispettala anche nel weekend — il 'social jetlag' distrugge il ritmo della settimana.",ambiente:"Porta un termometro in stanza (target 18-19°C), testa una mascherina, elimina ogni fonte luminosa inclusi i LED degli elettrodomestici. Anche 1 lux sopprime la melatonina."};
+  return map[lsG('proto_sabotatore')]||map.stress;
+}
+
+// ── ROUTINE BUILDER (giorno 13) ──
+function renderRoutineBuilder(){
+  const saved=JSON.parse(lsG('proto_routine')||'["","",""]');
+  return `<div class="routine-steps">${[1,2,3].map(n=>`<div class="routine-step-row"><div class="routine-step-num">${n}</div><input class="routine-step-in" id="routine-${n}" placeholder="Es: doccia tiepida, body scan, niente schermo…" value="${saved[n-1]||''}"></div>`).join('')}</div>`;
+}
+function saveRoutine(){const steps=[1,2,3].map(n=>document.getElementById('routine-'+n)?.value.trim()||'');lsS('proto_routine',JSON.stringify(steps));}
+
+// ── CLOSING STATS (giorno 14) ──
+function buildClosingStats(ap){
+  const vals=[];
+  for(let i=1;i<=14;i++){const v=lsG('proto_ds_'+ap.id+'_'+i);if(v)vals.push({day:i,v:parseFloat(v)});}
+  const week1=vals.filter(x=>x.day<=7).map(x=>x.v);
+  const week2=vals.filter(x=>x.day>7).map(x=>x.v);
+  const avg=arr=>arr.length?Math.round(arr.reduce((a,b)=>a+b,0)/arr.length*10)/10:null;
+  return {w1:avg(week1),w2:avg(week2),baseline:ap.baselineDeepSleep||13.2,improvement:avg(week2)&&ap.baselineDeepSleep?Math.round((avg(week2)-ap.baselineDeepSleep)*10)/10:null};
+}
+
+// ── RENDER PRINCIPALE PROTOCOLLO ──
+function renderProtocol(){
+  const pb=document.getElementById('proto-body');
+  const ap=getActiveProtocol();
+
+  if(ap&&ap.status==='active'){
+    const proto=PROTOCOL_REGISTRY[ap.id];
+    const dayObj=proto.days[ap.currentDay-1];
+    const pct=Math.round((ap.currentDay-1)/ap.totalDays*100);
+    const todayCompleted=ap.dayCompleted[ap.currentDay-1];
+    const note=lsG('proto_note_'+ap.id+'_'+ap.currentDay)||'';
+    const mornings_rp=lsMornings().filter(m=>!m.skipped&&m.deepSleepPct);
+    const todayM_rp=mornings_rp.find(m=>m.date===todayStr());
+    const currentDS=todayM_rp?.deepSleepPct||null;
+    let exerciseText=dayObj.exercise;
+    if(ap.currentDay===12&&!exerciseText) exerciseText=getDay12Exercise();
+
+    let html=`<div class="proto-active-card">
+      <div class="proto-day-label">${proto.emoji} ${proto.name} — Fase: ${dayObj.phase}</div>
+      <div class="proto-day-title">Giorno ${ap.currentDay} di ${ap.totalDays}: <em style="font-style:italic;color:var(--purple)">${dayObj.title}</em></div>
+      <div class="proto-progress-bar"><div class="proto-progress-fill" style="width:${pct}%"></div></div>
+      <div class="proto-progress-txt"><span>${ap.currentDay-1} giorni completati</span><span>${ap.totalDays-(ap.currentDay-1)} rimanenti</span></div>
+    </div>
+    <div class="proto-streak">
+      <div class="badge">🔥 ${ap.streakDays||0} giorni streak</div>
+      ${currentDS?`<div class="badge">🌙 Deep sleep ieri: ${currentDS}%</div>`:''}
+      ${ap.baselineDeepSleep?`<div class="badge">📊 Baseline: ${ap.baselineDeepSleep}%</div>`:''}
+    </div>
+    <div class="ds-chart-wrap">
+      <div class="ds-chart-title">Deep sleep% — progresso protocollo</div>
+      ${buildSparkline(ap.id,ap.totalDays,ap.currentDay-1)}
+      <div class="ds-target-note">▸ Target: 20-25% · Baseline: ${ap.baselineDeepSleep||13.2}%</div>
+    </div>
+    <div class="day-exercise-card">
+      <div class="day-ex-label">Esercizio del giorno</div>
+      <div class="day-ex-title">${dayObj.title}</div>`;
+
+    if(dayObj.isSabotatore){
+      html+=`<div class="day-ex-body">Identifica il fattore che sabota di più il tuo deep sleep. La tua scelta personalizza l'esercizio di domani.</div>`;
+      html+=renderSabotatore();
+    } else if(dayObj.isRoutine){
+      html+=`<div class="day-ex-body">${exerciseText}</div>`;
+      html+=renderRoutineBuilder();
+    } else if(dayObj.isClosing){
+      const stats=buildClosingStats(ap);
+      html+=`<div class="closing-stats">
+        <div class="cstat"><div class="cstat-n">${ap.baselineDeepSleep||'?'}%</div><div class="cstat-l">Baseline</div></div>
+        <div class="cstat ${stats.improvement&&stats.improvement>0?'up':''}"><div class="cstat-n">${stats.w2||'?'}%</div><div class="cstat-l">Media settimana 2</div></div>
+        <div class="cstat"><div class="cstat-n">${stats.w1||'?'}%</div><div class="cstat-l">Media settimana 1</div></div>
+        <div class="cstat ${stats.improvement&&stats.improvement>0?'up':''}"><div class="cstat-n">${stats.improvement?'+'+stats.improvement+'%':'?'}</div><div class="cstat-l">Miglioramento</div></div>
+      </div>
+      <div id="closing-ai-insight" class="ai-bub" style="margin-bottom:12px"><div class="ald"><span></span><span></span><span></span></div></div>`;
+      fetchClosingInsight(ap,stats);
+    } else {
+      html+=`<div class="day-ex-body">${exerciseText}</div>`;
+    }
+
+    if(dayObj.question&&!dayObj.isSabotatore) html+=`<div class="day-ex-q">${dayObj.question}</div>`;
+    html+=`<textarea class="day-note-area" id="proto-note" placeholder="La tua nota per oggi…">${note}</textarea>`;
+    html+=`</div>
+    <button class="btn-complete ${todayCompleted?'done-today':''}" id="btn-proto-complete" onclick="onCompleteDay()">
+      ${todayCompleted?'✓ Giorno completato':'Segna giorno completato ✓'}
+    </button>
+    <div class="status-msg" id="proto-st" style="margin-top:8px"></div>
+    <div style="margin-top:14px"><button class="btn-ghost" onclick="abandonProtocol()">Metti in pausa</button></div>`;
+    pb.innerHTML=html;
+    if(dayObj.isRoutine){[1,2,3].forEach(n=>{const el=document.getElementById('routine-'+n);if(el)el.addEventListener('input',saveRoutine);});}
+    return;
+  }
+
+  if(ap&&ap.status==='paused'){
+    const proto=PROTOCOL_REGISTRY[ap.id];
+    pb.innerHTML=`<div class="alert-banner proto" style="margin-bottom:20px"><div class="alert-icon">⏸️</div><div class="alert-text"><strong>${proto.emoji} ${proto.name} in pausa</strong>Ti eri fermato al giorno ${ap.currentDay} di ${ap.totalDays}.</div></div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <button class="btn-complete" onclick="resumeProtocol()">▶ Riprendi dal giorno ${ap.currentDay}</button>
+      <button class="btn-secondary" onclick="restartProtocol('${ap.id}')">↺ Ricomincia dall'inizio</button>
+    </div>${renderHistorySection()}`;
+    return;
+  }
+
+  if(ap&&ap.status==='completed'){
+    const stats=buildClosingStats(ap);
+    pb.innerHTML=`<div class="proto-active-card" style="background:var(--gbg);border-color:rgba(59,109,17,.3)">
+      <div class="proto-day-label" style="color:var(--green)">✓ Completato ${ap.endDate||''}</div>
+      <div class="proto-day-title">🌙 Deep Sleep — 14 giorni</div>
+      <div class="closing-stats">
+        <div class="cstat"><div class="cstat-n">${ap.baselineDeepSleep||'?'}%</div><div class="cstat-l">Baseline</div></div>
+        <div class="cstat up"><div class="cstat-n">${stats.w2||'?'}%</div><div class="cstat-l">Media finale</div></div>
+      </div>
+    </div>
+    <div style="margin-top:16px;margin-bottom:20px"><button class="btn-complete" onclick="activateProtocol('deep-sleep-14');renderProtocol()">↺ Rifai Deep Sleep</button></div>
+    <div class="eyebrow" style="margin-bottom:12px">Altri protocolli</div>
+    ${renderProtocolList()}${renderHistorySection()}`;
+    return;
+  }
+
+  // Stato 0: nessun protocollo
+  const mornings_st0=lsMornings().filter(m=>!m.skipped&&m.deepSleepPct);
+  const lastM_st0=mornings_st0[mornings_st0.length-1];
+  let suggestHtml='';
+  if(lastM_st0&&lastM_st0.deepSleepPct<ALERT_THRESHOLDS.deepSleepPct){
+    suggestHtml=`<div class="alert-banner proto" style="margin-bottom:16px"><div class="alert-icon">🌙</div><div class="alert-text"><strong>Deep sleep critico: ${lastM_st0.deepSleepPct}%</strong>Il Protocollo 14 giorni è progettato esattamente per questo.</div></div>`;
+  }
+  pb.innerHTML=`${suggestHtml}<div class="eyebrow" style="margin-bottom:12px">Scegli il tuo protocollo</div>${renderProtocolList()}${renderHistorySection()}`;
+}
+
+function renderProtocolList(){
+  const list=[
+    {id:'deep-sleep-14',emoji:'🌙',title:'Deep Sleep 14 giorni',desc:'Porta il deep sleep dal 13% al 20-25% con igiene del sonno, body scan MBSR e protocollo integratori.',tag:'Disponibile',locked:false},
+    {id:'stress-7',emoji:'⚡',title:'Centramento sotto stress 7 giorni',desc:'Tecniche di regolazione per mantenere focus e calma nelle settimane ad alta intensità.',tag:'Prossimamente',locked:true},
+    {id:'composizione-21',emoji:'💪',title:'Composizione corporea 21 giorni',desc:'Allineamento nutrizione + recovery + allenamento per aumentare massa mantenendo il peso target.',tag:'Prossimamente',locked:true},
+    {id:'energia-10',emoji:'☀️',title:'Energia e focus 10 giorni',desc:'Circadian alignment e pre-WOD mental prep per massimizzare performance e recupero.',tag:'Prossimamente',locked:true},
+  ];
+  return `<div class="proto-list">${list.map(p=>`<button class="proto-card ${p.locked?'locked':''}" onclick="${p.locked?'':("activateProtocol('"+p.id+"');renderProtocol()")}"><div class="proto-icon">${p.emoji}</div><div><div class="proto-title">${p.title}</div><div class="proto-desc">${p.desc}</div><span class="proto-tag ${p.locked?'coming':''}">${p.tag}</span></div></button>`).join('')}</div>`;
+}
+
+function renderHistorySection(){
+  const history=getProtocolHistory();
+  if(history.length===0) return '';
+  const names={'deep-sleep-14':'Deep Sleep 14gg'};
+  return `<div class="divider"></div><div class="eyebrow" style="margin-bottom:8px">Storico protocolli</div><div class="history-list">${history.slice().reverse().map(h=>`<div class="history-item"><div class="history-hd"><span class="history-name">${names[h.id]||h.id}</span><span class="history-status ${h.status}">${h.status==='completed'?'✓ Completato':'Interrotto'}</span></div><div class="history-dates">${h.startDate} → ${h.endDate||'?'} · Giorno ${h.currentDay||'?'}/${h.totalDays}</div></div>`).join('')}</div>`;
+}
+
+function onCompleteDay(){
+  const note=document.getElementById('proto-note')?.value.trim()||'';
+  const ap=getActiveProtocol();
+  if(ap&&ap.currentDay===13) saveRoutine();
+  completeProtocolDay(note);
+  const btn=document.getElementById('btn-proto-complete');
+  const st=document.getElementById('proto-st');
+  if(btn){btn.classList.add('done-today');btn.textContent='✓ Giorno completato';}
+  if(st){st.className='status-msg vis ok';st.textContent='Ottimo! Torna domani per il giorno '+(ap?ap.currentDay:'')+'.';}
+  setTimeout(()=>renderProtocol(),1200);
+}
+
+async function fetchClosingInsight(ap,stats){
+  const el=document.getElementById('closing-ai-insight');if(!el)return;
+  const ctx=`Edoardo, CrossFit 4-5x/settimana, Milano. Protocollo Deep Sleep 14 giorni completato. Baseline: ${stats.baseline||ap.baselineDeepSleep||13.2}% | Media sett.1: ${stats.w1||'n/d'}% | Media sett.2: ${stats.w2||'n/d'}% | Miglioramento: ${stats.improvement?'+'+stats.improvement+'%':'n/c'}`;
+  try{
+    const r=await fetch(AI_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:AI_MODEL,max_tokens:800,messages:[{role:'user',content:ctx+'\n\nScrivi 3-4 frasi in italiano: celebra il completamento, evidenzia il progresso specifico, suggerisci 1 cosa da mantenere definitivamente. Tono diretto e personale.'}]})});
+    const d=await r.json();if(el)el.textContent=d.content?.[0]?.text||'Protocollo completato. Ottimo lavoro.';
+  }catch{if(el)el.textContent='Protocollo completato. Analizza i dati nel Monthly Holistic Report.';}
+}
+
+// ── INIT BADGE PROTOCOLLO HOME ──
 // ─── NOTIFICHE PUSH ──────────────────────────────────────
 async function requestNotifications(){
   if(!('Notification' in window)) return;
@@ -1295,6 +1686,21 @@ function scheduleNotification(){
 }
 
 // ─── INIT ─────────────────────────────────────────────────
+// Badge e alert protocollo nella home
+(function(){
+  const _ap=getActiveProtocol();
+  const _pb=document.getElementById('proto-home-badge');
+  if(_ap&&_ap.status==='active'){if(_pb){_pb.textContent='🌙 Giorno '+_ap.currentDay+'/14';_pb.style.display='inline-flex';}}
+  else{
+    const _mornings=lsMornings().filter(m=>!m.skipped&&m.deepSleepPct);
+    const _lastM=_mornings[_mornings.length-1];
+    if(_lastM&&_lastM.deepSleepPct<ALERT_THRESHOLDS.deepSleepPct){
+      const _al=document.getElementById('home-proto-alert');
+      if(_al)_al.innerHTML=`<div class="alert-banner proto" style="margin-bottom:16px"><div class="alert-icon">🌙</div><div class="alert-text"><strong>Deep sleep critico (${_lastM.deepSleepPct}%)</strong>Vuoi attivare il Protocollo 14 giorni?<button onclick="activateProtocol('deep-sleep-14');goScreen('protocol')" style="display:inline-block;margin-top:6px;background:var(--purple);color:#fff;border:none;padding:6px 14px;border-radius:100px;font-size:11px;cursor:pointer;font-family:var(--fb)">Attiva →</button></div></div>`;
+    }
+  }
+})();
+
 document.getElementById('hdate').textContent=new Date().toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
 renderStreak();
 
@@ -1312,7 +1718,7 @@ requestNotifications().then(()=>scheduleNotification());
 // Service Worker
 if('serviceWorker' in navigator){
   const swCode=`
-const CACHE='er-v3';
+const CACHE='er-v4';
 const ASSETS=[self.location.href];
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS))));
 self.addEventListener('fetch',e=>{
