@@ -536,6 +536,12 @@ function goScreen(name){
 // ─── BOOT ─────────────────────────────────────────────────
 initHome();
 renderLibrary('tutti');
+
+// DEBUG temporaneo
+document.addEventListener('dblclick', () => {
+  const raw = localStorage.getItem('er_mornings');
+  alert(raw ? raw.substring(0, 200) : 'er_mornings = NULL');
+});
 </script>
 </body>
 </html>
