@@ -102,6 +102,10 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--linen);color:va
 .stat-label{font-size:9px;text-transform:uppercase;letter-spacing:.10em;color:var(--ink-soft);margin-bottom:5px;}
 .stat-value{font-size:14px;font-weight:500;color:var(--ink);margin-bottom:6px;}
 .stat-note{font-size:11px;color:var(--ink-soft);}
+.corr-row{padding:8px 0;border-bottom:0.5px solid var(--border-linen);}
+.corr-row:last-child{border-bottom:none;padding-bottom:0;}
+.corr-lbl{font-size:10px;color:var(--ink-soft);margin-bottom:3px;}
+.corr-val{font-size:13px;font-weight:500;color:var(--ink);margin-bottom:5px;}
 .bar-track{background:var(--linen-mid);border-radius:3px;height:4px;margin-top:8px;}
 .bar-fill{height:4px;border-radius:3px;}
 .bar-indigo{background:var(--indigo);}.bar-sage{background:var(--sage);}
@@ -384,7 +388,7 @@ function getStreak(){
 
 function hrvBandFromMs(hrv){
   if(!hrv)return null;
-  const baseline=52;
+  const baseline=28;
   const r=hrv/baseline;
   if(r>=1.10)return{label:'Ott.',cls:'ok'};
   if(r>=0.90)return{label:'Bil.',cls:'ok'};
@@ -442,20 +446,85 @@ function initProgress(){
     body.innerHTML=`<div class="stat-card"><div class="stat-label">Inizia il percorso</div><div class="stat-value">Nessuna sessione ancora</div><div class="stat-note">Completa la tua prima sessione per vedere i progressi qui.</div></div>`;
     return;
   }
+
+  // ── Streak dots ultimi 7 giorni ──
   const today=new Date();
   const todayStr=today.toISOString().split('T')[0];
   const sessionDays=new Set(sessions.map(s=>s.date));
   const last7=Array.from({length:7},(_,i)=>{const d=new Date(today);d.setDate(today.getDate()-(6-i));return d.toISOString().split('T')[0];});
   const dots=last7.map(d=>`<div class="sdot ${d===todayStr?'today':sessionDays.has(d)?'on':'off'}"></div>`).join('');
   const totalMin=sessions.reduce((acc,s)=>acc+(s.durMin||0),0);
+
+  // ── Mental Fitness Score (formula reale) ──
+  // Componenti: consistenza (streak), volume (sessioni), qualità biometrica
+  const HRV_BASELINE=28;
+  const sessionsWithBio=sessions.filter(s=>s.hrv!=null||s.deepSleepPct!=null);
+  let bioBonus=0;
+  if(sessionsWithBio.length>0){
+    const avgHrvRatio=sessionsWithBio.filter(s=>s.hrv).reduce((acc,s)=>acc+(s.hrv/HRV_BASELINE),0)/(sessionsWithBio.filter(s=>s.hrv).length||1);
+    const avgDs=sessionsWithBio.filter(s=>s.deepSleepPct).reduce((acc,s)=>acc+s.deepSleepPct,0)/(sessionsWithBio.filter(s=>s.deepSleepPct).length||1);
+    // HRV ratio 0.75–1.25 → 0–15 punti; deep sleep 10–25% → 0–15 punti
+    const hrvPts=Math.min(15,Math.max(0,Math.round((avgHrvRatio-0.75)/0.50*15)));
+    const dsPts=Math.min(15,Math.max(0,Math.round((avgDs-10)/15*15)));
+    bioBonus=hrvPts+dsPts;
+  }
+  const consistencyPts=Math.min(40,streak*8);   // max 40 (streak 5+)
+  const volumePts=Math.min(30,sessions.length*3); // max 30 (10+ sessioni)
+  const mfsScore=Math.min(100,consistencyPts+volumePts+bioBonus);
+
+  // ── Correlazioni biometriche ──
+  let correlHtml='';
+  if(sessionsWithBio.length>=3){
+    // HRV medio nelle sessioni con dato
+    const hrvSessions=sessions.filter(s=>s.hrv!=null);
+    const dsSessions=sessions.filter(s=>s.deepSleepPct!=null);
+    const bcSessions=sessions.filter(s=>s.biocharge!=null);
+
+    let corrCards='';
+
+    if(hrvSessions.length>=2){
+      const avgHrv=Math.round(hrvSessions.reduce((a,s)=>a+s.hrv,0)/hrvSessions.length);
+      const ratio=avgHrv/HRV_BASELINE;
+      const band=ratio>=1.10?'Ottimale':ratio>=0.90?'Bilanciato':ratio>=0.75?'Basso':'Critico';
+      const barW=Math.min(100,Math.round(ratio*70));
+      const barCol=ratio>=0.90?'var(--sage)':ratio>=0.75?'#D4A84A':'#C0605A';
+      corrCards+=`<div class="corr-row"><div class="corr-lbl">HRV medio nelle sessioni</div><div class="corr-val">${avgHrv} ms · ${band}</div><div class="bar-track"><div class="bar-fill" style="width:${barW}%;background:${barCol}"></div></div></div>`;
+    }
+
+    if(dsSessions.length>=2){
+      const avgDs=Math.round(dsSessions.reduce((a,s)=>a+s.deepSleepPct,0)/dsSessions.length*10)/10;
+      const barW=Math.min(100,Math.round(avgDs/20*100));
+      const barCol=avgDs>=20?'var(--sage)':avgDs>=15?'#D4A84A':'#C0605A';
+      corrCards+=`<div class="corr-row"><div class="corr-lbl">Deep sleep medio nelle sessioni</div><div class="corr-val">${avgDs}% ${avgDs>=20?'✓ target':avgDs>=15?'· in crescita':'· sotto target'}</div><div class="bar-track"><div class="bar-fill" style="width:${barW}%;background:${barCol}"></div></div></div>`;
+    }
+
+    if(bcSessions.length>=2){
+      const avgBc=Math.round(bcSessions.reduce((a,s)=>a+s.biocharge,0)/bcSessions.length);
+      const barW=Math.min(100,avgBc);
+      const barCol=avgBc>=70?'var(--sage)':avgBc>=50?'#D4A84A':'#C0605A';
+      corrCards+=`<div class="corr-row"><div class="corr-lbl">Biocharge medio nelle sessioni</div><div class="corr-val">${avgBc}%</div><div class="bar-track"><div class="bar-fill" style="width:${barW}%;background:${barCol}"></div></div></div>`;
+    }
+
+    // Categoria più usata
+    const catCount={};sessions.forEach(s=>{catCount[s.catKey]=(catCount[s.catKey]||0)+1;});
+    const topCat=Object.entries(catCount).sort((a,b)=>b[1]-a[1])[0];
+    const catNomi={'body-scan':'Body scan','breathwork':'Breathwork','decompressione':'Decompressione','regolazione':'Regolazione emotiva','focus':'Focus'};
+    if(topCat) corrCards+=`<div class="corr-row"><div class="corr-lbl">Pratica prevalente</div><div class="corr-val">${catNomi[topCat[0]]||topCat[0]} · ${topCat[1]} sess.</div></div>`;
+
+    correlHtml=`<div class="stat-card"><div class="stat-label">Correlazioni biometriche</div>${corrCards}</div>`;
+  } else {
+    const mancanti=Math.max(0,3-sessionsWithBio.length);
+    correlHtml=`<div class="stat-card"><div class="stat-label">Correlazioni biometriche</div><div class="stat-value" style="font-size:12px;font-weight:400;color:var(--ink-soft)">Ancora ${mancanti} session${mancanti===1?'e':'i'} con dati biometrici.</div><div class="stat-note">HRV, deep sleep e biocharge appariranno qui.</div></div>`;
+  }
+
   body.innerHTML=`
     <div class="stat-card"><div class="stat-label">Streak</div><div class="stat-value">${streak} giorn${streak===1?'o':'i'} consecutiv${streak===1?'o':'i'}</div><div class="streak-dots">${dots}</div></div>
     <div class="stat-card"><div class="stat-label">Sessioni completate</div><div class="stat-value">${sessions.length} sessioni · ${totalMin} minuti totali</div><div class="bar-track"><div class="bar-fill bar-indigo" style="width:${Math.min(100,sessions.length*5)}%"></div></div></div>
-    <div class="stat-card"><div class="stat-label">Correlazioni biometriche</div><div class="stat-value" style="font-size:12px;font-weight:400;color:var(--ink-soft)">Disponibili dopo 7+ sessioni con dati biometrici.</div><div class="stat-note">HRV ↔ meditazione e deep sleep ↔ body scan appariranno qui.</div></div>`;
+    ${correlHtml}`;
+
   if(sessions.length>=3){
-    const score=Math.min(100,Math.round(streak*8+sessions.length*3));
-    document.getElementById('mfs-score').textContent=score;
-    document.getElementById('mfs-sub').textContent='Score aggiornato oggi';
+    document.getElementById('mfs-score').textContent=mfsScore;
+    document.getElementById('mfs-sub').textContent=`Score aggiornato · ${consistencyPts}+${volumePts}+${bioBonus} pts`;
     document.getElementById('mfs-sub').className='mfs-delta';
   }
 }
