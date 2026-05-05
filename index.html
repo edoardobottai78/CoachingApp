@@ -410,6 +410,7 @@ body { font-family: var(--fb); background: var(--bg); color: var(--ink); height:
     </div>
     <div class="sum-actions">
       <button class="btn-primary" id="btn-save" onclick="copyForClaude()">📋 Copia per Claude →</button>
+<button class="btn-secondary" style="margin-top:10px" onclick="openMindFit()">🧘 Apri MindFit</button>
       <button class="btn-ghost" onclick="goScreen('home')">Scarta</button>
     </div>
     <div class="status-msg" id="save-st"></div>
@@ -1043,7 +1044,19 @@ async function fetchInsight(){
     const d=await r.json();const el=document.getElementById('itxt');if(el)el.textContent=d.content?.[0]?.text||'';
   }catch{const el=document.getElementById('itxt');if(el)el.textContent='Non disponibile.';}
 }
-
+// ─── APRI MINDFIT ────────────────────────────────────────
+function openMindFit(){
+  const today=new Date().toISOString().split('T')[0];
+  const mornings=lsMornings();
+  const m=mornings.find(x=>x.date===today&&!x.skipped)||{};
+  const params=new URLSearchParams();
+  if(m.biocharge) params.set('bc',m.biocharge);
+  if(m.hrv)       params.set('hrv',m.hrv);
+  if(m.energy)    params.set('en',m.energy);
+  if(m.deepSleepPct) params.set('ds',m.deepSleepPct);
+  if(m.slancio)   params.set('sl',m.slancio);
+  window.location.href='/mindfit?'+params.toString();
+}
 // ─── COPIA PER CLAUDE (sessione serale) ──────────────────
 function copyForClaude(){
   const btn=document.getElementById('btn-save');
