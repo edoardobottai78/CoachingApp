@@ -226,10 +226,13 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--linen);color:va
     <div class="progress-wrap"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
     <div class="time-row"><span id="time-elapsed">0:00</span><span id="time-total">0:00</span></div>
   </div>
-  <div class="player-controls">
+  <div class="player-controls" id="player-controls">
     <button class="ctrl-btn" onclick="skipBack()"><div class="ctrl-icon">↩</div><span class="ctrl-lbl">-30s</span></button>
     <button class="ctrl-btn" onclick="togglePlay()"><div class="ctrl-icon main" id="play-icon">▶</div><span class="ctrl-lbl" id="play-lbl">Play</span></button>
     <button class="ctrl-btn" onclick="skipForward()"><div class="ctrl-icon">↪</div><span class="ctrl-lbl">+30s</span></button>
+  </div>
+  <div id="copy-mf-wrap" style="display:none;padding:12px 24px 16px;background:#EFF5F0;text-align:center;">
+    <button id="copy-mf-btn" onclick="copyMindFitSession()" style="background:var(--forest);color:#EDF5EE;border:none;border-radius:100px;padding:14px 32px;font-size:14px;font-weight:500;cursor:pointer;width:100%;">📋 Copia per Claude</button>
   </div>
 </div>
 
@@ -520,15 +523,7 @@ function completeSession(){
   document.getElementById('progress-fill').style.width='100%';
   document.getElementById('play-icon').textContent='✓';
   document.getElementById('play-lbl').textContent='Fine';
-  const ctrl=document.getElementById('player-controls');
-  if(ctrl&&!document.getElementById('copy-mf-btn')){
-    const btn=document.createElement('button');
-    btn.id='copy-mf-btn';
-    btn.className='rec-btn';
-    btn.style.cssText='margin:16px auto 0;display:flex;';
-    btn.textContent='📋 Copia per Claude';
-    btn.onclick=copyMindFitSession;
-    ctrl.appendChild(btn);
+  document.getElementById('copy-mf-wrap').style.display='block';
   }
 }
 function copyMindFitSession(){
