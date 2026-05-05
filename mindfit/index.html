@@ -90,7 +90,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--linen);color:va
 .session-dur{background:var(--linen-mid);border-radius:100px;padding:4px 10px;font-size:11px;font-weight:500;color:var(--ink-mid);flex-shrink:0;margin-left:12px;}
 
 /* INIZIA DA QUI */
-.idq-wrap{margin:12px 16px 0;flex-shrink:0;}
+.idq-wrap{margin:12px 16px 0;}
 .idq-toggle{width:100%;background:#fff;border:0.5px solid var(--border-linen);border-radius:var(--r);padding:13px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;-webkit-appearance:none;}
 .idq-toggle:active{background:var(--linen-mid);}
 .idq-toggle-left{display:flex;align-items:center;gap:10px;}
@@ -206,77 +206,6 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--linen);color:va
 <!-- LIBRERIA -->
 <div class="screen" id="screen-libreria">
   <div class="lib-header"><div class="lib-title">Libreria sessioni</div></div>
-  <!-- INIZIA DA QUI -->
-  <div class="idq-wrap">
-    <button class="idq-toggle" onclick="toggleIdq(this)">
-      <div class="idq-toggle-left">
-        <span class="idq-toggle-icon">🧘</span>
-        <div>
-          <div class="idq-toggle-title">Inizia da qui</div>
-          <div class="idq-toggle-sub">Cos'è la meditazione · Come funziona · Benefici</div>
-        </div>
-      </div>
-      <span class="idq-arrow" id="idq-arrow">▾</span>
-    </button>
-    <div class="idq-body" id="idq-body">
-
-      <div class="idq-section">
-        <div class="idq-section-title">Cos'è la meditazione</div>
-        <p class="idq-text">La meditazione non è svuotare la mente. È <em>osservare</em> la mente — pensieri, sensazioni, emozioni — senza reagire automaticamente. La mente vaga sempre: il lavoro non è fermarla, è accorgersene e tornare. Ogni ritorno è un rep.</p>
-      </div>
-
-      <div class="idq-section">
-        <div class="idq-section-title">Come funziona</div>
-        <p class="idq-text">La pratica regolare riduce l'attività dell'amigdala (centro della risposta allo stress) e rafforza la corteccia prefrontale (regolazione emotiva, decisioni). Il sistema nervoso autonomo si sposta verso il parasimpatico — HRV più alta, cortisolo più basso, sonno più profondo.</p>
-      </div>
-
-      <div class="idq-section">
-        <div class="idq-section-title">Come approcciarsi</div>
-        <ul class="idq-list">
-          <li>Inizia con 5 minuti, non 20. La consistenza vale più della durata.</li>
-          <li>Nessuna sessione è "andata male". Se ti sei distratto 40 volte, hai fatto 40 rep di ritorno.</li>
-          <li>Le prime 2 settimane sembrerà di non fare nulla. I benefici arrivano dopo.</li>
-          <li>Sera è il momento ideale per te — il sistema nervoso è già orientato al recupero.</li>
-          <li>Non serve posizione perfetta: seduto, sdraiato, ovunque tu stia fermo.</li>
-        </ul>
-      </div>
-
-      <div class="idq-section">
-        <div class="idq-section-title">Errori comuni</div>
-        <ul class="idq-list">
-          <li><strong>Aspettarsi rilassamento immediato</strong> — le prime sessioni possono essere disturbanti. Normale.</li>
-          <li><strong>Smettere quando "non funziona"</strong> — è esattamente il momento in cui funziona di più.</li>
-          <li><strong>Sessioni troppo lunghe troppo presto</strong> — aumenta gradualmente, 1-2 minuti a settimana.</li>
-          <li><strong>Giudicare i propri pensieri durante la sessione</strong> — osserva, non valutare.</li>
-          <li><strong>Saltare perché "troppo stanco"</strong> — stanco è il momento migliore per il body scan.</li>
-        </ul>
-      </div>
-
-      <div class="idq-section">
-        <div class="idq-section-title">Benefici con evidenza scientifica</div>
-        <div class="idq-sci">
-          <div class="idq-sci-item">
-            <div class="idq-sci-benefit">↑ HRV e recupero autonomico</div>
-            <div class="idq-sci-source">8 settimane di mindfulness aumentano l'HRV a riposo — rilevante per atleti CrossFit (Thayer et al., meta-analisi 2012)</div>
-          </div>
-          <div class="idq-sci-item">
-            <div class="idq-sci-benefit">↑ Deep sleep e qualità del sonno</div>
-            <div class="idq-sci-source">La meditazione serale riduce l'arousal pre-sonno e aumenta il sonno a onde lente (Black et al., JAMA Internal Medicine 2015)</div>
-          </div>
-          <div class="idq-sci-item">
-            <div class="idq-sci-benefit">↓ Cortisolo e risposta allo stress</div>
-            <div class="idq-sci-source">Riduzione del 23% del cortisolo salivare dopo 4 settimane di pratica regolare (Turakitwanakan et al., 2013)</div>
-          </div>
-          <div class="idq-sci-item">
-            <div class="idq-sci-benefit">↑ Focus e working memory</div>
-            <div class="idq-sci-source">Miglioramenti misurabili in attenzione sostenuta già dopo 2 settimane (Zeidan et al., Consciousness and Cognition 2010)</div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
   <div class="filter-bar" id="filter-bar">
     <button class="filter-btn act" onclick="filterLib('tutti',this)">Tutti</button>
     <button class="filter-btn" onclick="filterLib('body-scan',this)">Body scan</button>
@@ -298,7 +227,79 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--linen);color:va
     <button class="filter-btn-dur" onclick="filterDur(15,this)">15'</button>
     <button class="filter-btn-dur" onclick="filterDur(20,this)">20'</button>
   </div>
-  <div class="scroll-body"><div class="session-list" id="session-list"></div></div>
+  <div class="scroll-body">
+    <!-- INIZIA DA QUI -->
+    <div class="idq-wrap">
+      <button class="idq-toggle" onclick="toggleIdq(this)">
+        <div class="idq-toggle-left">
+          <span class="idq-toggle-icon">🧘</span>
+          <div>
+            <div class="idq-toggle-title">Inizia da qui</div>
+            <div class="idq-toggle-sub">Cos'è la meditazione · Come funziona · Benefici</div>
+          </div>
+        </div>
+        <span class="idq-arrow" id="idq-arrow">▾</span>
+      </button>
+      <div class="idq-body" id="idq-body">
+
+        <div class="idq-section">
+          <div class="idq-section-title">Cos'è la meditazione</div>
+          <p class="idq-text">La meditazione non è svuotare la mente. È <em>osservare</em> la mente — pensieri, sensazioni, emozioni — senza reagire automaticamente. La mente vaga sempre: il lavoro non è fermarla, è accorgersene e tornare. Ogni ritorno è un rep.</p>
+        </div>
+
+        <div class="idq-section">
+          <div class="idq-section-title">Come funziona</div>
+          <p class="idq-text">La pratica regolare riduce l'attività dell'amigdala (centro della risposta allo stress) e rafforza la corteccia prefrontale (regolazione emotiva, decisioni). Il sistema nervoso autonomo si sposta verso il parasimpatico — HRV più alta, cortisolo più basso, sonno più profondo.</p>
+        </div>
+
+        <div class="idq-section">
+          <div class="idq-section-title">Come approcciarsi</div>
+          <ul class="idq-list">
+            <li>Inizia con 5 minuti, non 20. La consistenza vale più della durata.</li>
+            <li>Nessuna sessione è "andata male". Se ti sei distratto 40 volte, hai fatto 40 rep di ritorno.</li>
+            <li>Le prime 2 settimane sembrerà di non fare nulla. I benefici arrivano dopo.</li>
+            <li>Sera è il momento ideale per te — il sistema nervoso è già orientato al recupero.</li>
+            <li>Non serve posizione perfetta: seduto, sdraiato, ovunque tu stia fermo.</li>
+          </ul>
+        </div>
+
+        <div class="idq-section">
+          <div class="idq-section-title">Errori comuni</div>
+          <ul class="idq-list">
+            <li><strong>Aspettarsi rilassamento immediato</strong> — le prime sessioni possono essere disturbanti. Normale.</li>
+            <li><strong>Smettere quando "non funziona"</strong> — è esattamente il momento in cui funziona di più.</li>
+            <li><strong>Sessioni troppo lunghe troppo presto</strong> — aumenta gradualmente, 1-2 minuti a settimana.</li>
+            <li><strong>Giudicare i propri pensieri durante la sessione</strong> — osserva, non valutare.</li>
+            <li><strong>Saltare perché "troppo stanco"</strong> — stanco è il momento migliore per il body scan.</li>
+          </ul>
+        </div>
+
+        <div class="idq-section">
+          <div class="idq-section-title">Benefici con evidenza scientifica</div>
+          <div class="idq-sci">
+            <div class="idq-sci-item">
+              <div class="idq-sci-benefit">↑ HRV e recupero autonomico</div>
+              <div class="idq-sci-source">8 settimane di mindfulness aumentano l'HRV a riposo — rilevante per atleti CrossFit (Thayer et al., meta-analisi 2012)</div>
+            </div>
+            <div class="idq-sci-item">
+              <div class="idq-sci-benefit">↑ Deep sleep e qualità del sonno</div>
+              <div class="idq-sci-source">La meditazione serale riduce l'arousal pre-sonno e aumenta il sonno a onde lente (Black et al., JAMA Internal Medicine 2015)</div>
+            </div>
+            <div class="idq-sci-item">
+              <div class="idq-sci-benefit">↓ Cortisolo e risposta allo stress</div>
+              <div class="idq-sci-source">Riduzione del 23% del cortisolo salivare dopo 4 settimane di pratica regolare (Turakitwanakan et al., 2013)</div>
+            </div>
+            <div class="idq-sci-item">
+              <div class="idq-sci-benefit">↑ Focus e working memory</div>
+              <div class="idq-sci-source">Miglioramenti misurabili in attenzione sostenuta già dopo 2 settimane (Zeidan et al., Consciousness and Cognition 2010)</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="session-list" id="session-list"></div>
+  </div>
   <nav class="bottom-nav">
     <button class="nav-item" onclick="goScreen('home')"><div class="nav-bar"></div><span class="nav-icon">⌂</span><span class="nav-lbl">Home</span></button>
     <button class="nav-item act" onclick="goScreen('libreria')"><div class="nav-bar"></div><span class="nav-icon">☰</span><span class="nav-lbl">Libreria</span></button>
