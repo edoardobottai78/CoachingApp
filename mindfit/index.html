@@ -79,6 +79,8 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--linen);color:va
 .filter-bar{display:flex;gap:8px;overflow-x:auto;padding:12px 16px 0;flex-shrink:0;}
 .filter-btn{flex-shrink:0;background:none;border:0.5px solid var(--border-linen);border-radius:100px;padding:6px 14px;font-size:12px;color:var(--ink-soft);cursor:pointer;white-space:nowrap;-webkit-appearance:none;}
 .filter-btn.act{background:var(--night);color:var(--gold);border-color:var(--night);}
+.filter-btn-dur{flex-shrink:0;background:none;border:0.5px solid var(--border-linen);border-radius:100px;padding:4px 12px;font-size:11px;color:var(--ink-soft);cursor:pointer;white-space:nowrap;-webkit-appearance:none;}
+.filter-btn-dur.act{background:var(--forest);color:#fff;border-color:var(--forest);}
 .session-list{padding:12px 16px;}
 .session-item{background:#fff;border:0.5px solid var(--border-linen);border-radius:var(--r);padding:14px 16px;margin-bottom:10px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;}
 .session-item:active{background:var(--linen-mid);}
@@ -187,6 +189,19 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--linen);color:va
     <button class="filter-btn" onclick="filterLib('decompressione',this)">Decompressione</button>
     <button class="filter-btn" onclick="filterLib('regolazione',this)">Regolazione emotiva</button>
     <button class="filter-btn" onclick="filterLib('focus',this)">Focus</button>
+    <button class="filter-btn" onclick="filterLib('ansia',this)">Ansia</button>
+    <button class="filter-btn" onclick="filterLib('energia',this)">Energia</button>
+    <button class="filter-btn" onclick="filterLib('visualizzazione',this)">Visualizzazione</button>
+  </div>
+  <div class="filter-bar" id="filter-dur-bar">
+    <button class="filter-btn-dur act" onclick="filterDur(0,this)">Tutti</button>
+    <button class="filter-btn-dur" onclick="filterDur(3,this)">3'</button>
+    <button class="filter-btn-dur" onclick="filterDur(5,this)">5'</button>
+    <button class="filter-btn-dur" onclick="filterDur(8,this)">8'</button>
+    <button class="filter-btn-dur" onclick="filterDur(10,this)">10'</button>
+    <button class="filter-btn-dur" onclick="filterDur(12,this)">12'</button>
+    <button class="filter-btn-dur" onclick="filterDur(15,this)">15'</button>
+    <button class="filter-btn-dur" onclick="filterDur(20,this)">20'</button>
   </div>
   <div class="scroll-body"><div class="session-list" id="session-list"></div></div>
   <nav class="bottom-nav">
@@ -316,7 +331,243 @@ const SESSIONS=[
     {phase:'TOTALITA',dur:120,instruction:'Il corpo come un tutto',guide:'Senti tutto il corpo contemporaneamente. Pesante, caldo, immobile.'},
     {phase:'SILENZIO',dur:120,instruction:'Silenzio',guide:'...'}
   ]}
-];
+  ,{id:'breathwork-box-5',name:'Box Breathing 4-4-4-4',cat:'Breathwork',catKey:'breathwork',dur:5,context:'Sera',desc:'Coerenza cardiaca e focus. Attiva la corteccia prefrontale e stabilizza il sistema nervoso.',priority:null,
+   steps:[
+    {phase:'PREPARAZIONE',dur:20,instruction:'Schiena dritta, occhi chiusi',guide:'Siediti con la schiena dritta. Mani sulle ginocchia. Chiudi gli occhi.'},
+    {phase:'OSSERVA',dur:20,instruction:'Porta attenzione al respiro',guide:'Porta l\'attenzione al respiro naturale. Non cambiare nulla, osserva solo.'},
+    {phase:'AVVIO',dur:15,instruction:'Inspira 4 secondi',guide:'Ora iniziamo il ritmo Box. Inspira contando 4... 1, 2, 3, 4.'},
+    {phase:'AVVIO',dur:15,instruction:'Trattieni 4 secondi',guide:'Trattieni il respiro. 1, 2, 3, 4.'},
+    {phase:'AVVIO',dur:15,instruction:'Espira 4 secondi',guide:'Espira lentamente. 1, 2, 3, 4.'},
+    {phase:'AVVIO',dur:15,instruction:'Trattieni a vuoto 4 secondi',guide:'Trattieni a vuoto. 1, 2, 3, 4. Questo è un ciclo completo.'},
+    {phase:'RITMO',dur:120,instruction:'Continua il ritmo Box',guide:'Continua il ritmo Box. Il conteggio ti guida — lasciati portare.'},
+    {phase:'FINALE',dur:30,instruction:'Ultimi due cicli',guide:'Ultimi due cicli. Mantieni il ritmo, la mente si stabilizza.'},
+    {phase:'NATURALE',dur:30,instruction:'Lascia andare il controllo',guide:'Lascia andare il controllo del respiro. Respira normalmente. Nota la differenza.'},
+    {phase:'CHIUSURA',dur:15,instruction:'Apri gli occhi',guide:'Apri gli occhi lentamente. Sei pronto.'}
+  ]},
+  {id:'breathwork-coerenza-5',name:'Coerenza Cardiaca 5-5',cat:'Breathwork',catKey:'breathwork',dur:5,context:'Sera',desc:'HRV biofeedback. Regolazione del sistema nervoso autonomo a 6 respiri al minuto.',priority:null,
+   steps:[
+    {phase:'PREPARAZIONE',dur:20,instruction:'Mani sul petto e sull\'addome',guide:'Siediti comodo. Una mano sul petto, una sull\'addome. Chiudi gli occhi.'},
+    {phase:'DIAFRAMMA',dur:25,instruction:'Respira con l\'addome',guide:'Senti il respiro muovere l\'addome — non il petto. Questo è il respiro diaframmatico.'},
+    {phase:'RITMO',dur:15,instruction:'Inspira 5 secondi',guide:'Iniziamo il ritmo: inspira per 5 secondi. 1... 2... 3... 4... 5.'},
+    {phase:'RITMO',dur:15,instruction:'Espira 5 secondi',guide:'Espira per 5 secondi. 1... 2... 3... 4... 5. Nessuna pausa tra inspira ed espira.'},
+    {phase:'SINCRONIA',dur:20,instruction:'6 respiri al minuto',guide:'Sei a 6 respiri al minuto — la frequenza ottimale per la coerenza cardiaca.'},
+    {phase:'CONTINUA',dur:120,instruction:'Continua il ritmo 5-5',guide:'Continua il ritmo 5-5. Immagina il cuore che si sincronizza con il respiro.'},
+    {phase:'FINALE',dur:30,instruction:'Ultimi 30 secondi',guide:'Ultimi 30 secondi. Senti la calma che si espande ad ogni espirazione.'},
+    {phase:'NATURALE',dur:25,instruction:'Torna al respiro naturale',guide:'Lascia tornare il respiro naturale. Osserva: il battito è più lento e regolare.'},
+    {phase:'CHIUSURA',dur:10,instruction:'Coerenza raggiunta',guide:'Apri gli occhi. Coerenza raggiunta.'}
+  ]},
+  {id:'breathwork-sigh-3',name:'Physiological Sigh',cat:'Breathwork',catKey:'breathwork',dur:3,context:'Sera',desc:'Protocollo Huberman. Riduzione ansia acuta in 1-3 cicli.',priority:null,
+   steps:[
+    {phase:'INTRO',dur:15,instruction:'Il respiro più potente',guide:'Questo è il respiro più potente per abbassare lo stress in tempo reale.'},
+    {phase:'CICLO 1',dur:10,instruction:'Inspira fondo dal naso',guide:'Prima inspirazione: lenta e profonda dal naso. Riempi i polmoni.'},
+    {phase:'CICLO 1',dur:8,instruction:'Sniff aggiuntivo',guide:'Seconda inspirazione: un breve sniff aggiuntivo dal naso. Massima capacità polmonare.'},
+    {phase:'CICLO 1',dur:15,instruction:'Espira tutto lentamente',guide:'Espirazione: lunga, lenta, completamente dalla bocca. Svuota tutto.'},
+    {phase:'EFFETTO',dur:10,instruction:'Senti il sistema nervoso rallentare',guide:'Senti il sistema nervoso rallentare. Ripeti il ciclo.'},
+    {phase:'CICLO 2',dur:33,instruction:'Inspira — sniff — espira',guide:'Inspira fondo — sniff aggiuntivo — espira tutto lentamente.'},
+    {phase:'CICLO 3',dur:33,instruction:'Ancora una volta',guide:'Ancora una volta. Inspira — sniff — espira completamente.'},
+    {phase:'NATURALE',dur:25,instruction:'Respira normalmente',guide:'Ora respira normalmente. Il picco di CO₂ è abbassato. L\'ansia si riduce.'},
+    {phase:'INFO',dur:15,instruction:'Tre cicli sufficienti',guide:'Tre cicli sono sufficienti. Puoi usare questo in qualsiasi momento.'},
+    {phase:'CHIUSURA',dur:6,instruction:'Apri gli occhi',guide:'Apri gli occhi. Pronto.'}
+  ]},
+  {id:'breathwork-wimhof-8',name:'Wim Hof Base',cat:'Breathwork',catKey:'breathwork',dur:8,context:'Mattina',desc:'Energia e up-regulation. Tre round di iperventilazione controllata e trattenuta.',priority:null,
+   steps:[
+    {phase:'AVVISO',dur:20,instruction:'Siediti o sdraiati',guide:'Siediti o sdraiati. Questa sessione è intensa — non farlo in piedi o in acqua.'},
+    {phase:'TECNICA',dur:20,instruction:'Inspirazioni potenti',guide:'Inspirazioni potenti e veloci dal naso — espirazioni passive. Non forzare l\'espira.'},
+    {phase:'ROUND 1',dur:60,instruction:'30 respiri potenti',guide:'Round 1: 30 respiri potenti. Lasciati andare al ritmo — la testa può girare leggermente.'},
+    {phase:'TRATTENUTA 1',dur:45,instruction:'Trattieni a vuoto',guide:'Dopo il 30° respiro: espira tutto e trattieni a vuoto. Rilassati completamente.'},
+    {phase:'RECUPERO 1',dur:20,instruction:'Inspira fondo, trattieni 15s',guide:'Quando senti il bisogno di respirare: inspira fondo, trattieni 15 secondi, poi espira. Fine round 1.'},
+    {phase:'ROUND 2',dur:60,instruction:'30 respiri — round 2',guide:'Round 2: altri 30 respiri potenti. Il formicolio è normale — è il corpo che si alcalinizza.'},
+    {phase:'TRATTENUTA 2',dur:50,instruction:'Trattieni più a lungo',guide:'Trattieni a vuoto dopo l\'ultima espirazione. Mantieni più a lungo del round 1.'},
+    {phase:'RECUPERO 2',dur:20,instruction:'Inspira fondo, trattieni 15s',guide:'Inspira fondo, trattieni 15 secondi, espira. Fine round 2.'},
+    {phase:'ROUND 3',dur:60,instruction:'Ultimi 30 respiri',guide:'Round 3: ultimi 30 respiri. Sei nel ritmo ora.'},
+    {phase:'TRATTENUTA 3',dur:55,instruction:'Ultima trattenuta — il tuo record',guide:'Ultima trattenuta a vuoto. Questo è il tuo record personale di sessione.'},
+    {phase:'RECUPERO 3',dur:20,instruction:'Inspira fondo, trattieni 15s',guide:'Inspira fondo, trattieni 15 secondi, espira lentamente. Fine sessione.'},
+    {phase:'CHIUSURA',dur:30,instruction:'Senti l\'energia',guide:'Respira normalmente. Senti l\'energia nel corpo — questo è lo stato Wim Hof.'}
+  ]},
+  {id:'body-scan-progressive-5',name:'Progressive Scan',cat:'Body scan',catKey:'body-scan',dur:5,context:'Sera',desc:'Scansione rapida piedi→testa. Tre secondi per area, mappa completa del corpo.',priority:null,
+   steps:[
+    {phase:'PREPARAZIONE',dur:25,instruction:'Sdraiati o siediti',guide:'Sdraiati o siediti. Chiudi gli occhi. Tre respiri lenti per arrivare qui.'},
+    {phase:'PIEDI',dur:20,instruction:'Piedi',guide:'Piedi. Senti il contatto con il suolo o il materasso. Qualsiasi sensazione va bene.'},
+    {phase:'POLPACCI',dur:15,instruction:'Polpacci e ginocchia',guide:'Polpacci e ginocchia. Nota senza giudicare.'},
+    {phase:'COSCE',dur:15,instruction:'Cosce e bacino',guide:'Cosce e bacino. Il peso del corpo sostenuto.'},
+    {phase:'ADDOME',dur:20,instruction:'Addome',guide:'Addome. Senti il respiro che lo muove.'},
+    {phase:'PETTO',dur:20,instruction:'Petto e spalle',guide:'Petto e spalle. Dove tieni la tensione della giornata?'},
+    {phase:'BRACCIA',dur:20,instruction:'Braccia e mani',guide:'Braccia, avambracci, mani. Lascia che diventino pesanti.'},
+    {phase:'COLLO',dur:20,instruction:'Collo e gola',guide:'Collo e gola. Zona spesso contratta — solo osserva.'},
+    {phase:'VISO',dur:20,instruction:'Viso',guide:'Viso: fronte, sopracciglia, mascella. Ammorbidisci.'},
+    {phase:'TOTALE',dur:30,instruction:'Tutto il corpo insieme',guide:'Tutto il corpo insieme. Un\'unica sensazione di presenza.'},
+    {phase:'CHIUSURA',dur:15,instruction:'Apri gli occhi',guide:'Apri gli occhi. Hai fatto una mappa completa di te in 5 minuti.'}
+  ]},
+  {id:'body-scan-tension-15',name:'Tension Mapping',cat:'Body scan',catKey:'body-scan',dur:15,context:'Sera',desc:'Identificazione profonda delle zone di tensione. Respira dentro ogni nodo.',priority:null,
+   steps:[
+    {phase:'PREPARAZIONE',dur:30,instruction:'Sdraiati, nessuna fretta',guide:'Sdraiati comodamente. Questa sessione richiede attenzione fine — non fretta.'},
+    {phase:'RESPIRO',dur:45,instruction:'Respiro 4-2-6',guide:'Prima: un respiro completo. Inspira 4, trattieni 2, espira 6. Ripeti tre volte.'},
+    {phase:'PIEDI',dur:60,instruction:'Piedi e caviglie',guide:'Piedi e caviglie. Non solo superficie — senti dentro il muscolo, il tendine. C\'è tensione nascosta?'},
+    {phase:'POLPACCI',dur:60,instruction:'Polpacci',guide:'Polpacci. I muscoli che lavorano tutto il giorno. Nota se sono contratti anche a riposo.'},
+    {phase:'COSCE',dur:60,instruction:'Ginocchia e cosce',guide:'Ginocchia e cosce. Scendi nel tessuto. Se trovi un nodo, respira lì dentro — non forzare.'},
+    {phase:'BACINO',dur:60,instruction:'Bacino e glutei',guide:'Bacino e glutei. Zone che spesso teniamo contratte senza saperlo. Lascia andare.'},
+    {phase:'LOMBARE',dur:60,instruction:'Zona lombare',guide:'Zona lombare. Dove si accumula lo stress posturale. Con ogni espiro, il pavimento ti supporta.'},
+    {phase:'ADDOME',dur:60,instruction:'Addome',guide:'Addome. Spesso contratto quando siamo sotto pressione. Permettigli di espandersi.'},
+    {phase:'PETTO',dur:60,instruction:'Petto e diaframma',guide:'Petto e diaframma. Il respiro è più libero adesso? Nota la differenza dall\'inizio.'},
+    {phase:'SPALLE',dur:70,instruction:'Spalle',guide:'Spalle. Probabilmente il punto più teso. Non spingere — osserva e respira.'},
+    {phase:'COLLO',dur:60,instruction:'Collo',guide:'Collo. Sinistra, destra, centro. Dove è la tensione più forte?'},
+    {phase:'VISO',dur:60,instruction:'Viso',guide:'Viso. Fronte — mascella — occhi. Il viso porta tutto quello che non abbiamo detto oggi.'},
+    {phase:'MAPPA',dur:60,instruction:'Torna al punto più teso',guide:'Ora hai la mappa. Torna mentalmente al punto più teso che hai trovato. Respiraci dentro ancora una volta.'},
+    {phase:'RILASCIO',dur:40,instruction:'Lascia andare',guide:'Lascia andare. Il corpo sa dove ha bisogno di recuperare stanotte.'},
+    {phase:'CHIUSURA',dur:15,instruction:'Apri gli occhi lentamente',guide:'Apri gli occhi lentamente.'}
+  ]},
+  {id:'regolazione-rain-12',name:'RAIN Technique',cat:'Regolazione emotiva',catKey:'regolazione',dur:12,context:'Sera',desc:'Recognize, Allow, Investigate, Nurture. Protocollo MBSR per elaborazione emotiva.',priority:null,
+   steps:[
+    {phase:'PREPARAZIONE',dur:30,instruction:'Siediti, tre respiri',guide:'Siediti comodamente. Chiudi gli occhi. Tre respiri per arrivare qui.'},
+    {phase:'RICONOSCI',dur:90,instruction:'R — Riconosci',guide:'R — Riconosci. Cosa sta succedendo dentro di te in questo momento? Non analizzare — solo nomina. Ansia? Stanchezza? Frustrazione? Sollievo?'},
+    {phase:'PERMETTI',dur:90,instruction:'A — Permetti',guide:'A — Permetti. Non cercare di cambiare quello che hai trovato. Lascia che ci sia. Di\' internamente: \"Posso permettere a questo di esserci.\"'},
+    {phase:'INVESTIGA',dur:120,instruction:'I — Investiga',guide:'I — Investiga. Con gentilezza, scendi più in profondità. Dove senti questa emozione nel corpo? Come la descriveresti fisicamente — peso, calore, stretta?'},
+    {phase:'INVESTIGA 2',dur:90,instruction:'Cosa ha bisogno questa parte di te?',guide:'Continua ad investigare. Cosa ha bisogno questa parte di te? Non rispondere con la testa — ascolta il corpo.'},
+    {phase:'NUTRI',dur:90,instruction:'N — Nutri',guide:'N — Nutri. Porta qualcosa di gentile verso questa parte. Una mano sul petto, un respiro consapevole, una frase interna: \"Sono qui. Va bene così.\"'},
+    {phase:'SOSTA',dur:80,instruction:'Rimani con questa sensazione',guide:'Rimani con questa sensazione di cura verso te stesso. Non devi risolvere nulla.'},
+    {phase:'INTEGRA',dur:50,instruction:'Il rapporto è cambiato',guide:'Respira lentamente. L\'emozione non è sparita — ma hai cambiato il rapporto con essa.'},
+    {phase:'CHIUSURA',dur:20,instruction:'RAIN completo',guide:'Apri gli occhi lentamente. RAIN completo.'}
+  ]},
+  {id:'regolazione-espansione-5',name:'Espansione/Contrazione',cat:'Regolazione emotiva',catKey:'regolazione',dur:5,context:'Sera',desc:'Il respiro che segue il ritmo dell\'emozione. Trasforma tensione in rilascio.',priority:null,
+   steps:[
+    {phase:'OSSERVA',dur:25,instruction:'Come ti senti adesso?',guide:'Siediti. Chiudi gli occhi. Porta attenzione a come ti senti adesso — senza giudizio.'},
+    {phase:'RITMO',dur:35,instruction:'Ogni emozione ha un ritmo',guide:'Ogni emozione ha un ritmo. Ansia: rapida e contratta. Tristezza: lenta e pesante. Qual è il tuo ritmo di adesso?'},
+    {phase:'SEGUI',dur:40,instruction:'Respira seguendo il ritmo',guide:'Inizia a respirare seguendo quel ritmo — non combatterlo. Se sei teso, respira teso.'},
+    {phase:'ALLUNGA',dur:40,instruction:'Allunga l\'espirazione',guide:'Ora, gradualmente, inizia ad allungare l\'espirazione. Solo l\'espirazione — non forzare l\'inspiro.'},
+    {phase:'ESPANDI',dur:50,instruction:'Il corpo si espande e si contrae',guide:'Il corpo si espande con l\'inspiro. Si contrae con l\'espiro. Senti questo ritmo diventare più lento.'},
+    {phase:'RALLENTA',dur:50,instruction:'L\'espirazione è il doppio',guide:'Continua. L\'espirazione è ora quasi il doppio dell\'inspirazione. Il sistema nervoso rallenta.'},
+    {phase:'CHIUSURA',dur:30,instruction:'Nota la differenza',guide:'Nota la differenza rispetto a 3 minuti fa. Stessa emozione — corpo diverso.'},
+    {phase:'FINE',dur:10,instruction:'Apri gli occhi',guide:'Apri gli occhi. Il ritmo è cambiato.'}
+  ]},
+  {id:'ansia-labeling-5',name:'Thought Labeling',cat:'Ansia & Overthinking',catKey:'ansia',dur:5,context:'Sera',desc:'Osserva i pensieri come nuvole senza engagement. Crea distanza cognitiva.',priority:null,
+   steps:[
+    {phase:'INTRO',dur:25,instruction:'Non devi fermare i pensieri',guide:'Siediti. Chiudi gli occhi. Non devi fermare i pensieri — solo osservarli.'},
+    {phase:'METAFORA',dur:35,instruction:'La mente è un cielo',guide:'Immagina la mente come un cielo. I pensieri sono nuvole che passano. Tu sei il cielo — non le nuvole.'},
+    {phase:'ETICHETTA',dur:60,instruction:'Etichetta ogni pensiero',guide:'Quando arriva un pensiero, etichettalo in silenzio: \"preoccupazione\", \"ricordo\", \"pianificazione\", \"giudizio\". Solo il nome — poi lascialo passare.'},
+    {phase:'DISTANZA',dur:60,instruction:'Non combattere i pensieri',guide:'Non combattere i pensieri difficili. Etichettali: \"questo è un pensiero ansioso\". La distanza che crei è reale.'},
+    {phase:'CONTINUA',dur:60,instruction:'Arriva — etichetta — lascia passare',guide:'Continua. Arriva — etichetta — lascia passare. Arriva — etichetta — lascia passare.'},
+    {phase:'RIENTRO',dur:40,instruction:'Se ti sei perso in un pensiero',guide:'Se ti sei perso in un pensiero, nessun problema. Nota che è successo, etichettalo: \"coinvolgimento\". Torna al cielo.'},
+    {phase:'FINALE',dur:30,instruction:'Ultimi 30 secondi',guide:'Ultimi 30 secondi. Il flusso rallenta naturalmente quando smetti di alimentarlo.'},
+    {phase:'CHIUSURA',dur:10,instruction:'Apri gli occhi',guide:'Apri gli occhi. I pensieri esistono ancora — ma tu hai scelto di non inseguirli.'}
+  ]},
+  {id:'ansia-grounding-5',name:'5-4-3-2-1 Grounding',cat:'Ansia & Overthinking',catKey:'ansia',dur:5,context:'Sera',desc:'Ancoraggio sensoriale immediato. Interrompe il loop ansioso in pochi minuti.',priority:null,
+   steps:[
+    {phase:'AVVIO',dur:25,instruction:'Siediti, piedi a terra',guide:'Siediti. Piedi a terra. Occhi aperti per ora. Tre respiri lenti.'},
+    {phase:'VISTA',dur:50,instruction:'5 cose che vedi',guide:'5 cose che vedi. Guardati intorno. Nomina mentalmente 5 oggetti, uno alla volta. Prenditi il tempo.'},
+    {phase:'UDITO',dur:45,instruction:'4 cose che senti',guide:'4 cose che senti. Chiudi gli occhi. Suoni vicini, lontani, interni. Nomina 4.'},
+    {phase:'TATTO',dur:40,instruction:'3 cose che tocchi',guide:'3 cose che tocchi. La sedia sotto di te. Il tessuto dei vestiti. L\'aria sulla pelle. Senti davvero.'},
+    {phase:'OLFATTO',dur:35,instruction:'2 cose che annusi',guide:'2 cose che annusi. L\'aria della stanza. Qualsiasi profumo, anche debole.'},
+    {phase:'GUSTO',dur:25,instruction:'1 cosa che gusti',guide:'1 cosa che gusti. Anche solo il sapore neutro della bocca.'},
+    {phase:'PRESENZA',dur:35,instruction:'Sei qui',guide:'Sei qui. In questo momento. Il passato e il futuro non esistono in questo secondo.'},
+    {phase:'VERIFICA',dur:25,instruction:'Tre respiri lenti',guide:'Tre respiri lenti. Nota quanto è cambiata l\'intensità dell\'ansia.'},
+    {phase:'CHIUSURA',dur:10,instruction:'Grounded',guide:'Apri gli occhi. Grounded.'}
+  ]},
+  {id:'ansia-worry-15',name:'Worry Window',cat:'Ansia & Overthinking',catKey:'ansia',dur:15,context:'Sera',desc:'Contieni il pensiero ansiogeno in uno slot temporale definito. Chiudi la finestra.',priority:null,
+   steps:[
+    {phase:'INTRO',dur:30,instruction:'Porta le preoccupazioni, non evitarle',guide:'Siediti comodamente. Questa sessione ha una struttura diversa — ti chiedo di portare le preoccupazioni, non di evitarle.'},
+    {phase:'PREPARAZIONE',dur:25,instruction:'Tre respiri per arrivare',guide:'Tre respiri per arrivare. Non devi essere calmo per iniziare.'},
+    {phase:'APERTURA',dur:15,instruction:'Apri la finestra',guide:'Apri la finestra. Nei prossimi 4 minuti puoi preoccuparti liberamente. Porta tutto: i pensieri ricorrenti, gli scenari peggiori, le cose in sospeso. Questo è il momento dedicato.'},
+    {phase:'WORRY',dur:240,instruction:'Preoccupati — davvero',guide:'Preoccupati. Davvero — non reprimere nulla. Lascia che i pensieri ansiosi vengano tutti.'},
+    {phase:'CHIUSURA FINESTRA',dur:20,instruction:'Chiudi la finestra',guide:'Chiudi la finestra. Il tempo è finito. Quello che non hai risolto adesso non lo risolverai stanotte.'},
+    {phase:'RESPIRO',dur:40,instruction:'Tre respiri lenti',guide:'Tre respiri lenti. Espira più a lungo dell\'inspiro.'},
+    {phase:'SCELTA',dur:60,instruction:'Una cosa su cui puoi agire',guide:'Ora scegli: qual è la UNA cosa, tra quelle che hai pensato, su cui puoi agire domani? Solo una.'},
+    {phase:'POSA',dur:40,instruction:'Il resto può aspettare',guide:'Tutto il resto: rimane fuori dalla finestra fino a domani. Non perché non sia reale — ma perché non è il momento.'},
+    {phase:'RIPOSO',dur:50,instruction:'La preoccupazione ha avuto il suo spazio',guide:'Respira. La preoccupazione ha avuto il suo spazio. Adesso è il turno del riposo.'},
+    {phase:'FINE',dur:20,instruction:'La finestra è chiusa',guide:'Apri gli occhi. La finestra è chiusa.'}
+  ]},
+  {id:'focus-box-5',name:'Box Breathing — Focus',cat:'Focus & Produttività',catKey:'focus',dur:5,context:'Mattina · Giorno',desc:'Box Breathing per attivare la concentrazione. Attivazione, non rilassamento.',priority:null,
+   steps:[
+    {phase:'PREPARAZIONE',dur:20,instruction:'Schiena eretta, attivazione',guide:'Siediti dritto. Piedi a terra. Schiena eretta. Questo respiro attiva la concentrazione, non il rilassamento.'},
+    {phase:'CICLO',dur:4,instruction:'Inspira 4 secondi',guide:'Inspira 4 secondi.'},
+    {phase:'CICLO',dur:4,instruction:'Trattieni 4 secondi',guide:'Trattieni 4 secondi.'},
+    {phase:'CICLO',dur:4,instruction:'Espira 4 secondi',guide:'Espira 4 secondi.'},
+    {phase:'CICLO',dur:4,instruction:'Trattieni a vuoto 4 secondi',guide:'Trattieni a vuoto 4 secondi. Questo è un ciclo.'},
+    {phase:'RITMO',dur:180,instruction:'12 cicli — mente presente',guide:'Continua. 12 cicli. Schiena eretta, mente presente. Ogni ciclo è un reset.'},
+    {phase:'ANCORAGGIO',dur:30,instruction:'Cosa vuoi portare a termine?',guide:'Respiro naturale. Nota il silenzio mentale. Cosa vuoi portare a termine adesso?'},
+    {phase:'CHIUSURA',dur:10,instruction:'Inizia',guide:'Inizia.'}
+  ]},
+  {id:'focus-intention-5',name:'Intention Setting',cat:'Focus & Produttività',catKey:'focus',dur:5,context:'Mattina',desc:'Definisci l\'intenzione del giorno. Una cosa sola, chiara, ancorata nel corpo.',priority:null,
+   steps:[
+    {phase:'ATTERRAGGIO',dur:30,instruction:'Tre respiri, lascia andare',guide:'Chiudi gli occhi. Tre respiri profondi. Lascia andare tutto quello che hai fatto finora.'},
+    {phase:'PRESENZA',dur:10,instruction:'Sei qui. Adesso.',guide:'Sei qui. Adesso.'},
+    {phase:'DOMANDA',dur:90,instruction:'Cosa è davvero importante oggi?',guide:'Chiediti: cosa è davvero importante oggi? Non la lista — una cosa sola. Lascia emergere la risposta.'},
+    {phase:'FORMULAZIONE',dur:40,instruction:'Trasformala in intenzione',guide:'Trasformala in un\'intenzione. Non \"devo fare X\" — ma \"oggi porto attenzione a X\".'},
+    {phase:'ANCORAGGIO',dur:40,instruction:'Mano al petto, respira',guide:'Porta la mano al petto. Respira sull\'intenzione. Memorizza questa sensazione.'},
+    {phase:'CHIUSURA',dur:10,instruction:'L\'intenzione è con te',guide:'Apri gli occhi. L\'intenzione è con te per tutta la giornata.'}
+  ]},
+  {id:'focus-deep-10',name:'Deep Focus',cat:'Focus & Produttività',catKey:'focus',dur:10,context:'Mattina · Giorno',desc:'Preparazione mentale al lavoro profondo. Clearing, ancoraggio e attivazione task.',priority:null,
+   steps:[
+    {phase:'CLEARING',dur:120,instruction:'Posa i pensieri attivi',guide:'Chiudi gli occhi. Nota tutti i pensieri in circolazione — lavoro, notifiche, conversazioni. Non risolverli: posali mentalmente su un tavolo. Ci sono, ma non ti servono adesso.'},
+    {phase:'ANCORAGGIO',dur:120,instruction:'Conta le espirazioni',guide:'Respiro naturale. Conta le espirazioni da 1 a 10, poi ricomincia. Se perdi il conto, ricomincia da 1. Stai allenando l\'attenzione.'},
+    {phase:'FOCUS SENSORIALE',dur:180,instruction:'Fissa un punto, ascolta i suoni',guide:'Apri leggermente gli occhi. Fissa un punto davanti a te. Ascolta i suoni ambientali senza seguirli. Presente, non reattivo.'},
+    {phase:'ATTIVAZIONE',dur:120,instruction:'Visualizza il primo passo',guide:'Chiudi gli occhi. Visualizza il primo passo concreto del task che stai per iniziare. Solo il primo.'},
+    {phase:'TRANSIZIONE',dur:60,instruction:'Inizia entro 60 secondi',guide:'Apri gli occhi lentamente. Non toccare il telefono. Inizia entro 60 secondi.'}
+  ]},
+  {id:'focus-flow-20',name:'Flow State',cat:'Focus & Produttività',catKey:'focus',dur:20,context:'Mattina · Giorno',desc:'Accesso allo stato di flow. Memoria, condizioni, visualizzazione e gesto-ancora.',priority:null,
+   steps:[
+    {phase:'DECOMPRESSIONE',dur:180,instruction:'Lascia andare la tensione',guide:'Siediti. Occhi chiusi. Scansiona il corpo dalla testa ai piedi. Dove c\'è tensione, lasciala andare. Non devi fare nulla ancora.'},
+    {phase:'MEMORIA FLOW',dur:240,instruction:'Ricorda un momento di flow',guide:'Ricorda un momento in cui eri completamente assorbito — sport, lavoro, un progetto. Dov\'eri? Cosa stavi facendo? Come si sentiva il corpo? Ricostruiscilo in dettaglio.'},
+    {phase:'CONDIZIONI',dur:180,instruction:'Cosa rendeva possibile quel flow?',guide:'Cosa rendeva possibile quel flow? Silenzio? Musica? Ora del giorno? Sfida calibrata? Identifica 2-3 condizioni ricorrenti. Queste sono le tue variabili di accesso.'},
+    {phase:'VISUALIZZAZIONE',dur:240,instruction:'Visualizza il task di oggi in flow',guide:'Visualizza il task di oggi. Immagina di essere già dentro — non lo sforzo iniziale, ma il momento in cui scorre. Senti il ritmo. Il tempo rallenta.'},
+    {phase:'ANCORA',dur:180,instruction:'Crea il gesto-ancora',guide:'Crea un gesto-ancora: due dita che si toccano, o un respiro particolare. Eseguilo adesso, mentre sei nella visualizzazione. Lo userai per richiamare questo stato.'},
+    {phase:'USCITA',dur:180,instruction:'Attraversa la soglia',guide:'Respiro profondo. Apri gli occhi lentamente. Il gesto è tuo. Attraversa la soglia.'}
+  ]},
+  {id:'energia-postura-3',name:'Power Posture + Respiro',cat:'Energia & Motivazione',catKey:'energia',dur:3,context:'Mattina',desc:'Attivazione rapida corpo-mente. Postura espansiva e respiro esplosivo in 3 minuti.',priority:null,
+   steps:[
+    {phase:'POSTURA',dur:15,instruction:'Alzati in piedi',guide:'Alzati in piedi. Piedi larghi quanto le spalle. Mani sui fianchi o braccia aperte. Testa alta.'},
+    {phase:'TIENI',dur:45,instruction:'Il corpo manda un segnale',guide:'Tieni questa postura. Il corpo manda un segnale al cervello: sono pronto.'},
+    {phase:'RESPIRO',dur:60,instruction:'Inspira 4s, espira 4s',guide:'Inspira profondo dal naso — 4 secondi. Espira forte dalla bocca — 4 secondi. Ripeti.'},
+    {phase:'ESPLOSIVO',dur:20,instruction:'Tre respiri esplosivi',guide:'Tre respiri esplosivi: inspira veloce, espira forte. Senti l\'attivazione.'},
+    {phase:'INTENZIONE',dur:20,instruction:'Cosa vuoi conquistare adesso?',guide:'Rimani in postura. Cosa vuoi conquistare adesso?'}
+  ]},
+  {id:'energia-gratitude-8',name:'Gratitude Activation',cat:'Energia & Motivazione',catKey:'energia',dur:8,context:'Mattina · Sera',desc:'Attiva il tono emotivo positivo attraverso gratitudine specifica e ancorata.',priority:null,
+   steps:[
+    {phase:'PREPARAZIONE',dur:30,instruction:'Tre respiri lenti',guide:'Chiudi gli occhi. Tre respiri lenti. Lascia che il corpo si calmi.'},
+    {phase:'PERSONA',dur:90,instruction:'Una persona per cui sei grato',guide:'Pensa a una persona nella tua vita per cui sei grato. Non la lista — una sola. Vedi il suo viso.'},
+    {phase:'COSA',dur:90,instruction:'Qualcosa che funziona bene',guide:'Pensa a qualcosa che funziona bene nella tua vita in questo momento. Anche piccolo. Fermati su quella cosa.'},
+    {phase:'CORPO',dur:90,instruction:'Il tuo corpo o la tua mente',guide:'Pensa a qualcosa del tuo corpo o della tua mente che ti ha supportato oggi.'},
+    {phase:'SENSAZIONE',dur:60,instruction:'Nota la sensazione nel petto',guide:'Nota la sensazione nel petto. Questo è il tono emotivo che porti nel resto della giornata.'},
+    {phase:'CHIUSURA',dur:30,instruction:'La gratitudine è un filtro',guide:'Apri gli occhi. La gratitudine non è un esercizio — è un filtro.'}
+  ]},
+  {id:'energia-why-8',name:'Why Reconnect',cat:'Energia & Motivazione',catKey:'energia',dur:8,context:'Mattina · Sera',desc:'Riconnetti con il tuo perché profondo. Il carburante che muove l\'azione.',priority:null,
+   steps:[
+    {phase:'ARRIVO',dur:20,instruction:'Sei qui per un motivo',guide:'Chiudi gli occhi. Respiro naturale. Sei qui per un motivo.'},
+    {phase:'DOMANDA',dur:120,instruction:'Perché fai quello che fai?',guide:'Chiediti: perché faccio quello che faccio? Non la risposta automatica — quella vera, sotto. Aspetta.'},
+    {phase:'CONSEGUENZE',dur:90,instruction:'Cosa cambierebbe se smettessi?',guide:'Cosa cambierebbe se smettessi? Per te. Per chi ti è vicino.'},
+    {phase:'MEMORIA',dur:90,instruction:'Un momento in cui ha fatto la differenza',guide:'Ricorda un momento in cui quello che fai ha fatto la differenza — anche piccola. Tienilo.'},
+    {phase:'SINTESI',dur:30,instruction:'Il perché è il carburante',guide:'Il \"perché\" è il carburante. Il \"come\" è la tecnica. Adesso hai entrambi.'},
+    {phase:'CHIUSURA',dur:10,instruction:'Porta questo con te',guide:'Apri gli occhi. Porta questo con te.'}
+  ]},
+  {id:'viz-day-8',name:'Day Architecture',cat:'Visualizzazione',catKey:'visualizzazione',dur:8,context:'Mattina',desc:'Costruisci la giornata nella mente prima di viverla. Anticipa, gestisci, padroneggia.',priority:null,
+   steps:[
+    {phase:'PREPARAZIONE',dur:30,instruction:'Sei all\'inizio della giornata',guide:'Chiudi gli occhi. Tre respiri. Sei all\'inizio della giornata — anche se non lo è. La mente non distingue.'},
+    {phase:'SCORRIMENTO',dur:120,instruction:'Visualizza le prossime ore',guide:'Visualizza le prossime ore. Non la lista di cose da fare — la versione migliore di come le vivi. Dove sei? Come ti muovi?'},
+    {phase:'DIFFICOLTÀ',dur:120,instruction:'C\'è un momento difficile?',guide:'C\'è un momento difficile oggi? Vedilo arrivare. Guarda come lo gestisci con calma.'},
+    {phase:'MOMENTO CHIAVE',dur:120,instruction:'Il momento che vuoi che vada bene',guide:'C\'è un momento che vuoi che vada bene? Costruiscilo. Dettagli, sensazioni, risultato.'},
+    {phase:'CHIUSURA',dur:30,instruction:'La giornata è già dentro di te',guide:'La giornata è già dentro di te. Adesso eseguila.'}
+  ]},
+  {id:'viz-outcome-15',name:'Outcome Visualization',cat:'Visualizzazione',catKey:'visualizzazione',dur:15,context:'Mattina · Sera',desc:'Visualizza il risultato raggiunto. Sensoriale, emotivo, dettagliato.',priority:null,
+   steps:[
+    {phase:'PREPARAZIONE',dur:60,instruction:'Cinque respiri profondi',guide:'Siediti. Occhi chiusi. Corpo rilassato. Cinque respiri profondi.'},
+    {phase:'OBIETTIVO',dur:30,instruction:'Scegli un obiettivo specifico',guide:'Scegli un obiettivo specifico — non generico. Qualcosa che vuoi davvero.'},
+    {phase:'ARRIVO',dur:180,instruction:'Il momento in cui l\'hai raggiunto',guide:'Visualizza il momento in cui l\'hai raggiunto. Non il percorso — l\'arrivo. Dov\'è? Chi c\'è? Come ti senti?'},
+    {phase:'SENSORIALE',dur:180,instruction:'Entra nei dettagli sensoriali',guide:'Entra nei dettagli sensoriali. Cosa vedi intorno a te? Cosa senti? C\'è qualcuno con cui condividi questo momento?'},
+    {phase:'CORPO',dur:120,instruction:'Dove senti questa sensazione?',guide:'Nota la sensazione nel corpo. Dove la senti? Petto? Stomaco? Gambe? Lasciala espandere.'},
+    {phase:'CARBURANTE',dur:120,instruction:'La sensazione presente è il carburante',guide:'Questo stato emotivo è il tuo carburante. Non il risultato futuro — la sensazione presente.'},
+    {phase:'INTEGRAZIONE',dur:90,instruction:'Tre respiri lenti',guide:'Tre respiri lenti. Porta con te questa sensazione.'},
+    {phase:'CHIUSURA',dur:30,instruction:'L\'obiettivo è già reale nella mente',guide:'Apri gli occhi. L\'obiettivo è già reale nella mente. Adesso costruiscilo nel mondo.'}
+  ]},
+  {id:'viz-process-12',name:'Process Visualization',cat:'Visualizzazione',catKey:'visualizzazione',dur:12,context:'Mattina · Giorno',desc:'Visualizza il processo, non il risultato. Ogni step, ogni ostacolo, ogni gesto.',priority:null,
+   steps:[
+    {phase:'SCELTA',dur:60,instruction:'Scegli un task o una performance',guide:'Chiudi gli occhi. Respiro naturale. Scegli un task o una performance specifica — oggi, domani, questa settimana.'},
+    {phase:'INIZIO',dur:120,instruction:'Visualizza l\'inizio',guide:'Visualizza l\'inizio. Come ti prepari? Cosa fai prima? Vedi ogni gesto.'},
+    {phase:'PROCESSO',dur:180,instruction:'Entra nel task step per step',guide:'Entra nel task. Non il risultato — il processo. Step dopo step. Cosa fai? Come ti muovi? Come pensi?'},
+    {phase:'OSTACOLO',dur:120,instruction:'Attraversa il punto difficile',guide:'Arriva a un punto difficile. Non evitarlo — attraversalo. Guarda come lo gestisci. Il tuo corpo sa già cosa fare.'},
+    {phase:'COMPLETAMENTO',dur:120,instruction:'Completa con padronanza',guide:'Completa il task. Non con sollievo — con padronanza. Senti la differenza.'},
+    {phase:'INTEGRAZIONE',dur:60,instruction:'Hai già eseguito nella mente',guide:'Respiro profondo. Hai già eseguito questo nella mente. Il corpo segue.'},
+    {phase:'CHIUSURA',dur:30,instruction:'Pronto',guide:'Apri gli occhi. Pronto.'}
+  ]}
+
 
 // ─── UTILS ──────────────────────────────────────────────
 function lsG(k){try{return localStorage.getItem(k);}catch{return null;}}
@@ -426,15 +677,26 @@ function initHome(){
 
 // ─── LIBRERIA ────────────────────────────────────────────
 let activeFilter='tutti';
-function renderLibrary(filter){
-  const filtered=filter==='tutti'?SESSIONS:SESSIONS.filter(s=>s.catKey===filter);
-  document.getElementById('session-list').innerHTML=filtered.map(s=>`<div class="session-item" onclick="openPlayer('${s.id}')"><div><div class="session-cat">${s.cat} · ${s.context}</div><div class="session-name">${s.name}</div><div class="session-meta">${s.desc.substring(0,55)}…</div></div><div class="session-dur">${s.dur}'</div></div>`).join('');
+let activeDur=0;
+function renderLibrary(){
+  let filtered=SESSIONS;
+  if(activeFilter!=='tutti') filtered=filtered.filter(s=>s.catKey===activeFilter);
+  if(activeDur!==0) filtered=filtered.filter(s=>s.dur===activeDur);
+  document.getElementById('session-list').innerHTML=filtered.length
+    ? filtered.map(s=>`<div class="session-item" onclick="openPlayer('${s.id}')"><div><div class="session-cat">${s.cat} · ${s.context}</div><div class="session-name">${s.name}</div><div class="session-meta">${s.desc.substring(0,55)}…</div></div><div class="session-dur">${s.dur}'</div></div>`).join('')
+    : '<div style="padding:24px;text-align:center;color:var(--ink-soft);font-size:14px;">Nessuna sessione per questi filtri.</div>';
 }
 function filterLib(key,btn){
   activeFilter=key;
   document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('act'));
   btn.classList.add('act');
-  renderLibrary(key);
+  renderLibrary();
+}
+function filterDur(dur,btn){
+  activeDur=dur;
+  document.querySelectorAll('.filter-btn-dur').forEach(b=>b.classList.remove('act'));
+  btn.classList.add('act');
+  renderLibrary();
 }
 
 // ─── PROGRESS ────────────────────────────────────────────
@@ -508,7 +770,7 @@ function initProgress(){
     // Categoria più usata
     const catCount={};sessions.forEach(s=>{catCount[s.catKey]=(catCount[s.catKey]||0)+1;});
     const topCat=Object.entries(catCount).sort((a,b)=>b[1]-a[1])[0];
-    const catNomi={'body-scan':'Body scan','breathwork':'Breathwork','decompressione':'Decompressione','regolazione':'Regolazione emotiva','focus':'Focus'};
+    const catNomi={'body-scan':'Body scan','breathwork':'Breathwork','decompressione':'Decompressione','regolazione':'Regolazione emotiva','focus':'Focus','ansia':'Ansia & Overthinking','energia':'Energia & Motivazione','visualizzazione':'Visualizzazione'};
     if(topCat) corrCards+=`<div class="corr-row"><div class="corr-lbl">Pratica prevalente</div><div class="corr-val">${catNomi[topCat[0]]||topCat[0]} · ${topCat[1]} sess.</div></div>`;
 
     correlHtml=`<div class="stat-card"><div class="stat-label">Correlazioni biometriche</div>${corrCards}</div>`;
@@ -649,7 +911,10 @@ function copyMindFitSession(){
     'breathwork':'Breathwork',
     'decompressione':'Decompressione',
     'regolazione':'Regolazione emotiva',
-    'focus':'Focus'
+    'focus':'Focus',
+    'ansia':'Ansia & Overthinking',
+    'energia':'Energia & Motivazione',
+    'visualizzazione':'Visualizzazione'
   };
   const nome=sessNomi[s.id]||s.id;
   const cat=catNomi[s.catKey]||s.catKey;
@@ -679,13 +944,13 @@ function goScreen(name){
     n.classList.toggle('act',navOrder[i]===name);
   });
   if(name==='home')initHome();
-  if(name==='libreria')renderLibrary(activeFilter);
+  if(name==='libreria')renderLibrary();
   if(name==='progress')initProgress();
 }
 
 // ─── BOOT ─────────────────────────────────────────────────
 initHome();
-renderLibrary('tutti');
+renderLibrary();
 </script>
 </body>
 </html>
