@@ -509,12 +509,27 @@ function skipForward(){PS.elapsed=Math.min(PS.totalDur-1,PS.elapsed+30);PS.stepE
 function completeSession(){
   clearInterval(PS.timer);clearInterval(PS.cycleTimer);PS.isPlaying=false;
   saveMfSession(PS.session.id,PS.session.dur,PS.session.catKey);
+  const today=new Date().toISOString().split('T')[0];
+  lsS('mindfit_sessione',PS.session.id);
+  lsS('mindfit_durata',String(PS.session.dur));
+  lsS('mindfit_categoria',PS.session.catKey);
+  lsS('mindfit_data',today);
   document.getElementById('breath-phase').textContent='COMPLETATO';
   document.getElementById('breath-instruction').textContent='Sessione terminata';
   document.getElementById('guide-text').textContent='Ottimo. Prenditi un momento prima di rientrare nel flusso.';
   document.getElementById('progress-fill').style.width='100%';
   document.getElementById('play-icon').textContent='✓';
   document.getElementById('play-lbl').textContent='Fine';
+  const ctrl=document.getElementById('player-controls');
+  if(ctrl&&!document.getElementById('copy-mf-btn')){
+    const btn=document.createElement('button');
+    btn.id='copy-mf-btn';
+    btn.className='rec-btn';
+    btn.style.cssText='margin:16px auto 0;display:flex;';
+    btn.textContent='📋 Copia per Claude';
+    btn.onclick=copyMindFitSession;
+    ctrl.appendChild(btn);
+  }
 }
 
 function exitPlayer(){clearInterval(PS.timer);clearInterval(PS.cycleTimer);PS.isPlaying=false;goScreen('home');}
