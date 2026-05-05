@@ -531,7 +531,39 @@ function completeSession(){
     ctrl.appendChild(btn);
   }
 }
-
+function copyMindFitSession(){
+  const s=PS.session;
+  const today=new Date().toISOString().split('T')[0];
+  const sessNomi={
+    'body-scan-12':'Body scan pre-sleep',
+    'body-scan-20':'Body scan profondo',
+    'decompressione-8':'Decompressione serale',
+    'respiro-478':'Respiro 4-7-8',
+    'regolazione-5':'Temperatura emotiva',
+    'review-8':'Review della giornata'
+  };
+  const catNomi={
+    'body-scan':'Body scan',
+    'breathwork':'Breathwork',
+    'decompressione':'Decompressione',
+    'regolazione':'Regolazione emotiva',
+    'focus':'Focus'
+  };
+  const nome=sessNomi[s.id]||s.id;
+  const cat=catNomi[s.catKey]||s.catKey;
+  const txt=
+`MINDFIT — SESSIONE COMPLETATA
+Data: ${today}
+Sessione: ${nome}
+Durata: ${s.dur} minuti
+Categoria: ${cat}`;
+  navigator.clipboard.writeText(txt).then(()=>{
+    const btn=document.getElementById('copy-mf-btn');
+    if(btn){btn.textContent='✓ Copiato';setTimeout(()=>{btn.textContent='📋 Copia per Claude';},2000);}
+  }).catch(()=>{
+    prompt('Copia questo testo:',txt);
+  });
+}
 function exitPlayer(){clearInterval(PS.timer);clearInterval(PS.cycleTimer);PS.isPlaying=false;goScreen('home');}
 function fmtTime(sec){return Math.floor(sec/60)+':'+String(sec%60).padStart(2,'0');}
 
