@@ -1,12 +1,21 @@
 {
-  "version": 2,
   "functions": {
-    "api/ai.js": { "maxDuration": 30 },
-    "api/notion.js": { "maxDuration": 30 }
+    "api/proxy.js": {
+      "maxDuration": 30
+    }
   },
-  "routes": [
-    { "src": "/api/ai", "dest": "/api/ai.js" },
-    { "src": "/api/notion", "dest": "/api/notion.js" },
-    { "src": "/(.*)", "dest": "/index.html" }
+  "rewrites": [
+    {
+      "source": "/api/proxy",
+      "destination": "/api/proxy.js"
+    },
+    {
+      "source": "/mindfit",
+      "destination": "/mindfit/index.html"
+    },
+    {
+      "source": "/mindfit/(.*)",
+      "destination": "/mindfit/index.html"
+    }
   ]
 }
