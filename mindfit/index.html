@@ -126,7 +126,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--linen);color:va
 .progress-wrap{width:100%;background:rgba(255,255,255,0.08);border-radius:3px;height:3px;margin-bottom:10px;}
 .progress-fill{height:3px;border-radius:3px;background:var(--sage);transition:width .5s linear;}
 .time-row{display:flex;justify-content:space-between;width:100%;font-size:11px;color:rgba(90,122,96,0.8);}
-.player-controls{background:#EFF5F0;padding:16px 24px;padding-bottom:calc(20px + var(--safe-bot));display:flex;flex-wrap:wrap;justify-content:center;gap:32px;align-items:center;flex-shrink:0;}
+.player-controls{background:#EFF5F0;padding:16px 24px;padding-bottom:calc(20px + var(--safe-bot));display:flex;justify-content:center;gap:32px;align-items:center;flex-shrink:0;}
 .ctrl-btn{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;-webkit-appearance:none;}
 .ctrl-icon{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;background:rgba(42,70,44,0.15);color:var(--forest);}
 .ctrl-icon.main{width:56px;height:56px;background:var(--forest-mid);color:#EDF5EE;font-size:20px;}
@@ -231,7 +231,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--linen);color:va
     <button class="ctrl-btn" onclick="togglePlay()"><div class="ctrl-icon main" id="play-icon">▶</div><span class="ctrl-lbl" id="play-lbl">Play</span></button>
     <button class="ctrl-btn" onclick="skipForward()"><div class="ctrl-icon">↪</div><span class="ctrl-lbl">+30s</span></button>
   </div>
-  <div id="copy-mf-wrap" style="display:none;padding:12px 24px 16px;background:#EFF5F0;text-align:center;">
+  <div id="copy-mf-wrap" style="display:none;padding:12px 24px calc(16px + var(--safe-bot));background:#EFF5F0;text-align:center;">
     <button id="copy-mf-btn" onclick="copyMindFitSession()" style="background:var(--forest);color:#EDF5EE;border:none;border-radius:100px;padding:14px 32px;font-size:14px;font-weight:500;cursor:pointer;width:100%;">📋 Copia per Claude</button>
   </div>
 </div>
@@ -315,6 +315,25 @@ const SESSIONS=[
 function lsG(k){try{return localStorage.getItem(k);}catch{return null;}}
 function lsS(k,v){try{localStorage.setItem(k,v);}catch{}}
 
+// Legge i parametri URL passati da Evening Reflection al lancio
+// Formato: ?bc=70&hrv=48&en=3&ds=18&sl=82
+function getUrlParams(){
+  try{
+    const p=new URLSearchParams(window.location.search);
+    const bc=p.get('bc');const hrv=p.get('hrv');const en=p.get('en');
+    const ds=p.get('ds');const sl=p.get('sl');
+    if(!bc&&!hrv&&!en)return null;
+    return{
+      biocharge:bc?parseInt(bc):null,
+      hrv:hrv?parseInt(hrv):null,
+      energy:en?parseInt(en):null,
+      deepSleepPct:ds?parseFloat(ds):null,
+      sleepScore:sl?parseInt(sl):null
+    };
+  }catch{return null;}
+}
+
+// Legge i dati del morning check-in da localStorage (fallback se non ci sono URL params)
 function getMorningToday(){
   try{
     const raw=lsG('er_mornings');if(!raw)return null;
@@ -322,6 +341,13 @@ function getMorningToday(){
     const today=new Date().toISOString().split('T')[0];
     return mornings.find(m=>m.date===today&&!m.skipped)||null;
   }catch{return null;}
+}
+
+// Dati biometrici: URL params hanno priorità, poi localStorage
+function getBioData(){
+  const fromUrl=getUrlParams();
+  if(fromUrl)return fromUrl;
+  return getMorningToday();
 }
 
 function getMfSessions(){try{const r=lsG('mf_sessions');return r?JSON.parse(r):[];}catch{return[];}}
@@ -347,7 +373,7 @@ function getStreak(){
 
 function hrvBandFromMs(hrv){
   if(!hrv)return null;
-  const baseline=52; // baseline Edoardo aprile 2026
+  const baseline=52;
   const r=hrv/baseline;
   if(r>=1.10)return{label:'Ott.',cls:'ok'};
   if(r>=0.90)return{label:'Bil.',cls:'ok'};
@@ -355,9 +381,9 @@ function hrvBandFromMs(hrv){
   return{label:'Crit.',cls:'crit'};
 }
 
-function buildRec(morning){
-  if(!morning)return{eyebrow:'Sessione consigliata',title:'Body scan pre-sleep',sub:'Nessun dato di oggi disponibile. Sessione base consigliata.',sessionId:'body-scan-12'};
-  const{deepSleepPct,biocharge,hrv,energy}=morning;
+function buildRec(data){
+  if(!data)return{eyebrow:'Sessione consigliata',title:'Body scan pre-sleep',sub:'Nessun dato di oggi disponibile. Sessione base consigliata.',sessionId:'body-scan-12'};
+  const{deepSleepPct,biocharge,hrv,energy}=data;
   const band=hrv?hrvBandFromMs(hrv):null;
   if(deepSleepPct&&deepSleepPct<15)return{eyebrow:'Deep sleep critico ieri · '+deepSleepPct+'%',title:'Body scan pre-sleep',sub:'La sessione più efficace per aumentare il sonno profondo. 12 minuti.',sessionId:'body-scan-12'};
   if(biocharge&&biocharge<55)return{eyebrow:'Biocharge basso · '+biocharge+'%',title:'Decompressione serale',sub:'Il corpo è in recupero. Una decompressione gentile per facilitarlo.',sessionId:'decompressione-8'};
@@ -368,18 +394,18 @@ function buildRec(morning){
 
 // ─── HOME ────────────────────────────────────────────────
 function initHome(){
-  const morning=getMorningToday();
+  const data=getBioData();
   const h=new Date().getHours();
   document.getElementById('greeting').textContent=h<12?'Buongiorno':h<18?'Buon pomeriggio':'Buonasera';
-  if(morning){
+  if(data){
     const bcEl=document.getElementById('stat-biocharge');
     const hrvEl=document.getElementById('stat-hrv');
     const enEl=document.getElementById('stat-energy');
-    if(morning.biocharge){bcEl.textContent=morning.biocharge+'%';bcEl.className='status-pill-val'+(morning.biocharge>=70?' ok':morning.biocharge>=50?'':' warn');}
-    if(morning.hrv){const b=hrvBandFromMs(morning.hrv);hrvEl.textContent=b.label;hrvEl.className='status-pill-val '+b.cls;}
-    if(morning.energy){enEl.textContent=morning.energy+'/5';enEl.className='status-pill-val'+(morning.energy>=4?' ok':morning.energy>=3?'':' warn');}
+    if(data.biocharge){bcEl.textContent=data.biocharge+'%';bcEl.className='status-pill-val'+(data.biocharge>=70?' ok':data.biocharge>=50?'':' warn');}
+    if(data.hrv){const b=hrvBandFromMs(data.hrv);hrvEl.textContent=b.label;hrvEl.className='status-pill-val '+b.cls;}
+    if(data.energy){enEl.textContent=data.energy+'/5';enEl.className='status-pill-val'+(data.energy>=4?' ok':data.energy>=3?'':' warn');}
   }
-  const rec=buildRec(morning);
+  const rec=buildRec(data);
   document.getElementById('rec-area').innerHTML=`<div class="rec-card"><div class="rec-eyebrow">${rec.eyebrow}</div><div class="rec-title">${rec.title}</div><div class="rec-sub">${rec.sub}</div><button class="rec-btn" onclick="openPlayer('${rec.sessionId}')">Inizia sessione ›</button></div>`;
 }
 
@@ -437,6 +463,7 @@ function openPlayer(sessionId){
   document.getElementById('progress-fill').style.width='0%';
   document.getElementById('play-icon').textContent='▶';
   document.getElementById('play-lbl').textContent='Play';
+  document.getElementById('copy-mf-wrap').style.display='none';
   renderStep(0);
   goScreen('player');
 }
@@ -524,8 +551,8 @@ function completeSession(){
   document.getElementById('play-icon').textContent='✓';
   document.getElementById('play-lbl').textContent='Fine';
   document.getElementById('copy-mf-wrap').style.display='block';
-  }
 }
+
 function copyMindFitSession(){
   const s=PS.session;
   const today=new Date().toISOString().split('T')[0];
@@ -535,7 +562,7 @@ function copyMindFitSession(){
     'decompressione-8':'Decompressione serale',
     'respiro-478':'Respiro 4-7-8',
     'regolazione-5':'Temperatura emotiva',
-    'review-8':'Review della giornata'
+    'focus-review-8':'Review della giornata'
   };
   const catNomi={
     'body-scan':'Body scan',
@@ -559,6 +586,7 @@ Categoria: ${cat}`;
     prompt('Copia questo testo:',txt);
   });
 }
+
 function exitPlayer(){clearInterval(PS.timer);clearInterval(PS.cycleTimer);PS.isPlaying=false;goScreen('home');}
 function fmtTime(sec){return Math.floor(sec/60)+':'+String(sec%60).padStart(2,'0');}
 
@@ -578,12 +606,6 @@ function goScreen(name){
 // ─── BOOT ─────────────────────────────────────────────────
 initHome();
 renderLibrary('tutti');
-
-// DEBUG temporaneo
-document.addEventListener('dblclick', () => {
-  const raw = localStorage.getItem('er_mornings');
-  alert(raw ? raw.substring(0, 200) : 'er_mornings = NULL');
-});
 </script>
 </body>
 </html>
