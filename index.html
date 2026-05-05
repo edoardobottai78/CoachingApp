@@ -338,7 +338,10 @@ body { font-family: var(--fb); background: var(--bg); color: var(--ink); height:
 <!-- ── HOME ── -->
 <div id="shome" class="screen">
   <div style="background:var(--bg);border-bottom:0.5px solid var(--line);padding:calc(var(--safe-top) + 16px) 20px 14px;flex-shrink:0">
-    <div class="eyebrow">Evening Reflection</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div class="eyebrow">Evening Reflection</div>
+      <button onclick="openMindFit()" style="background:#3B6D11;color:#fff;border:none;border-radius:100px;padding:6px 14px;font-size:11px;font-weight:500;font-family:inherit;cursor:pointer;">🧘 MindFit</button>
+    </div>
     <h1 class="hero">Come stai<br><em>stasera?</em></h1>
     <p class="sub" id="hdate"></p>
     <div class="streak-row">
