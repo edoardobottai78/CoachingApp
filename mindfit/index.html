@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="MindFit">
+<meta name="theme-color" content="#2C2A1E">
+<title>MindFit</title>
+<script>
+const manifestData={name:"MindFit",short_name:"MindFit",description:"Mental performance e meditazione serale",start_url:"/mindfit",display:"standalone",background_color:"#2C2A1E",theme_color:"#2C2A1E",orientation:"portrait",icons:[{src:"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' fill='%232C2A1E'/%3E%3Ccircle cx='96' cy='96' r='56' fill='none' stroke='%23D4C89A' stroke-width='3'/%3E%3Ccircle cx='96' cy='96' r='16' fill='%23D4C89A'/%3E%3C/svg%3E",sizes:"192x192",type:"image/svg+xml"}]};
+const blob=new Blob([JSON.stringify(manifestData)],{type:'application/json'});
+document.write('<link rel="manifest" href="'+URL.createObjectURL(blob)+'">');
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --night:#2C2A1E;--night-mid:#3A3828;--gold:#D4C89A;--gold-dim:#A09060;
+  --forest:#1A2B1F;--forest-mid:#243527;--sage:#7ABB85;--sage-dim:#5A9A65;
+  --linen:#F8F6F1;--linen-mid:#F0EDE6;--linen-dark:#E0DCCD;
+  --ink:#2C2A1E;--ink-mid:#5C5840;--ink-soft:#908060;
+  --night-blue:#1E2030;--indigo:#4A4CC8;--indigo-dim:#7A7CC8;
+  --text-on-night:#F5F0E6;--text-on-night-dim:#A09070;
+  --border-night:rgba(255,255,255,0.10);--border-linen:#E0DCCD;
+  --r:14px;--r-sm:10px;
+  --safe-top:env(safe-area-inset-top,0px);--safe-bot:env(safe-area-inset-bottom,0px);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html{height:100%;overscroll-behavior:none;}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--linen);color:var(--ink);height:100%;overflow:hidden;-webkit-font-smoothing:antialiased;}
+#app{height:100vh;height:100dvh;display:flex;flex-direction:column;overflow:hidden;}
+.screen{display:none;flex-direction:column;height:100%;overflow:hidden;}
+.screen.active{display:flex;}
+.scroll-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+
+/* NAV */
+.bottom-nav{display:flex;border-top:0.5px solid var(--border-linen);background:var(--linen);padding-bottom:var(--safe-bot);flex-shrink:0;}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;padding:10px 4px 8px;background:none;border:none;cursor:pointer;color:var(--ink-soft);gap:3px;}
+.nav-item.act{color:var(--ink);}
+.nav-icon{font-size:18px;line-height:1;}
+.nav-lbl{font-size:9px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;}
+.nav-bar{width:20px;height:2.5px;border-radius:2px;background:var(--gold);display:none;}
+.nav-item.act .nav-bar{display:block;}
+
+/* HOME */
+.home-header{background:var(--night);padding:calc(var(--safe-top) + 20px) 20px 22px;flex-shrink:0;}
+.home-greeting{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--text-on-night-dim);margin-bottom:4px;}
+.home-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:26px;font-weight:300;color:var(--text-on-night);margin-bottom:18px;line-height:1.2;}
+.home-title em{font-style:italic;color:var(--gold);}
+.status-bar{display:flex;gap:8px;}
+.status-pill{flex:1;background:rgba(255,255,255,0.07);border:0.5px solid var(--border-night);border-radius:var(--r-sm);padding:10px 8px;text-align:center;}
+.status-pill-val{font-size:17px;font-weight:500;color:var(--gold);display:block;}
+.status-pill-lbl{font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:rgba(160,144,112,0.8);display:block;margin-top:2px;}
+.status-pill-val.ok{color:#7ABB85;}.status-pill-val.warn{color:#F5A623;}.status-pill-val.crit{color:#F53A3A;}
+.home-body{padding:14px 16px 16px;}
+.rec-card{background:#fff;border:0.5px solid var(--border-linen);border-radius:var(--r);padding:16px;margin-bottom:12px;}
+.rec-eyebrow{font-size:9px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:5px;}
+.rec-title{font-size:15px;font-weight:500;color:var(--ink);margin-bottom:3px;}
+.rec-sub{font-size:12px;color:var(--ink-soft);margin-bottom:14px;line-height:1.4;}
+.rec-btn{display:inline-flex;align-items:center;gap:6px;background:var(--night);color:var(--gold);border:none;border-radius:100px;padding:10px 18px;font-size:12px;font-weight:500;cursor:pointer;-webkit-appearance:none;}
+.rec-btn:active{opacity:.85;}
+.section-label{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:10px;}
+.quick-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;}
+.quick-card{background:#fff;border:0.5px solid var(--border-linen);border-radius:var(--r-sm);padding:12px 8px;text-align:center;cursor:pointer;-webkit-appearance:none;border-style:solid;}
+.quick-card:active{background:var(--linen-mid);}
+.quick-min{font-size:20px;font-weight:500;color:var(--ink);display:block;margin-bottom:3px;}
+.quick-name{font-size:10px;color:var(--ink-soft);}
+.path-card{background:var(--forest);border-radius:var(--r);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;margin-bottom:4px;}
+.path-card:active{opacity:.85;}
+.path-eyebrow{font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--sage-dim);margin-bottom:3px;}
+.path-name{font-size:14px;font-weight:500;color:#EDF5EE;}
+.path-arrow{color:var(--sage);font-size:18px;}
+
+/* LIBRERIA */
+.lib-header{background:var(--linen);padding:calc(var(--safe-top) + 16px) 20px 12px;border-bottom:0.5px solid var(--border-linen);flex-shrink:0;}
+.lib-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;font-weight:300;color:var(--ink);}
+.filter-bar{display:flex;gap:8px;overflow-x:auto;padding:12px 16px 0;flex-shrink:0;}
+.filter-btn{flex-shrink:0;background:none;border:0.5px solid var(--border-linen);border-radius:100px;padding:6px 14px;font-size:12px;color:var(--ink-soft);cursor:pointer;white-space:nowrap;-webkit-appearance:none;}
+.filter-btn.act{background:var(--night);color:var(--gold);border-color:var(--night);}
+.session-list{padding:12px 16px;}
+.session-item{background:#fff;border:0.5px solid var(--border-linen);border-radius:var(--r);padding:14px 16px;margin-bottom:10px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;}
+.session-item:active{background:var(--linen-mid);}
+.session-cat{font-size:9px;font-weight:500;letter-spacing:.10em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:3px;}
+.session-name{font-size:14px;font-weight:500;color:var(--ink);margin-bottom:2px;}
+.session-meta{font-size:11px;color:var(--ink-soft);}
+.session-dur{background:var(--linen-mid);border-radius:100px;padding:4px 10px;font-size:11px;font-weight:500;color:var(--ink-mid);flex-shrink:0;margin-left:12px;}
+
+/* PROGRESS */
+.prog-header{background:var(--night-blue);padding:calc(var(--safe-top) + 20px) 20px 20px;flex-shrink:0;}
+.prog-eyebrow{font-size:9px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:#6062A0;margin-bottom:4px;}
+.prog-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;font-weight:300;color:#E8EAF5;margin-bottom:16px;}
+.mfs-row{display:flex;align-items:center;gap:16px;}
+.mfs-ring{width:60px;height:60px;border-radius:50%;border:3px solid var(--indigo);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.mfs-score{font-size:20px;font-weight:500;color:#E8EAF5;}
+.mfs-label{font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:#6062A0;margin-bottom:4px;}
+.mfs-delta{font-size:12px;color:var(--indigo-dim);}
+.mfs-empty{font-size:12px;color:#6062A0;font-style:italic;}
+.prog-body{padding:14px 16px;}
+.stat-card{background:#fff;border:0.5px solid var(--border-linen);border-radius:var(--r);padding:14px 16px;margin-bottom:10px;}
+.stat-label{font-size:9px;text-transform:uppercase;letter-spacing:.10em;color:var(--ink-soft);margin-bottom:5px;}
+.stat-value{font-size:14px;font-weight:500;color:var(--ink);margin-bottom:6px;}
+.stat-note{font-size:11px;color:var(--ink-soft);}
+.bar-track{background:var(--linen-mid);border-radius:3px;height:4px;margin-top:8px;}
+.bar-fill{height:4px;border-radius:3px;}
+.bar-indigo{background:var(--indigo);}.bar-sage{background:var(--sage);}
+.streak-dots{display:flex;gap:5px;margin-top:8px;}
+.sdot{width:12px;height:12px;border-radius:50%;}
+.sdot.on{background:var(--indigo);}.sdot.off{background:var(--linen-mid);}.sdot.today{background:var(--gold);}
+
+/* PLAYER */
+.player-screen{background:var(--forest);}
+.player-header{background:var(--forest);padding:calc(var(--safe-top) + 16px) 20px 0;flex-shrink:0;}
+.player-back{font-size:10px;font-weight:500;letter-spacing:.10em;text-transform:uppercase;color:var(--sage-dim);background:none;border:none;cursor:pointer;padding:0;margin-bottom:8px;display:block;-webkit-appearance:none;}
+.player-cat{font-size:9px;text-transform:uppercase;letter-spacing:.10em;color:var(--sage-dim);}
+.player-name{font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;font-weight:300;color:#EDF5EE;margin:3px 0 20px;}
+.breath-area{flex:1;background:var(--forest);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;}
+.breath-ring-outer{width:140px;height:140px;border-radius:50%;border:1px solid rgba(120,180,130,0.20);display:flex;align-items:center;justify-content:center;margin-bottom:20px;transition:transform 4s ease-in-out;}
+.breath-ring-mid{width:108px;height:108px;border-radius:50%;border:1px solid rgba(120,180,130,0.30);display:flex;align-items:center;justify-content:center;}
+.breath-ring-inner{width:74px;height:74px;border-radius:50%;background:var(--forest-mid);border:1.5px solid rgba(122,187,133,0.5);display:flex;align-items:center;justify-content:center;transition:transform 4s ease-in-out,background 4s ease;}
+.breath-count{font-size:24px;font-weight:300;color:#EDF5EE;}
+.breath-phase{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--sage);margin-bottom:4px;}
+.breath-instruction{font-size:13px;color:rgba(237,245,238,0.6);margin-bottom:24px;text-align:center;}
+.guide-text{background:rgba(255,255,255,0.06);border-radius:var(--r-sm);padding:12px 16px;margin:0 0 16px;width:100%;font-size:13px;color:rgba(237,245,238,0.75);line-height:1.6;text-align:center;font-style:italic;font-family:'Cormorant Garamond',Georgia,serif;}
+.progress-wrap{width:100%;background:rgba(255,255,255,0.08);border-radius:3px;height:3px;margin-bottom:10px;}
+.progress-fill{height:3px;border-radius:3px;background:var(--sage);transition:width .5s linear;}
+.time-row{display:flex;justify-content:space-between;width:100%;font-size:11px;color:rgba(90,122,96,0.8);}
+.player-controls{background:#EFF5F0;padding:16px 24px;padding-bottom:calc(20px + var(--safe-bot));display:flex;justify-content:center;gap:32px;align-items:center;flex-shrink:0;}
+.ctrl-btn{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;-webkit-appearance:none;}
+.ctrl-icon{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;background:rgba(42,70,44,0.15);color:var(--forest);}
+.ctrl-icon.main{width:56px;height:56px;background:var(--forest-mid);color:#EDF5EE;font-size:20px;}
+.ctrl-lbl{font-size:9px;color:var(--sage-dim);letter-spacing:.05em;text-transform:uppercase;}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- HOME -->
+<div class="screen active" id="screen-home">
+  <div class="home-header">
+    <div class="home-greeting" id="greeting">Buonasera</div>
+    <div class="home-title" id="home-title">Come stai<br><em>stasera?</em></div>
+    <div class="status-bar">
+      <div class="status-pill"><span class="status-pill-val" id="stat-biocharge">—</span><span class="status-pill-lbl">Biocharge</span></div>
+      <div class="status-pill"><span class="status-pill-val" id="stat-hrv">—</span><span class="status-pill-lbl">HRV</span></div>
+      <div class="status-pill"><span class="status-pill-val" id="stat-energy">—</span><span class="status-pill-lbl">Energia</span></div>
+    </div>
+  </div>
+  <div class="scroll-body">
+    <div class="home-body">
+      <div id="rec-area"></div>
+      <div class="section-label">Sessioni rapide</div>
+      <div class="quick-grid">
+        <button class="quick-card" onclick="openPlayer('respiro-478')"><span class="quick-min">5'</span><span class="quick-name">Respiro 4-7-8</span></button>
+        <button class="quick-card" onclick="openPlayer('decompressione-8')"><span class="quick-min">8'</span><span class="quick-name">Decompressione</span></button>
+        <button class="quick-card" onclick="openPlayer('body-scan-12')"><span class="quick-min">12'</span><span class="quick-name">Body scan</span></button>
+      </div>
+      <div class="section-label">Percorso attivo</div>
+      <div class="path-card" onclick="goScreen('libreria')">
+        <div><div class="path-eyebrow">Deep Sleep · Priorità</div><div class="path-name">Body scan pre-sleep</div></div>
+        <div class="path-arrow">›</div>
+      </div>
+    </div>
+  </div>
+  <nav class="bottom-nav">
+    <button class="nav-item act" onclick="goScreen('home')"><div class="nav-bar"></div><span class="nav-icon">⌂</span><span class="nav-lbl">Home</span></button>
+    <button class="nav-item" onclick="goScreen('libreria')"><div class="nav-bar"></div><span class="nav-icon">☰</span><span class="nav-lbl">Libreria</span></button>
+    <button class="nav-item" onclick="goScreen('progress')"><div class="nav-bar"></div><span class="nav-icon">◎</span><span class="nav-lbl">Progress</span></button>
+  </nav>
+</div>
+
+<!-- LIBRERIA -->
+<div class="screen" id="screen-libreria">
+  <div class="lib-header"><div class="lib-title">Libreria sessioni</div></div>
+  <div class="filter-bar" id="filter-bar">
+    <button class="filter-btn act" onclick="filterLib('tutti',this)">Tutti</button>
+    <button class="filter-btn" onclick="filterLib('body-scan',this)">Body scan</button>
+    <button class="filter-btn" onclick="filterLib('breathwork',this)">Breathwork</button>
+    <button class="filter-btn" onclick="filterLib('decompressione',this)">Decompressione</button>
+    <button class="filter-btn" onclick="filterLib('regolazione',this)">Regolazione emotiva</button>
+    <button class="filter-btn" onclick="filterLib('focus',this)">Focus</button>
+  </div>
+  <div class="scroll-body"><div class="session-list" id="session-list"></div></div>
+  <nav class="bottom-nav">
+    <button class="nav-item" onclick="goScreen('home')"><div class="nav-bar"></div><span class="nav-icon">⌂</span><span class="nav-lbl">Home</span></button>
+    <button class="nav-item act" onclick="goScreen('libreria')"><div class="nav-bar"></div><span class="nav-icon">☰</span><span class="nav-lbl">Libreria</span></button>
+    <button class="nav-item" onclick="goScreen('progress')"><div class="nav-bar"></div><span class="nav-icon">◎</span><span class="nav-lbl">Progress</span></button>
+  </nav>
+</div>
+
+<!-- PROGRESS -->
+<div class="screen" id="screen-progress">
+  <div class="prog-header">
+    <div class="prog-eyebrow">Mental Fitness</div>
+    <div class="prog-title">Il tuo progresso</div>
+    <div class="mfs-row">
+      <div class="mfs-ring"><span class="mfs-score" id="mfs-score">—</span></div>
+      <div><div class="mfs-label">Mental Fitness Score</div><div id="mfs-sub" class="mfs-empty">Completa 3 sessioni per il primo score</div></div>
+    </div>
+  </div>
+  <div class="scroll-body"><div class="prog-body" id="prog-body"></div></div>
+  <nav class="bottom-nav">
+    <button class="nav-item" onclick="goScreen('home')"><div class="nav-bar"></div><span class="nav-icon">⌂</span><span class="nav-lbl">Home</span></button>
+    <button class="nav-item" onclick="goScreen('libreria')"><div class="nav-bar"></div><span class="nav-icon">☰</span><span class="nav-lbl">Libreria</span></button>
+    <button class="nav-item act" onclick="goScreen('progress')"><div class="nav-bar"></div><span class="nav-icon">◎</span><span class="nav-lbl">Progress</span></button>
+  </nav>
+</div>
+
+<!-- PLAYER -->
+<div class="screen player-screen" id="screen-player">
+  <div class="player-header">
+    <button class="player-back" onclick="exitPlayer()">← Indietro</button>
+    <div class="player-cat" id="player-cat">Breathwork · Sera</div>
+    <div class="player-name" id="player-name">Sessione</div>
+  </div>
+  <div class="breath-area">
+    <div class="breath-ring-outer" id="breath-outer">
+      <div class="breath-ring-mid">
+        <div class="breath-ring-inner" id="breath-inner"><span class="breath-count" id="breath-count"></span></div>
+      </div>
+    </div>
+    <div class="guide-text" id="guide-text">Siediti comodamente. Chiudi gli occhi.</div>
+    <div class="breath-phase" id="breath-phase">PRONTO?</div>
+    <div class="breath-instruction" id="breath-instruction">Tocca play per iniziare</div>
+    <div class="progress-wrap"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    <div class="time-row"><span id="time-elapsed">0:00</span><span id="time-total">0:00</span></div>
+  </div>
+  <div class="player-controls">
+    <button class="ctrl-btn" onclick="skipBack()"><div class="ctrl-icon">↩</div><span class="ctrl-lbl">-30s</span></button>
+    <button class="ctrl-btn" onclick="togglePlay()"><div class="ctrl-icon main" id="play-icon">▶</div><span class="ctrl-lbl" id="play-lbl">Play</span></button>
+    <button class="ctrl-btn" onclick="skipForward()"><div class="ctrl-icon">↪</div><span class="ctrl-lbl">+30s</span></button>
+  </div>
+</div>
+
+</div><!-- /app -->
+<script>
+// ─── SESSIONI ───────────────────────────────────────────
+const SESSIONS=[
+  {id:'body-scan-12',name:'Body scan pre-sleep',cat:'Body scan',catKey:'body-scan',dur:12,context:'Sera · Notte',desc:'Scansione progressiva del corpo per rilasciare la tensione e preparare il sonno profondo.',priority:'deep-sleep',
+   steps:[
+    {phase:'PREPARAZIONE',dur:30,instruction:'Sdraiati comodamente',guide:'Trova una posizione comoda. Lascia che il corpo si sistemi naturalmente. Occhi chiusi.'},
+    {phase:'RESPIRO',dur:60,instruction:'Osserva il respiro',guide:'Porta l\'attenzione al respiro. Non cambiarlo. Ogni espirazione è un rilascio.'},
+    {phase:'PIEDI',dur:60,instruction:'Porta l\'attenzione ai piedi',guide:'Senti il peso dei piedi. Nota qualsiasi sensazione: calore, pressione, formicolio.'},
+    {phase:'GAMBE',dur:60,instruction:'Risali verso le gambe',guide:'Polpacci, ginocchia, cosce. Se trovi tensione, lasciala sciogliere con ogni espirazione.'},
+    {phase:'ADDOME',dur:60,instruction:'Zona addome e lombare',guide:'Nota il movimento naturale del respiro sull\'addome. L\'area lombare: rilascia ogni contrazione.'},
+    {phase:'PETTO',dur:60,instruction:'Petto e spalle',guide:'Dove porti spesso la tensione della giornata. Con ogni espiro, lascia che le spalle scendano.'},
+    {phase:'BRACCIA',dur:60,instruction:'Braccia e mani',guide:'Dal bordo delle spalle fino alle dita. Lascia che le braccia diventino pesanti, sostenute.'},
+    {phase:'COLLO',dur:60,instruction:'Collo e gola',guide:'Zona spesso carica. Non forzare il rilascio: osserva e respira.'},
+    {phase:'VISO',dur:60,instruction:'Viso e testa',guide:'Fronte, sopracciglia, mascella. Nota se hai il viso contratto. Lascia che si ammorbidisca.'},
+    {phase:'INTEGRAZIONE',dur:90,instruction:'Tutto il corpo insieme',guide:'Senti il corpo come un tutto. Pesante, caldo, sostenuto. Sei pronto per il sonno.'},
+    {phase:'CHIUSURA',dur:60,instruction:'Rimani qui',guide:'Non c\'è nulla da fare. Il corpo sa come dormire. Lascialo andare.'}
+  ]},
+  {id:'respiro-478',name:'Respiro 4-7-8',cat:'Breathwork',catKey:'breathwork',dur:5,context:'Sera',desc:'Il pattern respiratorio 4-7-8 attiva il sistema parasimpatico e riduce l\'attivazione nervosa.',priority:null,
+   steps:[
+    {phase:'PREPARAZIONE',dur:20,instruction:'Schiena dritta, bocca chiusa',guide:'Siediti con la schiena eretta. Appoggia la lingua al palato, dietro i denti superiori.'},
+    {phase:'CICLO 1',dur:19,instruction:'Inizia il ciclo 4-7-8',guide:'Inspira dal naso 4 secondi. Trattieni 7. Espira dalla bocca 8.',isCycle:true},
+    {phase:'CICLO 2',dur:19,instruction:'Secondo ciclo',guide:'Stai attivando il freno parasimpatico.',isCycle:true},
+    {phase:'CICLO 3',dur:19,instruction:'Terzo ciclo',guide:'Senti la calma che si installa.',isCycle:true},
+    {phase:'CICLO 4',dur:19,instruction:'Quarto ciclo',guide:'Meno pensieri, più presenza.',isCycle:true},
+    {phase:'CICLO 5',dur:19,instruction:'Quinto ciclo',guide:'Quasi alla fine. Il corpo ha ricevuto il segnale di sicurezza.',isCycle:true},
+    {phase:'CICLO 6',dur:19,instruction:'Sesto ciclo',guide:'Portalo a casa.',isCycle:true},
+    {phase:'NATURALE',dur:60,instruction:'Respiro naturale',guide:'Lascia che il respiro torni spontaneo. Nota come si è modificato.'},
+    {phase:'CHIUSURA',dur:26,instruction:'Integra',guide:'Questo effetto durerà. Puoi usare questo pattern ogni volta che ne hai bisogno.'}
+  ]},
+  {id:'decompressione-8',name:'Decompressione serale',cat:'Decompressione',catKey:'decompressione',dur:8,context:'Sera',desc:'Lascia andare la giornata. Transizione consapevole dal modo fare al modo essere.',priority:null,
+   steps:[
+    {phase:'ATTERRAGGIO',dur:40,instruction:'Ferma tutto',guide:'Hai finito. La giornata è conclusa. Non c\'è nulla che devi risolvere adesso.'},
+    {phase:'RESPIRO',dur:60,instruction:'Respira lentamente',guide:'Inspira 4 secondi, espira 6 secondi. L\'espirazione più lunga attiva il rilassamento.'},
+    {phase:'SCARICA',dur:80,instruction:'Cosa ti sei portato dietro?',guide:'Pensa alla giornata. Non per analizzarla: solo per vederla. Lascia che le immagini passino.'},
+    {phase:'LASCIA',dur:80,instruction:'Posa ogni cosa',guide:'Immagina di posare uno zaino pesante. Ogni task, ogni conversazione incompiuta: può aspettare domani.'},
+    {phase:'CORPO',dur:60,instruction:'Dove sei nel corpo?',guide:'Dove hai accumulato la tensione oggi? Collo? Mascella? Stomaco? Solo osservare già aiuta.'},
+    {phase:'GRATITUDINE',dur:60,instruction:'Una cosa positiva',guide:'Un momento, anche piccolo, che oggi ha funzionato. Non serve che sia grande. Solo reale.'},
+    {phase:'CHIUSURA',dur:60,instruction:'Sei qui, ora',guide:'Il lavoro della giornata è fatto. Ora inizia il tempo del recupero. Permettitelo.'}
+  ]},
+  {id:'regolazione-5',name:'Temperatura emotiva',cat:'Regolazione emotiva',catKey:'regolazione',dur:5,context:'Sera',desc:'Identifica e nomina l\'emozione prevalente. Il labeling riduce l\'intensità emotiva.',priority:null,
+   steps:[
+    {phase:'OSSERVA',dur:30,instruction:'Cosa senti adesso?',guide:'Non come stai in senso generico. Cosa senti nel corpo in questo momento preciso?'},
+    {phase:'NOMINA',dur:60,instruction:'Dai un nome all\'emozione',guide:'Ansia? Stanchezza? Frustrazione? Soddisfazione? Nominarla crea distanza e chiarezza.'},
+    {phase:'LOCALIZZA',dur:60,instruction:'Dove la senti nel corpo?',guide:'Ogni emozione ha una sede fisica. Stringi allo stomaco? Pesantezza al petto? Tensione alle spalle?'},
+    {phase:'RESPIRA',dur:60,instruction:'Respira nell\'emozione',guide:'Non cercare di cambiarla. Porta il respiro lì dove la senti.'},
+    {phase:'INTEGRA',dur:90,instruction:'Lascia che ci sia',guide:'L\'emozione è informazione. Puoi starci insieme, anche senza capirla.'}
+  ]},
+  {id:'focus-review-8',name:'Review della giornata',cat:'Focus',catKey:'focus',dur:8,context:'Sera',desc:'Revisione consapevole della giornata. Consolida l\'apprendimento e prepara il domani.',priority:null,
+   steps:[
+    {phase:'CENTRA',dur:40,instruction:'Tre respiri profondi',guide:'Prima di guardare indietro, arriva qui. Tre respiri lenti per passare alla modalità riflessiva.'},
+    {phase:'HIGHLIGHT',dur:90,instruction:'Il momento migliore',guide:'Cosa ha funzionato oggi? Un\'azione, una decisione, una conversazione. Riconoscerlo lo consolida.'},
+    {phase:'APPRENDIMENTO',dur:90,instruction:'Cosa hai imparato?',guide:'Non necessariamente qualcosa di grande. Anche una piccola osservazione su te stesso conta.'},
+    {phase:'INCOMPIUTO',dur:60,instruction:'Cosa resta aperto?',guide:'Non per preoccuparti: nomina quello che è rimasto in sospeso e posalo.'},
+    {phase:'DOMANI',dur:60,instruction:'Una priorità per domani',guide:'Una sola. La cosa più importante. Questo è tutto quello che ti serve sapere prima di dormire.'},
+    {phase:'CHIUSURA',dur:40,instruction:'La giornata è compiuta',guide:'Hai fatto quello che hai potuto, con le risorse che avevi. Questo è sufficiente.'}
+  ]},
+  {id:'body-scan-20',name:'Body scan profondo',cat:'Body scan',catKey:'body-scan',dur:20,context:'Notte',desc:'Versione estesa del body scan. Ideale nei giorni di recupero o quando hai più tempo.',priority:null,
+   steps:[
+    {phase:'PREPARAZIONE',dur:60,instruction:'Sdraiati, occhi chiusi',guide:'Posizione supina. Braccia lungo i fianchi, palmi verso l\'alto. Non c\'è nessun posto dove andare.'},
+    {phase:'RESPIRO BASE',dur:120,instruction:'Stabilisci il ritmo',guide:'Respiro naturale. L\'addome si espande nell\'inspirazione, si rilassa nell\'espirazione.'},
+    {phase:'PIEDI',dur:90,instruction:'Piedi e dita',guide:'Inizia dai piedi. Dita, pianta, tallone. Nota ogni sensazione senza modificarla.'},
+    {phase:'GAMBE',dur:90,instruction:'Gambe complete',guide:'Polpacci, ginocchia, cosce anteriori e posteriori.'},
+    {phase:'BACINO',dur:90,instruction:'Bacino e glutei',guide:'Zona che accumula tensione. Lascia che si appesantisca verso il pavimento.'},
+    {phase:'ADDOME',dur:90,instruction:'Addome',guide:'Respira nell\'addome. Immagina calore che si diffonde dall\'interno.'},
+    {phase:'SCHIENA',dur:90,instruction:'Tutta la schiena',guide:'Lombare, dorsale, cervicale. Zona per zona.'},
+    {phase:'PETTO',dur:90,instruction:'Petto e cuore',guide:'Nota il battito cardiaco. Non serve contarlo: solo sentirlo.'},
+    {phase:'BRACCIA',dur:90,instruction:'Spalle e braccia',guide:'Lascia che le braccia sprofondino verso il basso.'},
+    {phase:'COLLO',dur:90,instruction:'Collo e mascella',guide:'Zona ad alta tensione. Sciogli la mandibola. Lascia spazio tra i molari.'},
+    {phase:'VISO',dur:90,instruction:'Viso e cranio',guide:'Fronte liscia. Occhi morbidi. Cuoio capelluto che si allarga.'},
+    {phase:'TOTALITA',dur:120,instruction:'Il corpo come un tutto',guide:'Senti tutto il corpo contemporaneamente. Pesante, caldo, immobile.'},
+    {phase:'SILENZIO',dur:120,instruction:'Silenzio',guide:'...'}
+  ]}
+];
+
+// ─── UTILS ──────────────────────────────────────────────
+function lsG(k){try{return localStorage.getItem(k);}catch{return null;}}
+function lsS(k,v){try{localStorage.setItem(k,v);}catch{}}
+
+function getMorningToday(){
+  try{
+    const raw=lsG('er_mornings');if(!raw)return null;
+    const mornings=JSON.parse(raw);
+    const today=new Date().toISOString().split('T')[0];
+    return mornings.find(m=>m.date===today&&!m.skipped)||null;
+  }catch{return null;}
+}
+
+function getMfSessions(){try{const r=lsG('mf_sessions');return r?JSON.parse(r):[];}catch{return[];}}
+
+function saveMfSession(sessionId,durMin,catKey){
+  const sessions=getMfSessions();
+  const today=new Date().toISOString().split('T')[0];
+  sessions.push({date:today,sessionId,durMin,catKey,ts:Date.now()});
+  lsS('mf_sessions',JSON.stringify(sessions));
+}
+
+function getStreak(){
+  const sessions=getMfSessions();
+  if(!sessions.length)return 0;
+  const days=[...new Set(sessions.map(s=>s.date))].sort((a,b)=>b.localeCompare(a));
+  let streak=0,cur=new Date();
+  for(const d of days){
+    const exp=cur.toISOString().split('T')[0];
+    if(d===exp){streak++;cur.setDate(cur.getDate()-1);}else break;
+  }
+  return streak;
+}
+
+function hrvBandFromMs(hrv){
+  if(!hrv)return null;
+  const baseline=52; // baseline Edoardo aprile 2026
+  const r=hrv/baseline;
+  if(r>=1.10)return{label:'Ott.',cls:'ok'};
+  if(r>=0.90)return{label:'Bil.',cls:'ok'};
+  if(r>=0.75)return{label:'Basso',cls:'warn'};
+  return{label:'Crit.',cls:'crit'};
+}
+
+function buildRec(morning){
+  if(!morning)return{eyebrow:'Sessione consigliata',title:'Body scan pre-sleep',sub:'Nessun dato di oggi disponibile. Sessione base consigliata.',sessionId:'body-scan-12'};
+  const{deepSleepPct,biocharge,hrv,energy}=morning;
+  const band=hrv?hrvBandFromMs(hrv):null;
+  if(deepSleepPct&&deepSleepPct<15)return{eyebrow:'Deep sleep critico ieri · '+deepSleepPct+'%',title:'Body scan pre-sleep',sub:'La sessione più efficace per aumentare il sonno profondo. 12 minuti.',sessionId:'body-scan-12'};
+  if(biocharge&&biocharge<55)return{eyebrow:'Biocharge basso · '+biocharge+'%',title:'Decompressione serale',sub:'Il corpo è in recupero. Una decompressione gentile per facilitarlo.',sessionId:'decompressione-8'};
+  if(band&&(band.label==='Basso'||band.label==='Crit.'))return{eyebrow:'HRV · fascia '+band.label,title:'Respiro 4-7-8',sub:'Il breathwork attiva il sistema parasimpatico e supporta la variabilità cardiaca.',sessionId:'respiro-478'};
+  if(energy&&energy<=2)return{eyebrow:'Energia mattutina bassa · '+energy+'/5',title:'Temperatura emotiva',sub:'Identifica cosa ha pesato oggi. 5 minuti di regolazione emotiva.',sessionId:'regolazione-5'};
+  return{eyebrow:'Sessione serale',title:'Decompressione serale',sub:'Chiudi la giornata con consapevolezza. 8 minuti.',sessionId:'decompressione-8'};
+}
+
+// ─── HOME ────────────────────────────────────────────────
+function initHome(){
+  const morning=getMorningToday();
+  const h=new Date().getHours();
+  document.getElementById('greeting').textContent=h<12?'Buongiorno':h<18?'Buon pomeriggio':'Buonasera';
+  if(morning){
+    const bcEl=document.getElementById('stat-biocharge');
+    const hrvEl=document.getElementById('stat-hrv');
+    const enEl=document.getElementById('stat-energy');
+    if(morning.biocharge){bcEl.textContent=morning.biocharge+'%';bcEl.className='status-pill-val'+(morning.biocharge>=70?' ok':morning.biocharge>=50?'':' warn');}
+    if(morning.hrv){const b=hrvBandFromMs(morning.hrv);hrvEl.textContent=b.label;hrvEl.className='status-pill-val '+b.cls;}
+    if(morning.energy){enEl.textContent=morning.energy+'/5';enEl.className='status-pill-val'+(morning.energy>=4?' ok':morning.energy>=3?'':' warn');}
+  }
+  const rec=buildRec(morning);
+  document.getElementById('rec-area').innerHTML=`<div class="rec-card"><div class="rec-eyebrow">${rec.eyebrow}</div><div class="rec-title">${rec.title}</div><div class="rec-sub">${rec.sub}</div><button class="rec-btn" onclick="openPlayer('${rec.sessionId}')">Inizia sessione ›</button></div>`;
+}
+
+// ─── LIBRERIA ────────────────────────────────────────────
+let activeFilter='tutti';
+function renderLibrary(filter){
+  const filtered=filter==='tutti'?SESSIONS:SESSIONS.filter(s=>s.catKey===filter);
+  document.getElementById('session-list').innerHTML=filtered.map(s=>`<div class="session-item" onclick="openPlayer('${s.id}')"><div><div class="session-cat">${s.cat} · ${s.context}</div><div class="session-name">${s.name}</div><div class="session-meta">${s.desc.substring(0,55)}…</div></div><div class="session-dur">${s.dur}'</div></div>`).join('');
+}
+function filterLib(key,btn){
+  activeFilter=key;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('act'));
+  btn.classList.add('act');
+  renderLibrary(key);
+}
+
+// ─── PROGRESS ────────────────────────────────────────────
+function initProgress(){
+  const sessions=getMfSessions();
+  const streak=getStreak();
+  const body=document.getElementById('prog-body');
+  if(!sessions.length){
+    body.innerHTML=`<div class="stat-card"><div class="stat-label">Inizia il percorso</div><div class="stat-value">Nessuna sessione ancora</div><div class="stat-note">Completa la tua prima sessione per vedere i progressi qui.</div></div>`;
+    return;
+  }
+  const today=new Date();
+  const todayStr=today.toISOString().split('T')[0];
+  const sessionDays=new Set(sessions.map(s=>s.date));
+  const last7=Array.from({length:7},(_,i)=>{const d=new Date(today);d.setDate(today.getDate()-(6-i));return d.toISOString().split('T')[0];});
+  const dots=last7.map(d=>`<div class="sdot ${d===todayStr?'today':sessionDays.has(d)?'on':'off'}"></div>`).join('');
+  const totalMin=sessions.reduce((acc,s)=>acc+(s.durMin||0),0);
+  body.innerHTML=`
+    <div class="stat-card"><div class="stat-label">Streak</div><div class="stat-value">${streak} giorn${streak===1?'o':'i'} consecutiv${streak===1?'o':'i'}</div><div class="streak-dots">${dots}</div></div>
+    <div class="stat-card"><div class="stat-label">Sessioni completate</div><div class="stat-value">${sessions.length} sessioni · ${totalMin} minuti totali</div><div class="bar-track"><div class="bar-fill bar-indigo" style="width:${Math.min(100,sessions.length*5)}%"></div></div></div>
+    <div class="stat-card"><div class="stat-label">Correlazioni biometriche</div><div class="stat-value" style="font-size:12px;font-weight:400;color:var(--ink-soft)">Disponibili dopo 7+ sessioni con dati biometrici.</div><div class="stat-note">HRV ↔ meditazione e deep sleep ↔ body scan appariranno qui.</div></div>`;
+  if(sessions.length>=3){
+    const score=Math.min(100,Math.round(streak*8+sessions.length*3));
+    document.getElementById('mfs-score').textContent=score;
+    document.getElementById('mfs-sub').textContent='Score aggiornato oggi';
+    document.getElementById('mfs-sub').className='mfs-delta';
+  }
+}
+
+// ─── PLAYER ─────────────────────────────────────────────
+let PS={session:null,stepIdx:0,elapsed:0,totalDur:0,isPlaying:false,timer:null,stepElapsed:0,cycleTimer:null};
+
+function openPlayer(sessionId){
+  const s=SESSIONS.find(x=>x.id===sessionId);if(!s)return;
+  clearInterval(PS.timer);clearInterval(PS.cycleTimer);
+  PS={session:s,stepIdx:0,elapsed:0,totalDur:s.dur*60,isPlaying:false,timer:null,stepElapsed:0,cycleTimer:null};
+  document.getElementById('player-cat').textContent=s.cat+' · '+s.context;
+  document.getElementById('player-name').textContent=s.name;
+  document.getElementById('time-total').textContent=fmtTime(PS.totalDur);
+  document.getElementById('time-elapsed').textContent='0:00';
+  document.getElementById('progress-fill').style.width='0%';
+  document.getElementById('play-icon').textContent='▶';
+  document.getElementById('play-lbl').textContent='Play';
+  renderStep(0);
+  goScreen('player');
+}
+
+function renderStep(idx){
+  const s=PS.session;if(!s||idx>=s.steps.length)return;
+  const step=s.steps[idx];
+  document.getElementById('breath-phase').textContent=step.phase;
+  document.getElementById('breath-instruction').textContent=step.instruction;
+  document.getElementById('guide-text').textContent=step.guide;
+  if(step.isCycle){startBreathCycle();}
+  else{clearInterval(PS.cycleTimer);document.getElementById('breath-count').textContent='';resetRings();}
+}
+
+function startBreathCycle(){
+  clearInterval(PS.cycleTimer);
+  let phase='in',phaseEl=0;
+  const dur={in:4,hold:7,out:8};
+  document.getElementById('breath-count').textContent=dur.in;
+  document.getElementById('breath-phase').textContent='INSPIRA';
+  document.getElementById('breath-instruction').textContent='Inspira dal naso · 4s';
+  expandRings(true);
+  PS.cycleTimer=setInterval(()=>{
+    if(!PS.isPlaying)return;
+    phaseEl++;
+    const remaining=dur[phase]-phaseEl;
+    document.getElementById('breath-count').textContent=Math.max(1,remaining+1);
+    if(phaseEl>=dur[phase]){
+      phaseEl=0;
+      if(phase==='in'){phase='hold';document.getElementById('breath-phase').textContent='TRATTIENI';document.getElementById('breath-instruction').textContent='Trattieni · 7s';}
+      else if(phase==='hold'){phase='out';document.getElementById('breath-phase').textContent='ESPIRA';document.getElementById('breath-instruction').textContent='Espira dalla bocca · 8s';expandRings(false);}
+      else{clearInterval(PS.cycleTimer);}
+    }
+  },1000);
+}
+
+function expandRings(exp){
+  document.getElementById('breath-outer').style.transform=exp?'scale(1.08)':'scale(1.0)';
+  document.getElementById('breath-inner').style.transform=exp?'scale(1.15)':'scale(1.0)';
+  document.getElementById('breath-inner').style.background=exp?'#3A6B45':'#243527';
+}
+function resetRings(){document.getElementById('breath-outer').style.transform='scale(1.0)';document.getElementById('breath-inner').style.transform='scale(1.0)';document.getElementById('breath-inner').style.background='#243527';}
+
+function togglePlay(){PS.isPlaying?pausePlayer():startPlayer();}
+
+function startPlayer(){
+  PS.isPlaying=true;
+  document.getElementById('play-icon').textContent='❚❚';
+  document.getElementById('play-lbl').textContent='Pausa';
+  renderStep(PS.stepIdx);
+  PS.timer=setInterval(()=>{
+    PS.elapsed++;PS.stepElapsed++;
+    const curStep=PS.session.steps[PS.stepIdx];
+    if(PS.stepElapsed>=curStep.dur){
+      PS.stepElapsed=0;PS.stepIdx++;
+      if(PS.stepIdx<PS.session.steps.length)renderStep(PS.stepIdx);
+      else{completeSession();return;}
+    }
+    document.getElementById('progress-fill').style.width=Math.min(100,(PS.elapsed/PS.totalDur)*100)+'%';
+    document.getElementById('time-elapsed').textContent=fmtTime(PS.elapsed);
+  },1000);
+}
+
+function pausePlayer(){
+  PS.isPlaying=false;clearInterval(PS.timer);clearInterval(PS.cycleTimer);
+  document.getElementById('play-icon').textContent='▶';
+  document.getElementById('play-lbl').textContent='Riprendi';
+}
+
+function skipBack(){PS.elapsed=Math.max(0,PS.elapsed-30);PS.stepElapsed=Math.max(0,PS.stepElapsed-30);document.getElementById('time-elapsed').textContent=fmtTime(PS.elapsed);}
+function skipForward(){PS.elapsed=Math.min(PS.totalDur-1,PS.elapsed+30);PS.stepElapsed+=30;document.getElementById('time-elapsed').textContent=fmtTime(PS.elapsed);}
+
+function completeSession(){
+  clearInterval(PS.timer);clearInterval(PS.cycleTimer);PS.isPlaying=false;
+  saveMfSession(PS.session.id,PS.session.dur,PS.session.catKey);
+  document.getElementById('breath-phase').textContent='COMPLETATO';
+  document.getElementById('breath-instruction').textContent='Sessione terminata';
+  document.getElementById('guide-text').textContent='Ottimo. Prenditi un momento prima di rientrare nel flusso.';
+  document.getElementById('progress-fill').style.width='100%';
+  document.getElementById('play-icon').textContent='✓';
+  document.getElementById('play-lbl').textContent='Fine';
+}
+
+function exitPlayer(){clearInterval(PS.timer);clearInterval(PS.cycleTimer);PS.isPlaying=false;goScreen('home');}
+function fmtTime(sec){return Math.floor(sec/60)+':'+String(sec%60).padStart(2,'0');}
+
+// ─── NAVIGAZIONE ─────────────────────────────────────────
+function goScreen(name){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-'+name).classList.add('active');
+  const navOrder=['home','libreria','progress'];
+  document.querySelectorAll('.nav-item').forEach((n,i)=>{
+    n.classList.toggle('act',navOrder[i]===name);
+  });
+  if(name==='home')initHome();
+  if(name==='libreria')renderLibrary(activeFilter);
+  if(name==='progress')initProgress();
+}
+
+// ─── BOOT ─────────────────────────────────────────────────
+initHome();
+renderLibrary('tutti');
+</script>
+</body>
+</html>
