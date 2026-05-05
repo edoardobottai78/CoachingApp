@@ -355,10 +355,18 @@ function getBioData(){
 
 function getMfSessions(){try{const r=lsG('mf_sessions');return r?JSON.parse(r):[];}catch{return[];}}
 
-function saveMfSession(sessionId,durMin,catKey){
+function saveMfSession(sessionId,durMin,catKey,bioData){
   const sessions=getMfSessions();
   const today=new Date().toISOString().split('T')[0];
-  sessions.push({date:today,sessionId,durMin,catKey,ts:Date.now()});
+  const entry={date:today,sessionId,durMin,catKey,ts:Date.now()};
+  if(bioData){
+    if(bioData.hrv!=null)entry.hrv=bioData.hrv;
+    if(bioData.biocharge!=null)entry.biocharge=bioData.biocharge;
+    if(bioData.energy!=null)entry.energy=bioData.energy;
+    if(bioData.deepSleepPct!=null)entry.deepSleepPct=bioData.deepSleepPct;
+    if(bioData.sleepScore!=null)entry.sleepScore=bioData.sleepScore;
+  }
+  sessions.push(entry);
   lsS('mf_sessions',JSON.stringify(sessions));
 }
 
@@ -541,7 +549,7 @@ function skipForward(){PS.elapsed=Math.min(PS.totalDur-1,PS.elapsed+30);PS.stepE
 
 function completeSession(){
   clearInterval(PS.timer);clearInterval(PS.cycleTimer);PS.isPlaying=false;
-  saveMfSession(PS.session.id,PS.session.dur,PS.session.catKey);
+  saveMfSession(PS.session.id,PS.session.dur,PS.session.catKey,getBioData());
   const today=new Date().toISOString().split('T')[0];
   lsS('mindfit_sessione',PS.session.id);
   lsS('mindfit_durata',String(PS.session.dur));
