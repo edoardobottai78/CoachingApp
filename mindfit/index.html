@@ -1358,12 +1358,14 @@ function copyMindFitSession(){
   };
   const nome=sessNomi[s.id]||s.id;
   const cat=catNomi[s.catKey]||s.catKey;
+  const ap=getActiveProtocol();
+  const protoLine=ap?`\nProtocollo attivo: ${ap.name} (Giorno ${ap.giornoCorrente}/${ap.durTot})`:'';
   const txt=
 `MINDFIT — SESSIONE COMPLETATA
 Data: ${today}
 Sessione: ${nome}
 Durata: ${s.dur} minuti
-Categoria: ${cat}`;
+Categoria: ${cat}${protoLine}`;
   navigator.clipboard.writeText(txt).then(()=>{
     const btn=document.getElementById('copy-mf-btn');
     if(btn){btn.textContent='✓ Copiato';setTimeout(()=>{btn.textContent='📋 Copia per Claude';},2000);}
