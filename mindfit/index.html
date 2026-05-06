@@ -176,6 +176,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--linen);color:va
     <button class="nav-item act" onclick="goScreen('home')"><div class="nav-bar"></div><span class="nav-icon">⌂</span><span class="nav-lbl">Home</span></button>
     <button class="nav-item" onclick="goScreen('libreria')"><div class="nav-bar"></div><span class="nav-icon">☰</span><span class="nav-lbl">Libreria</span></button>
     <button class="nav-item" onclick="goScreen('progress')"><div class="nav-bar"></div><span class="nav-icon">◎</span><span class="nav-lbl">Progress</span></button>
+    <button class="nav-item" onclick="goScreen('protocolli')"><div class="nav-bar"></div><span class="nav-icon">◈</span><span class="nav-lbl">Protocolli</span></button>
   </nav>
 </div>
 
@@ -208,6 +209,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--linen);color:va
     <button class="nav-item" onclick="goScreen('home')"><div class="nav-bar"></div><span class="nav-icon">⌂</span><span class="nav-lbl">Home</span></button>
     <button class="nav-item act" onclick="goScreen('libreria')"><div class="nav-bar"></div><span class="nav-icon">☰</span><span class="nav-lbl">Libreria</span></button>
     <button class="nav-item" onclick="goScreen('progress')"><div class="nav-bar"></div><span class="nav-icon">◎</span><span class="nav-lbl">Progress</span></button>
+    <button class="nav-item" onclick="goScreen('protocolli')"><div class="nav-bar"></div><span class="nav-icon">◈</span><span class="nav-lbl">Protocolli</span></button>
   </nav>
 </div>
 
@@ -226,6 +228,22 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--linen);color:va
     <button class="nav-item" onclick="goScreen('home')"><div class="nav-bar"></div><span class="nav-icon">⌂</span><span class="nav-lbl">Home</span></button>
     <button class="nav-item" onclick="goScreen('libreria')"><div class="nav-bar"></div><span class="nav-icon">☰</span><span class="nav-lbl">Libreria</span></button>
     <button class="nav-item act" onclick="goScreen('progress')"><div class="nav-bar"></div><span class="nav-icon">◎</span><span class="nav-lbl">Progress</span></button>
+    <button class="nav-item" onclick="goScreen('protocolli')"><div class="nav-bar"></div><span class="nav-icon">◈</span><span class="nav-lbl">Protocolli</span></button>
+  </nav>
+</div>
+
+<!-- PROTOCOLLI -->
+<div class="screen" id="screen-protocolli">
+  <div class="prog-header">
+    <div class="prog-eyebrow">Percorsi guidati</div>
+    <div class="prog-title">Protocolli</div>
+  </div>
+  <div class="scroll-body"><div class="prog-body" id="proto-body"></div></div>
+  <nav class="bottom-nav">
+    <button class="nav-item" onclick="goScreen('home')"><div class="nav-bar"></div><span class="nav-icon">⌂</span><span class="nav-lbl">Home</span></button>
+    <button class="nav-item" onclick="goScreen('libreria')"><div class="nav-bar"></div><span class="nav-icon">☰</span><span class="nav-lbl">Libreria</span></button>
+    <button class="nav-item" onclick="goScreen('progress')"><div class="nav-bar"></div><span class="nav-icon">◎</span><span class="nav-lbl">Progress</span></button>
+    <button class="nav-item act" onclick="goScreen('protocolli')"><div class="nav-bar"></div><span class="nav-icon">◈</span><span class="nav-lbl">Protocolli</span></button>
   </nav>
 </div>
 
@@ -572,9 +590,180 @@ const SESSIONS=[
   ]}
 ];
 
+// ─── PROTOCOL REGISTRY ───────────────────────────────────
+const PROTOCOL_REGISTRY=[
+  {
+    id:'stress-recovery',
+    name:'Stress Recovery',
+    emoji:'🧘',
+    tipo:'Remediale',
+    dur:5,
+    desc:'Sequenza per abbassare il sistema nervoso e ripristinare equilibrio in settimane di HRV compromesso.',
+    trigger:d=>d.hrv && (()=>{const b=hrvBandFromMs(d.hrv);return b.cls==='hrv-low'||b.cls==='hrv-crit';})(),
+    priorita:2,
+    sessionIds:['mindfulness-body-7','breathwork-478-10','mindfulness-focused-10','body-scan-12','breathwork-box-5']
+  },
+  {
+    id:'deep-sleep-repair',
+    name:'Deep Sleep Repair',
+    emoji:'🌙',
+    tipo:'Remediale',
+    dur:7,
+    desc:'Protocollo serale per migliorare la qualità del sonno profondo e ridurre l\'arousal notturno.',
+    trigger:d=>d.deepSleepPct!=null && d.deepSleepPct<15,
+    priorita:2,
+    sessionIds:['body-scan-12','breathwork-478-10','mindfulness-body-7','body-scan-progressive-5','breathwork-478-10','mindfulness-focused-10','body-scan-12']
+  },
+  {
+    id:'ricarica-energetica',
+    name:'Ricarica Energetica',
+    emoji:'⚡',
+    tipo:'Remediale',
+    dur:5,
+    desc:'Ciclo di recupero per settimane di biocharge cronico basso. Focus su respiro e ancoraggio.',
+    trigger:d=>d.biocharge!=null && d.biocharge<55,
+    priorita:1,
+    sessionIds:['breathwork-box-5','mindfulness-body-7','breathwork-478-10','body-scan-progressive-5','mindfulness-focused-10']
+  },
+  {
+    id:'reset-emotivo',
+    name:'Reset Emotivo',
+    emoji:'🌊',
+    tipo:'Remediale',
+    dur:3,
+    desc:'Tre giorni di reset quando l\'energia emotiva è ai minimi. Breve, intenso, efficace.',
+    trigger:d=>d.energy!=null && d.energy<=2,
+    priorita:1,
+    sessionIds:['breathwork-478-10','mindfulness-body-7','body-scan-12']
+  },
+  {
+    id:'focus-clarity',
+    name:'Focus & Clarity',
+    emoji:'🎯',
+    tipo:'Potenziamento',
+    dur:5,
+    desc:'Sfrutta i picchi di forma per affinare concentrazione e lucidità decisionale.',
+    trigger:d=>d.biocharge!=null && d.energy!=null && d.biocharge>=70 && d.energy>=4,
+    priorita:1,
+    sessionIds:['mindfulness-focused-10','breathwork-box-5','mindfulness-focused-10','breathwork-box-5','mindfulness-focused-10']
+  },
+  {
+    id:'recovery-profondo',
+    name:'Recovery Profondo',
+    emoji:'🔴',
+    tipo:'Remediale prioritario',
+    dur:10,
+    desc:'Protocollo intensivo per il doppio segnale negativo: HRV compromesso + sonno profondo insufficiente.',
+    trigger:d=>d.hrv && d.deepSleepPct!=null && (()=>{const b=hrvBandFromMs(d.hrv);return(b.cls==='hrv-low'||b.cls==='hrv-crit')&&d.deepSleepPct<15;})(),
+    priorita:3,
+    sessionIds:['body-scan-12','breathwork-478-10','mindfulness-body-7','body-scan-12','breathwork-478-10','mindfulness-focused-10','body-scan-progressive-5','breathwork-478-10','body-scan-12','mindfulness-body-7']
+  },
+  {
+    id:'peak-performance',
+    name:'Peak Performance',
+    emoji:'🏔️',
+    tipo:'Visualizzazione',
+    dur:7,
+    desc:'Visualizzazione progressiva per consolidare lo stato di forma ottimale. Solo quando sei al top.',
+    trigger:d=>d.biocharge!=null && d.hrv && (()=>{const b=hrvBandFromMs(d.hrv);return d.biocharge>=70&&(b.cls==='hrv-opt'||b.cls==='hrv-bal');})(),
+    priorita:1,
+    sessionIds:['mindfulness-focused-10','breathwork-box-5','mindfulness-focused-10','body-scan-progressive-5','mindfulness-focused-10','breathwork-box-5','mindfulness-focused-10']
+  }
+];
+
 // ─── UTILS ──────────────────────────────────────────────
 function lsG(k){try{return localStorage.getItem(k);}catch{return null;}}
 function lsS(k,v){try{localStorage.setItem(k,v);}catch{}}
+
+// ─── PROTOCOLLI STORAGE & LOGICA ─────────────────────────
+function getActiveProtocol(){
+  try{const r=lsG('mf_active_protocol');return r?JSON.parse(r):null;}catch{return null;}
+}
+function saveActiveProtocol(p){lsS('mf_active_protocol',JSON.stringify(p));}
+function clearActiveProtocol(){try{localStorage.removeItem('mf_active_protocol');}catch{}}
+
+function getProtocolHistory(){
+  try{const r=lsG('mf_protocol_history');return r?JSON.parse(r):[];}catch{return[];}
+}
+function addProtocolHistory(entry){
+  const h=getProtocolHistory();
+  h.unshift(entry);
+  lsS('mf_protocol_history',JSON.stringify(h.slice(0,20)));
+}
+
+function activateProtocol(protocolId){
+  const pr=PROTOCOL_REGISTRY.find(p=>p.id===protocolId);
+  if(!pr)return;
+  const today=new Date().toISOString().split('T')[0];
+  const active={
+    id:pr.id,
+    name:pr.name,
+    emoji:pr.emoji,
+    durTot:pr.dur,
+    giornoCorrente:1,
+    dataInizio:today,
+    dataUltimaApertura:today,
+    completati:[]
+  };
+  saveActiveProtocol(active);
+  goScreen('home');
+}
+
+function abandonProtocol(){
+  const ap=getActiveProtocol();
+  if(!ap)return;
+  addProtocolHistory({id:ap.id,name:ap.name,emoji:ap.emoji,dataInizio:ap.dataInizio,dataFine:new Date().toISOString().split('T')[0],esito:'abbandonato',giorniCompletati:ap.completati.length});
+  clearActiveProtocol();
+  initProgress();
+}
+
+function advanceProtocol(){
+  const ap=getActiveProtocol();
+  if(!ap)return;
+  const today=new Date().toISOString().split('T')[0];
+  // Congela: se oggi è già stato segnato come completato, non avanzare
+  if(ap.completati.includes(today))return;
+  ap.completati.push(today);
+  ap.dataUltimaApertura=today;
+  if(ap.completati.length>=ap.durTot){
+    // Protocollo completato
+    addProtocolHistory({id:ap.id,name:ap.name,emoji:ap.emoji,dataInizio:ap.dataInizio,dataFine:today,esito:'completato',giorniCompletati:ap.completati.length});
+    clearActiveProtocol();
+    showProtocolCompletato(ap.name,ap.emoji);
+  } else {
+    ap.giornoCorrente=ap.completati.length+1;
+    saveActiveProtocol(ap);
+  }
+}
+
+function showProtocolCompletato(name,emoji){
+  const area=document.getElementById('rec-area');
+  if(!area)return;
+  const old=area.innerHTML;
+  area.innerHTML=`<div class="rec-card" style="border-left:3px solid var(--sage);text-align:center;padding:24px 20px;">
+    <div style="font-size:36px;margin-bottom:8px;">${emoji}</div>
+    <div class="rec-eyebrow" style="color:var(--sage);">PROTOCOLLO COMPLETATO</div>
+    <div class="rec-title" style="font-size:18px;">${name}</div>
+    <div class="rec-sub" style="margin-top:8px;">Ottimo lavoro. Il protocollo è concluso.</div>
+    <button class="rec-btn" style="margin-top:16px;" onclick="initHome()">Torna alla home ›</button>
+  </div>`;
+}
+
+function checkProtocolSuggestion(data){
+  if(getActiveProtocol())return null;
+  const candidates=PROTOCOL_REGISTRY
+    .filter(p=>p.trigger(data))
+    .sort((a,b)=>b.priorita-a.priorita);
+  return candidates.length>0?candidates[0]:null;
+}
+
+function getSessionForDay(protocolId,giorno){
+  const pr=PROTOCOL_REGISTRY.find(p=>p.id===protocolId);
+  if(!pr)return null;
+  const idx=(giorno-1)%pr.sessionIds.length;
+  return SESSIONS.find(s=>s.id===pr.sessionIds[idx])||null;
+}
+// ─── FINE PROTOCOLLI ─────────────────────────────────────
 
 // Legge i parametri URL passati da Evening Reflection al lancio
 // Formato: ?bc=70&hrv=48&en=3&ds=18&sl=82
@@ -674,8 +863,52 @@ function initHome(){
     if(data.hrv){const b=hrvBandFromMs(data.hrv);hrvEl.textContent=b.label;hrvEl.className='status-pill-val '+b.cls;}
     if(data.energy){enEl.textContent=data.energy+'/5';enEl.className='status-pill-val'+(data.energy>=4?' ok':data.energy>=3?'':' warn');}
   }
-  const rec=buildRec(data);
-  document.getElementById('rec-area').innerHTML=`<div class="rec-card"><div class="rec-eyebrow">${rec.eyebrow}</div><div class="rec-title">${rec.title}</div><div class="rec-sub">${rec.sub}</div><button class="rec-btn" onclick="openPlayer('${rec.sessionId}')">Inizia sessione ›</button></div>`;
+  const recArea=document.getElementById('rec-area');
+  const ap=getActiveProtocol();
+
+  if(ap){
+    // ── Protocollo attivo ──
+    const today=new Date().toISOString().split('T')[0];
+    const giaFatto=ap.completati.includes(today);
+    const sess=getSessionForDay(ap.id,ap.giornoCorrente);
+    const sessName=sess?sess.name:'Sessione del giorno';
+    const sessId=sess?sess.id:'body-scan-12';
+    const pct=Math.round((ap.completati.length/ap.durTot)*100);
+    recArea.innerHTML=`
+      <div class="rec-card" style="border-left:3px solid var(--sage);">
+        <div class="rec-eyebrow" style="color:var(--sage);">${ap.emoji} PROTOCOLLO ATTIVO · GIORNO ${ap.giornoCorrente}/${ap.durTot}</div>
+        <div class="rec-title" style="font-size:16px;">${ap.name}</div>
+        <div style="margin:10px 0 6px;background:rgba(255,255,255,0.08);border-radius:3px;height:4px;"><div style="height:4px;border-radius:3px;background:var(--sage);width:${pct}%;transition:width .5s;"></div></div>
+        <div class="rec-sub" style="margin-bottom:12px;">${giaFatto?'✓ Sessione completata oggi':'Sessione di oggi: '+sessName}</div>
+        ${giaFatto
+          ?`<button class="rec-btn" style="background:rgba(255,255,255,0.08);color:var(--gold);" onclick="goScreen('progress')">Vedi progressi ›</button>`
+          :`<button class="rec-btn" onclick="startProtocolSession('${sessId}')">Inizia sessione del giorno ›</button>`
+        }
+      </div>`;
+  } else {
+    // ── Raccomandazione normale ──
+    const rec=buildRec(data);
+    recArea.innerHTML=`<div class="rec-card"><div class="rec-eyebrow">${rec.eyebrow}</div><div class="rec-title">${rec.title}</div><div class="rec-sub">${rec.sub}</div><button class="rec-btn" onclick="openPlayer('${rec.sessionId}')">Inizia sessione ›</button></div>`;
+
+    // ── Suggerimento protocollo automatico ──
+    if(data){
+      const sug=checkProtocolSuggestion(data);
+      if(sug){
+        const sugEl=document.createElement('div');
+        sugEl.className='rec-card';
+        sugEl.style.cssText='margin-top:12px;border-left:3px solid var(--gold);opacity:0.92;';
+        sugEl.innerHTML=`
+          <div class="rec-eyebrow" style="color:var(--gold);">${sug.emoji} PROTOCOLLO SUGGERITO</div>
+          <div class="rec-title" style="font-size:15px;">${sug.name} · ${sug.dur} giorni</div>
+          <div class="rec-sub" style="margin-bottom:12px;">${sug.desc}</div>
+          <div style="display:flex;gap:8px;">
+            <button class="rec-btn" style="flex:1;" onclick="activateProtocol('${sug.id}')">Attiva protocollo</button>
+            <button class="rec-btn" style="flex:0 0 auto;background:rgba(255,255,255,0.08);color:var(--gold);" onclick="this.parentElement.parentElement.remove()">✕</button>
+          </div>`;
+        recArea.appendChild(sugEl);
+      }
+    }
+  }
 }
 
 // ─── LIBRERIA ────────────────────────────────────────────
@@ -792,10 +1025,69 @@ function initProgress(){
     document.getElementById('mfs-sub').textContent=`Score aggiornato · ${consistencyPts}+${volumePts}+${bioBonus} pts`;
     document.getElementById('mfs-sub').className='mfs-delta';
   }
+
+
+  body.innerHTML += '';
+}
+
+// ─── PROTOCOLLI TAB ──────────────────────────────────────
+function initProtocols(){
+  const body=document.getElementById('proto-body');
+  const ap=getActiveProtocol();
+  const hist=getProtocolHistory();
+  let html='';
+
+  // Protocollo attivo (se presente)
+  if(ap){
+    const pct=Math.round((ap.completati.length/ap.durTot)*100);
+    const today=new Date().toISOString().split('T')[0];
+    const giaFatto=ap.completati.includes(today);
+    html+=`<div class="stat-card" style="border-left:3px solid var(--sage);margin-bottom:4px;">
+      <div class="stat-label">${ap.emoji} PROTOCOLLO IN CORSO</div>
+      <div class="stat-value" style="font-size:16px;">${ap.name}</div>
+      <div class="bar-track" style="margin:10px 0 6px;"><div class="bar-fill" style="width:${pct}%;background:var(--sage);"></div></div>
+      <div class="stat-note">Giorno ${ap.giornoCorrente}/${ap.durTot} · ${ap.completati.length} giorni completati${giaFatto?' · ✓ oggi completato':''}</div>
+      <button class="rec-btn" style="margin-top:12px;width:100%;font-size:12px;background:rgba(255,255,255,0.08);color:var(--ink-soft);" 
+        onclick="if(confirm('Abbandonare il protocollo ${ap.name}?')){abandonProtocol();initProtocols();}">Abbandona protocollo</button>
+    </div>`;
+  }
+
+  // Catalogo
+  html+=`<div class="stat-label" style="padding:16px 20px 8px;font-size:10px;letter-spacing:.08em;">CATALOGO · ${PROTOCOL_REGISTRY.length} PROTOCOLLI</div>`;
+  PROTOCOL_REGISTRY.forEach(p=>{
+    const isActive=ap&&ap.id===p.id;
+    html+=`<div class="stat-card" style="${isActive?'opacity:0.55;':''} margin-bottom:4px;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+        <span style="font-size:26px;">${p.emoji}</span>
+        <div>
+          <div class="stat-value" style="font-size:15px;margin-bottom:2px;">${p.name}</div>
+          <div class="stat-label" style="font-size:9px;">${p.tipo} · ${p.dur} giorni</div>
+        </div>
+      </div>
+      <div class="stat-note" style="margin-bottom:12px;">${p.desc}</div>
+      <button class="rec-btn" style="width:100%;font-size:12px;${isActive?'background:rgba(255,255,255,0.08);color:var(--ink-soft);cursor:default;':''}"
+        onclick="${isActive?'':ap?`if(confirm('Sostituire "${ap.name}" con "${p.name}"?')){activateProtocol('${p.id}');}`:`activateProtocol('${p.id}');`}">
+        ${isActive?'✓ In corso':'Attiva protocollo'}
+      </button>
+    </div>`;
+  });
+
+  // Storico
+  if(hist.length>0){
+    const rows=hist.slice(0,5).map(h=>`<div class="corr-row"><div class="corr-lbl">${h.emoji} ${h.name}</div><div class="corr-val">${h.esito==='completato'?'✓ Completato':'Abbandonato'} · ${h.giorniCompletati}gg</div></div>`).join('');
+    html+=`<div class="stat-card" style="margin-top:8px;"><div class="stat-label" style="margin-bottom:10px;">STORICO</div>${rows}</div>`;
+  }
+
+  body.innerHTML=html;
 }
 
 // ─── PLAYER ─────────────────────────────────────────────
 let PS={session:null,stepIdx:0,elapsed:0,totalDur:0,isPlaying:false,timer:null,stepElapsed:0,cycleTimer:null};
+
+function startProtocolSession(sessionId){
+  advanceProtocol();
+  openPlayer(sessionId);
+}
 
 function openPlayer(sessionId){
   const s=SESSIONS.find(x=>x.id===sessionId);if(!s)return;
@@ -991,13 +1283,14 @@ function fmtTime(sec){return Math.floor(sec/60)+':'+String(sec%60).padStart(2,'0
 function goScreen(name){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('screen-'+name).classList.add('active');
-  const navOrder=['home','libreria','progress'];
+  const navOrder=['home','libreria','progress','protocolli'];
   document.querySelectorAll('.nav-item').forEach((n,i)=>{
-    n.classList.toggle('act',navOrder[i]===name);
+    n.classList.toggle('act',navOrder[i%4]===name);
   });
   if(name==='home')initHome();
   if(name==='libreria')renderLibrary();
   if(name==='progress')initProgress();
+  if(name==='protocolli')initProtocols();
 }
 
 // ─── BOOT ─────────────────────────────────────────────────
