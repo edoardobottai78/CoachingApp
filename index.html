@@ -338,10 +338,7 @@ body { font-family: var(--fb); background: var(--bg); color: var(--ink); height:
 <!-- ── HOME ── -->
 <div id="shome" class="screen">
   <div style="background:var(--bg);border-bottom:0.5px solid var(--line);padding:calc(var(--safe-top) + 16px) 20px 14px;flex-shrink:0">
-    <div style="display:flex;justify-content:space-between;align-items:center;">
-      <div class="eyebrow">Evening Reflection</div>
-      <button onclick="openMindFit()" style="background:#3B6D11;color:#fff;border:none;border-radius:100px;padding:6px 14px;font-size:11px;font-weight:500;font-family:inherit;cursor:pointer;">🧘 MindFit</button>
-    </div>
+    <div class="eyebrow">Evening Reflection</div>
     <h1 class="hero">Come stai<br><em>stasera?</em></h1>
     <p class="sub" id="hdate"></p>
     <div class="streak-row">
@@ -413,7 +410,6 @@ body { font-family: var(--fb); background: var(--bg); color: var(--ink); height:
     </div>
     <div class="sum-actions">
       <button class="btn-primary" id="btn-save" onclick="copyForClaude()">📋 Copia per Claude →</button>
-<button class="btn-secondary" style="margin-top:10px" onclick="openMindFit()">🧘 Apri MindFit</button>
       <button class="btn-ghost" onclick="goScreen('home')">Scarta</button>
     </div>
     <div class="status-msg" id="save-st"></div>
@@ -1044,22 +1040,15 @@ async function fetchInsight(){
   const p=`Analizza questa sessione serale, dai 1 insight breve (max 3 frasi) in italiano:\n\n${buildCtx()}\n\nOsservazione genuina, non ovvia.`;
   try{
     const r=await fetch(AI_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:AI_MODEL,max_tokens:1000,messages:[{role:'user',content:p}]})});
-    const d=await r.json();const el=document.getElementById('itxt');if(el)el.textContent=d.content?.[0]?.text||'';
+    const d=await r.json();
+    // FIX: sovrascrive sd.air con la riflessione finale (completa, basata su tutta la sessione)
+    // così copyForClaude esporta questa invece di quella parziale generata durante la sessione
+    const txt=d.content?.[0]?.text||'';
+    sd.air=txt;
+    const el=document.getElementById('itxt');if(el)el.textContent=txt;
   }catch{const el=document.getElementById('itxt');if(el)el.textContent='Non disponibile.';}
 }
-// ─── APRI MINDFIT ────────────────────────────────────────
-function openMindFit(){
-  const today=new Date().toISOString().split('T')[0];
-  const mornings=lsMornings();
-  const m=mornings.find(x=>x.date===today&&!x.skipped)||{};
-  const params=new URLSearchParams();
-  if(m.biocharge) params.set('bc',m.biocharge);
-  if(m.hrv)       params.set('hrv',m.hrv);
-  if(m.energy)    params.set('en',m.energy);
-  if(m.deepSleepPct) params.set('ds',m.deepSleepPct);
-  if(m.slancio)   params.set('sl',m.slancio);
-  window.location.href='/mindfit?'+params.toString();
-}
+
 // ─── COPIA PER CLAUDE (sessione serale) ──────────────────
 function copyForClaude(){
   const btn=document.getElementById('btn-save');
@@ -1134,14 +1123,19 @@ function copyForClaude(){
   const ap_c=getActiveProtocol();
   if(ap_c&&ap_c.status==='active'){
     const proto_c=PROTOCOL_REGISTRY[ap_c.id];
-    const dayObj_c=proto_c&&proto_c.days[ap_c.currentDay-1];
+    // FIX: se il giorno corrente è già stato completato (dayCompleted[currentDay-1]===true),
+    // completeProtocolDay() ha già fatto currentDay++ → il giorno eseguito oggi è currentDay-1
+    // Se invece non ancora completato, il giorno corrente è currentDay
+    const completedToday_c=ap_c.dayCompleted&&ap_c.dayCompleted[ap_c.currentDay-1];
+    const reportDay_c=completedToday_c?ap_c.currentDay-1:ap_c.currentDay;
+    const dayObj_c=proto_c&&proto_c.days[reportDay_c-1];
     text+='\n--- Protocollo Attivo ---\n';
     text+='Protocollo: '+ap_c.id+'\n';
-    text+='Giorno: '+ap_c.currentDay+'/'+ap_c.totalDays+'\n';
+    text+='Giorno: '+reportDay_c+'/'+ap_c.totalDays+'\n';
     if(dayObj_c) text+='Esercizio: '+dayObj_c.title+'\n';
-    const pNote_c=lsG('proto_note_'+ap_c.id+'_'+ap_c.currentDay);
+    const pNote_c=lsG('proto_note_'+ap_c.id+'_'+reportDay_c);
     if(pNote_c) text+='Nota protocollo: '+pNote_c+'\n';
-    text+='Completato oggi: '+(ap_c.dayCompleted&&ap_c.dayCompleted[ap_c.currentDay-1]?'Si':'No')+'\n';
+    text+='Completato oggi: '+(completedToday_c?'Si':'No')+'\n';
   }
 
   navigator.clipboard.writeText(text).then(()=>{
