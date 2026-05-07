@@ -350,7 +350,10 @@ body { font-family: var(--fb); background: var(--bg); color: var(--ink); height:
 <!-- ── HOME ── -->
 <div id="shome" class="screen">
   <div style="background:var(--bg);border-bottom:0.5px solid var(--line);padding:calc(var(--safe-top) + 16px) 20px 14px;flex-shrink:0">
-    <div class="eyebrow">Evening Reflection</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div class="eyebrow">Evening Reflection</div>
+      <button onclick="openMindFit()" style="background:#3B6D11;color:#fff;border:none;border-radius:100px;padding:6px 14px;font-size:11px;font-weight:500;font-family:inherit;cursor:pointer;">🧘 MindFit</button>
+    </div>
     <h1 class="hero">Come stai<br><em>stasera?</em></h1>
     <p class="sub" id="hdate"></p>
     <div class="streak-row">
@@ -422,6 +425,7 @@ body { font-family: var(--fb); background: var(--bg); color: var(--ink); height:
     </div>
     <div class="sum-actions">
       <button class="btn-primary" id="btn-save" onclick="copyForClaude()">📋 Copia per Claude →</button>
+      <button class="btn-secondary" style="margin-top:10px" onclick="openMindFit()">🧘 Apri MindFit</button>
       <button class="btn-ghost" onclick="goScreen('home')">Scarta</button>
     </div>
     <div class="status-msg" id="save-st"></div>
@@ -1107,6 +1111,19 @@ async function fetchInsight(){
   }catch{const el=document.getElementById('itxt');if(el)el.textContent='Non disponibile.';}
 }
 
+// ─── APRI MINDFIT ────────────────────────────────────────
+function openMindFit(){
+  const today=new Date().toISOString().split('T')[0];
+  const mornings=lsMornings();
+  const m=mornings.find(x=>x.date===today&&!x.skipped)||{};
+  const params=new URLSearchParams();
+  if(m.biocharge) params.set('bc',m.biocharge);
+  if(m.hrv)       params.set('hrv',m.hrv);
+  if(m.energy)    params.set('en',m.energy);
+  if(m.deepSleepPct) params.set('ds',m.deepSleepPct);
+  if(m.slancio)   params.set('sl',m.slancio);
+  window.location.href='/mindfit?'+params.toString();
+}
 // ─── COPIA PER CLAUDE (sessione serale) ──────────────────
 function copyForClaude(){
   const btn=document.getElementById('btn-save');
