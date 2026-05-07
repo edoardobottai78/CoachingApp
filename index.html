@@ -152,6 +152,18 @@ body { font-family: var(--fb); background: var(--bg); color: var(--ink); height:
 .jta { width: 100%; min-height: 130px; padding: 14px 16px; border: 0.5px solid var(--line); border-radius: var(--r); background: var(--bg-w); font-family: var(--fd); font-size: 1rem; font-weight: 300; font-style: italic; color: var(--ink); resize: none; line-height: 1.7; -webkit-appearance: none; outline: none; transition: border-color .2s; }
 .jta:focus { border-color: var(--gold); background: var(--gold-p); }
 .jta::placeholder { color: var(--ink-s); }
+.jta.mic-active { border-color: #E24B4A; background: #FEF2F2; }
+
+/* ── MIC DETTATURA ── */
+.mic-row { display:flex; justify-content:flex-end; margin-bottom:6px; }
+.mic-btn-voice { display:flex; align-items:center; gap:5px; padding:6px 13px; border-radius:100px; border:0.5px solid var(--line); background:var(--bg-w); font-family:var(--fb); font-size:11px; font-weight:500; color:var(--ink-s); cursor:pointer; -webkit-appearance:none; transition:all .2s; }
+.mic-btn-voice.listening { border-color:#E24B4A; background:#FEF2F2; color:#E24B4A; }
+.mic-btn-voice.done { border-color:var(--gold); color:var(--gold); }
+.mic-dot { width:6px; height:6px; border-radius:50%; background:currentColor; display:none; }
+.mic-btn-voice.listening .mic-dot { display:block; animation:micpulse 1s infinite; }
+@keyframes micpulse { 0%,100%{opacity:1} 50%{opacity:.25} }
+.mic-hint { font-family:var(--fd); font-size:.75rem; font-style:italic; color:var(--ink-s); margin-top:5px; text-align:right; }
+.mic-hint.active { color:#E24B4A; font-style:normal; font-size:.7rem; font-family:var(--fb); }
 
 /* ── WIN DEL GIORNO ── */
 .win-grid { display: flex; flex-direction: column; gap: 12px; }
@@ -851,7 +863,9 @@ function renderStep(){
 
   if(s.t==='ta'){
     bl.innerHTML=`<div class="tlbl">${s.lbl}</div><div class="q">${s.q}</div>
-    <textarea class="jta" id="f-${s.id}" placeholder="Scrivi qui…" rows="5">${sd[s.id]||''}</textarea>`;
+    <div class="mic-row"><button class="mic-btn-voice" id="mic-${s.id}" onclick="startDictation('f-${s.id}','mic-${s.id}','mh-${s.id}')"><span class="mic-dot"></span><span class="mic-lbl">🎤 Detta</span></button></div>
+    <textarea class="jta" id="f-${s.id}" placeholder="Scrivi qui…" rows="5">${sd[s.id]||''}</textarea>
+    <div class="mic-hint" id="mh-${s.id}">Tocca per scrivere · o detta con il mic</div>`;
   } else if(s.t==='moodw'){
     const pos=MOOD_WORDS.filter(m=>m.g==='+');
     const neu=MOOD_WORDS.filter(m=>m.g==='~');
@@ -888,7 +902,9 @@ function renderStep(){
     bl.innerHTML=`<div class="tlbl" style="color:var(--ink-m)">${s.lbl} · ogni 2 settimane</div>
     <div class="q" style="font-size:1.35rem">${s.title}</div>
     <p style="font-family:var(--fd);font-size:.95rem;font-style:italic;color:var(--ink-m);margin-bottom:14px;line-height:1.6">${s.q}</p>
-    <textarea class="jta" id="f-${s.id}" placeholder="${s.placeholder}" rows="6">${sd[s.id]||''}</textarea>`;
+    <div class="mic-row"><button class="mic-btn-voice" id="mic-${s.id}" onclick="startDictation('f-${s.id}','mic-${s.id}','mh-${s.id}')"><span class="mic-dot"></span><span class="mic-lbl">🎤 Detta</span></button></div>
+    <textarea class="jta" id="f-${s.id}" placeholder="${s.placeholder}" rows="6">${sd[s.id]||''}</textarea>
+    <div class="mic-hint" id="mh-${s.id}">Tocca per scrivere · o detta con il mic</div>`;
   } else if(s.t==='rat'){
     const cur=sd.rat||0;
     bl.innerHTML=`<div class="tlbl">${s.lbl}</div><div class="q">${s.q}</div>
@@ -995,6 +1011,48 @@ function buildCtx(){
     if(ms.length)p.push('Habit miss: '+ms.join(', '));
   }
   return p.join('\n')||'Nessun dato';
+}
+
+// ─── DETTATURA VOCALE ──────────────────────────────────────
+let _micRec=null;
+function startDictation(taId,btnId,hintId){
+  const ta=document.getElementById(taId);
+  const btn=document.getElementById(btnId);
+  const hint=hintId?document.getElementById(hintId):null;
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){alert('Il tuo browser non supporta la dettatura vocale. Usa Safari su iOS.');return;}
+  if(_micRec){_micRec.stop();return;}
+  const rec=new SR();
+  rec.lang='it-IT';rec.continuous=true;rec.interimResults=true;
+  _micRec=rec;
+  const lbl=btn.querySelector('.mic-lbl');
+  btn.classList.add('listening');
+  if(lbl)lbl.textContent='● Stop';
+  ta.classList.add('mic-active');
+  if(hint){hint.textContent='● Trascrizione in corso — parla pure';hint.classList.add('active');}
+  const base=ta.value;
+  rec.onresult=e=>{
+    let interim='';let final='';
+    for(let i=e.resultIndex;i<e.results.length;i++){
+      if(e.results[i].isFinal)final+=e.results[i][0].transcript;
+      else interim+=e.results[i][0].transcript;
+    }
+    ta.value=base+(base&&final?' ':'')+final+(interim?' '+interim:'');
+  };
+  rec.onerror=()=>{_stopDictation(ta,btn,hint);};
+  rec.onend=()=>{
+    if(ta.value!==base)sd[taId.replace('f-','')]=ta.value;
+    _stopDictation(ta,btn,hint);
+  };
+  rec.start();
+}
+function _stopDictation(ta,btn,hint){
+  _micRec=null;
+  btn.classList.remove('listening');btn.classList.add('done');
+  ta.classList.remove('mic-active');
+  const lbl=btn.querySelector('.mic-lbl');
+  if(lbl)lbl.textContent='🎤 Ridetta';
+  if(hint){hint.textContent='Puoi modificare il testo o dettare di nuovo';hint.classList.remove('active');}
 }
 
 function saveSd(){
