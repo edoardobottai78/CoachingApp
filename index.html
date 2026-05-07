@@ -165,6 +165,49 @@ body { font-family: var(--fb); background: var(--bg); color: var(--ink); height:
 .mic-hint { font-family:var(--fd); font-size:.75rem; font-style:italic; color:var(--ink-s); margin-top:5px; text-align:right; }
 .mic-hint.active { color:#E24B4A; font-style:normal; font-size:.7rem; font-family:var(--fb); }
 
+/* ── COACH AI ── */
+.coach-card-home { background:var(--gold-p); border:1px solid var(--gold-l); border-radius:var(--r); padding:14px 16px; display:flex; align-items:center; gap:12px; margin-bottom:12px; cursor:pointer; -webkit-appearance:none; width:100%; text-align:left; transition:all .15s; }
+.coach-card-home:active { border-color:var(--gold); }
+.coach-card-icon { width:34px; height:34px; border-radius:50%; background:var(--gold-l); display:flex; align-items:center; justify-content:center; font-size:1rem; flex-shrink:0; }
+.coach-card-lbl { font-size:14px; font-weight:500; color:var(--ink); font-family:var(--fb); }
+.coach-card-sub { font-size:11px; color:var(--ink-m); font-family:var(--fb); margin-top:2px; }
+.coach-new-badge { font-size:8px; font-weight:500; letter-spacing:.08em; text-transform:uppercase; background:var(--gold); color:var(--bg); border-radius:100px; padding:3px 8px; font-family:var(--fb); margin-left:auto; flex-shrink:0; }
+.coach-cta-sum { background:var(--gold-p); border:0.5px solid var(--gold-l); border-radius:12px; padding:10px 14px; display:flex; align-items:center; gap:10px; margin-top:10px; cursor:pointer; -webkit-appearance:none; width:100%; text-align:left; transition:all .15s; }
+.coach-cta-sum:active { border-color:var(--gold); }
+.coach-cta-lbl { font-size:13px; font-weight:500; color:var(--ink-m); font-family:var(--fb); }
+.coach-cta-sub { font-size:10px; color:var(--ink-s); font-family:var(--fb); margin-top:1px; }
+.coach-screen-header { background:var(--bg); border-bottom:0.5px solid var(--line); padding:calc(var(--safe-top)+12px) 20px 10px; display:flex; align-items:center; gap:12px; flex-shrink:0; }
+.coach-ctx-strip { background:var(--gold-p); border:0.5px solid var(--gold-l); border-radius:12px; padding:9px 12px; margin:12px 20px 0; flex-shrink:0; }
+.coach-ctx-lbl { font-size:8px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--gold); font-family:var(--fb); margin-bottom:5px; }
+.coach-ctx-pills { display:flex; flex-wrap:wrap; gap:4px; }
+.coach-pill { font-size:10px; font-family:var(--fb); color:var(--ink-m); background:var(--bg); border:0.5px solid var(--gold-l); border-radius:100px; padding:3px 8px; }
+.coach-pill.warn { background:#FEF2F2; border-color:rgba(226,75,74,.3); color:#E24B4A; }
+.coach-messages { flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; padding:12px 20px 8px; display:flex; flex-direction:column; gap:10px; }
+.cmsg-coach { align-self:flex-start; max-width:88%; }
+.cmsg-user { align-self:flex-end; max-width:85%; }
+.cmsg-sender { font-size:8px; font-weight:500; letter-spacing:.1em; text-transform:uppercase; color:var(--gold); font-family:var(--fb); margin-bottom:3px; padding-left:2px; }
+.cmsg-bub { font-family:var(--fd); font-size:.95rem; font-weight:300; line-height:1.6; }
+.cmsg-coach .cmsg-bub { background:var(--bg-w); border:0.5px solid var(--line); border-radius:4px 14px 14px 14px; padding:10px 13px; color:var(--ink); }
+.cmsg-user .cmsg-bub { background:var(--ink); border-radius:14px 14px 4px 14px; padding:10px 13px; color:var(--gold-l); font-style:italic; }
+.cmsg-typing .cmsg-bub { background:var(--bg-w); border:0.5px solid var(--line); border-radius:4px 14px 14px 14px; padding:12px 14px; }
+.coach-input-bar { border-top:0.5px solid var(--line); padding:10px 16px calc(var(--safe-bot)+12px); display:flex; align-items:center; gap:8px; background:var(--bg); flex-shrink:0; }
+.coach-input { flex:1; font-family:var(--fd); font-size:.95rem; font-style:italic; color:var(--ink); border:0.5px solid var(--line); border-radius:100px; padding:10px 16px; background:var(--bg-w); outline:none; transition:border-color .2s; -webkit-appearance:none; }
+.coach-input:focus { border-color:var(--gold); background:var(--gold-p); }
+.coach-input::placeholder { color:var(--ink-s); }
+.coach-mic-btn { width:36px; height:36px; border-radius:50%; background:var(--bg-w); border:0.5px solid var(--line); display:flex; align-items:center; justify-content:center; flex-shrink:0; color:var(--ink-s); font-size:16px; cursor:pointer; -webkit-appearance:none; }
+.coach-mic-btn.listening { background:#FEF2F2; border-color:#E24B4A; color:#E24B4A; }
+.coach-send-btn { width:36px; height:36px; border-radius:50%; background:var(--ink); border:none; display:flex; align-items:center; justify-content:center; flex-shrink:0; color:var(--gold-l); font-size:15px; cursor:pointer; -webkit-appearance:none; }
+.coach-send-btn:active { background:var(--ink-m); }
+.coach-tts-row { display:flex; align-items:center; gap:8px; padding:6px 20px 0; flex-shrink:0; }
+.coach-tts-lbl { font-size:10px; color:var(--ink-s); font-family:var(--fb); }
+.coach-tts-toggle { position:relative; width:32px; height:18px; flex-shrink:0; cursor:pointer; }
+.coach-tts-toggle input { opacity:0; width:0; height:0; }
+.coach-tts-slider { position:absolute; inset:0; border-radius:9px; background:var(--line); transition:background .2s; border:0.5px solid var(--gold-l); }
+.coach-tts-slider::after { content:''; position:absolute; width:14px; height:14px; border-radius:50%; background:var(--bg); top:2px; left:2px; transition:transform .2s; }
+.coach-tts-toggle input:checked + .coach-tts-slider { background:var(--gold); }
+.coach-tts-toggle input:checked + .coach-tts-slider::after { transform:translateX(14px); }
+.divider-lbl { font-size:9px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-s); font-family:var(--fb); margin:4px 0 10px; }
+
 /* ── WIN DEL GIORNO ── */
 .win-grid { display: flex; flex-direction: column; gap: 12px; }
 .win-card { background: var(--bg-w); border: 0.5px solid var(--line); border-radius: 12px; padding: 14px 16px; }
@@ -364,6 +407,15 @@ body { font-family: var(--fb); background: var(--bg); color: var(--ink); height:
   </div>
   <div class="scroll-body">
     <div id="home-proto-alert"></div>
+    <button class="coach-card-home" onclick="openCoach(false)">
+      <div class="coach-card-icon">✦</div>
+      <div>
+        <div class="coach-card-lbl">Coach AI</div>
+        <div class="coach-card-sub">Chat con i tuoi dati di oggi</div>
+      </div>
+      <span class="coach-new-badge">Nuovo</span>
+    </button>
+    <div class="divider-lbl">Sessione guidata</div>
     <div class="modes">
       <button class="mcard sel" data-mode="reflection" onclick="selMode(this)">
         <div class="mi">✦</div>
@@ -426,6 +478,14 @@ body { font-family: var(--fb); background: var(--bg); color: var(--ink); height:
     <div class="sum-actions">
       <button class="btn-primary" id="btn-save" onclick="copyForClaude()">📋 Copia per Claude →</button>
       <button class="btn-secondary" style="margin-top:10px" onclick="openMindFit()">🧘 Apri MindFit</button>
+      <button class="coach-cta-sum" onclick="openCoach(true)">
+        <div class="coach-card-icon" style="width:28px;height:28px;font-size:.85rem">✦</div>
+        <div>
+          <div class="coach-cta-lbl">Approfondisci con il Coach</div>
+          <div class="coach-cta-sub">Domande sui tuoi dati di stasera</div>
+        </div>
+        <span style="margin-left:auto;color:var(--gold);font-size:16px">→</span>
+      </button>
       <button class="btn-ghost" onclick="goScreen('home')">Scarta</button>
     </div>
     <div class="status-msg" id="save-st"></div>
@@ -484,6 +544,24 @@ body { font-family: var(--fb); background: var(--bg); color: var(--ink); height:
     <button class="nav-item" onclick="goScreen('week')"><div class="nav-icon">◉</div><div class="nav-lbl">Settimana</div></button>
     <button class="nav-item" onclick="goScreen('protocol')"><div class="nav-icon">🌙</div><div class="nav-lbl">Protocollo</div></button>
     <button class="nav-item act" onclick="goScreen('export')"><div class="nav-icon">◎</div><div class="nav-lbl">Export</div></button>
+  </div>
+</div>
+<!-- ── COACH AI ── -->
+<div id="scoach" class="screen">
+  <div class="coach-screen-header">
+    <button class="icon-btn" id="coach-back-btn" onclick="goScreen('home')" style="font-size:16px">←</button>
+    <span style="font-family:var(--fd);font-size:1.05rem;font-style:italic;color:var(--ink-m);">Coach ✦</span>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:8px">
+      <span class="coach-tts-lbl">Voce</span>
+      <label class="coach-tts-toggle"><input type="checkbox" id="coach-tts-chk" onchange="toggleTTS(this)"><span class="coach-tts-slider"></span></label>
+    </div>
+  </div>
+  <div class="coach-ctx-strip" id="coach-ctx-strip"></div>
+  <div class="coach-messages" id="coach-messages"></div>
+  <div class="coach-input-bar">
+    <input class="coach-input" id="coach-input" type="text" placeholder="Scrivi o detta…" onkeydown="if(event.key==='Enter')sendCoachMsg()">
+    <button class="coach-mic-btn" id="coach-mic" onclick="coachDictation()" aria-label="Dettatura">🎤</button>
+    <button class="coach-send-btn" onclick="sendCoachMsg()" aria-label="Invia">→</button>
   </div>
 </div>
 
@@ -613,7 +691,7 @@ function isMonday(){return new Date().getDay()===1;}
 // ─── NAVIGATION ──────────────────────────────────────────
 function goScreen(name){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  const map={home:'shome',morning:'smorning',week:'sweek',export:'sexport',session:'ss',summary:'ssum',protocol:'sprotocol'};
+  const map={home:'shome',morning:'smorning',week:'sweek',export:'sexport',session:'ss',summary:'ssum',protocol:'sprotocol',coach:'scoach'};
   document.getElementById(map[name]||('s'+name)).classList.add('active');
   if(name==='week')   loadWeek();
   if(name==='export') initExport();
@@ -1109,6 +1187,168 @@ async function fetchInsight(){
     sd.air=txt;
     const el=document.getElementById('itxt');if(el)el.textContent=txt;
   }catch{const el=document.getElementById('itxt');if(el)el.textContent='Non disponibile.';}
+}
+
+// ─── COACH AI ─────────────────────────────────────────────
+let _coachHistory = [];   // [{role:'user'|'assistant', content:'...'}]
+let _coachMicRec  = null;
+let _coachTTS     = false;
+let _coachBackTo  = 'home'; // schermata da cui si è entrati
+
+function openCoach(fromSummary){
+  _coachBackTo = fromSummary ? 'summary' : 'home';
+  _coachHistory = [];
+  document.getElementById('coach-back-btn').onclick = ()=>goScreen(_coachBackTo);
+
+  // Context strip
+  const today = todayStr();
+  const mornings = lsMornings();
+  const m = mornings.find(x=>x.date===today&&!x.skipped)||{};
+  const pills = [];
+  if(m.biocharge)     pills.push({t:'⚡ Biocharge '+m.biocharge+'%', w: m.biocharge<40});
+  if(m.hrv)           pills.push({t:'💓 HRV '+m.hrv+' ms', w: m.hrv<28});
+  if(m.deepSleepPct)  pills.push({t:'🌙 Deep sleep '+m.deepSleepPct+'%', w: m.deepSleepPct<15});
+  if(m.energy)        pills.push({t:'⚡ Energia '+m.energy+'/5', w: m.energy<=2});
+  if(sd.rat)          pills.push({t:'★ Rating '+sd.rat+'/5', w:false});
+  if(sd.moodWords&&sd.moodWords.length) pills.push({t:sd.moodWords.slice(0,2).join(' · '), w:false});
+  const strip = document.getElementById('coach-ctx-strip');
+  if(pills.length>0){
+    strip.style.display='block';
+    strip.innerHTML=`<div class="coach-ctx-lbl">Contesto oggi</div><div class="coach-ctx-pills">${pills.map(p=>`<span class="coach-pill${p.w?' warn':''}">${p.t}</span>`).join('')}</div>`;
+  } else {
+    strip.style.display='none';
+  }
+
+  // Svuota messaggi e avvia
+  document.getElementById('coach-messages').innerHTML='';
+  goScreen('coach');
+  _coachOpeningMsg();
+}
+
+async function _coachOpeningMsg(){
+  _addCoachTyping();
+  const sys = _buildCoachSystemPrompt();
+  const opening = 'Analizza il contesto e apri la conversazione con UNA domanda specifica e contestuale. Max 2 frasi. Italiano. Diretto, caldo, non generico.';
+  try{
+    const r = await fetch(AI_URL,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:AI_MODEL,max_tokens:300,
+        system: sys,
+        messages:[{role:'user',content:opening}]
+      })
+    });
+    const d = await r.json();
+    const txt = d.content?.[0]?.text||'Come posso aiutarti a riflettere su questa giornata?';
+    _removeTyping();
+    _addCoachMsg('assistant', txt);
+    _coachHistory.push({role:'assistant', content:txt});
+    if(_coachTTS) _speakTTS(txt);
+  }catch{
+    _removeTyping();
+    const txt = 'Ciao Edoardo — come posso aiutarti a riflettere su questa giornata?';
+    _addCoachMsg('assistant', txt);
+    _coachHistory.push({role:'assistant', content:txt});
+  }
+}
+
+async function sendCoachMsg(){
+  const inp = document.getElementById('coach-input');
+  const txt = inp.value.trim();
+  if(!txt) return;
+  inp.value='';
+  _addCoachMsg('user', txt);
+  _coachHistory.push({role:'user', content:txt});
+  _addCoachTyping();
+  try{
+    const r = await fetch(AI_URL,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:AI_MODEL,max_tokens:400,
+        system: _buildCoachSystemPrompt(),
+        messages: _coachHistory
+      })
+    });
+    const d = await r.json();
+    const reply = d.content?.[0]?.text||'Non disponibile.';
+    _removeTyping();
+    _addCoachMsg('assistant', reply);
+    _coachHistory.push({role:'assistant', content:reply});
+    if(_coachTTS) _speakTTS(reply);
+  }catch{
+    _removeTyping();
+    const reply='Mi dispiace, errore di connessione. Riprova.';
+    _addCoachMsg('assistant', reply);
+  }
+}
+
+function _buildCoachSystemPrompt(){
+  const ctx = buildCtx();
+  return `Sei un coach personale empatico per Edoardo (Milano, CrossFit 4-5x/settimana, target peso 82kg, HRV baseline 28ms RMSSD, target deep sleep 20-25%).
+
+DATI DELLA GIORNATA:
+${ctx}
+
+SCALE DI RIFERIMENTO:
+- HRV Zepp RMSSD: Ottimale = sopra/allineato baseline 28ms | Bilanciato = range normale | Basso = sotto baseline | Critico = molto sotto
+- Sleep score: Eccellente 90-100 | Buono 80-89 | Sufficiente 60-79 | Basso <60
+- Deep sleep: target 20-25% (baseline attuale ~13%)
+- Score Hume (max 900): Eccellente 765-900 | Buono 585-764 | Moderato 450-584 | Sufficiente 297-449 | Basso ≤296
+
+ISTRUZIONI:
+- Rispondi sempre in italiano
+- Usa i dati reali del contesto — non fare domande su informazioni già presenti
+- Fai UNA domanda alla volta, mai più
+- Tono caldo, diretto, non paternalistico
+- Max 3-4 frasi per risposta
+- Se i dati biometrici mostrano qualcosa di rilevante (deep sleep basso, HRV sotto baseline) collegalo a ciò che l'utente ha scritto`;
+}
+
+function _addCoachMsg(role, text){
+  const wrap = document.getElementById('coach-messages');
+  const div = document.createElement('div');
+  div.className = role==='assistant' ? 'cmsg-coach' : 'cmsg-user';
+  div.innerHTML = (role==='assistant'?'<div class="cmsg-sender">Coach ✦</div>':'')
+    + `<div class="cmsg-bub">${text}</div>`;
+  wrap.appendChild(div);
+  wrap.scrollTop = wrap.scrollHeight;
+}
+
+function _addCoachTyping(){
+  const wrap = document.getElementById('coach-messages');
+  const div = document.createElement('div');
+  div.className='cmsg-coach cmsg-typing';div.id='coach-typing';
+  div.innerHTML='<div class="cmsg-bub"><div class="ald"><span></span><span></span><span></span></div></div>';
+  wrap.appendChild(div);wrap.scrollTop=wrap.scrollHeight;
+}
+
+function _removeTyping(){
+  const el=document.getElementById('coach-typing');if(el)el.remove();
+}
+
+function toggleTTS(chk){
+  _coachTTS = chk.checked;
+  if(!_coachTTS && window.speechSynthesis) window.speechSynthesis.cancel();
+}
+
+function _speakTTS(text){
+  if(!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const utt = new SpeechSynthesisUtterance(text);
+  utt.lang='it-IT'; utt.rate=0.92; utt.pitch=1;
+  window.speechSynthesis.speak(utt);
+}
+
+function coachDictation(){
+  const inp = document.getElementById('coach-input');
+  const btn = document.getElementById('coach-mic');
+  const SR = window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){alert('Dettatura non supportata. Usa Safari su iOS.');return;}
+  if(_coachMicRec){_coachMicRec.stop();return;}
+  const rec = new SR();
+  rec.lang='it-IT';rec.continuous=false;rec.interimResults=false;
+  _coachMicRec=rec;
+  btn.classList.add('listening');btn.textContent='⏹';
+  rec.onresult=e=>{inp.value=(inp.value+' '+e.results[0][0].transcript).trim();};
+  rec.onend=()=>{_coachMicRec=null;btn.classList.remove('listening');btn.textContent='🎤';};
+  rec.onerror=()=>{_coachMicRec=null;btn.classList.remove('listening');btn.textContent='🎤';};
+  rec.start();
 }
 
 // ─── APRI MINDFIT ────────────────────────────────────────
