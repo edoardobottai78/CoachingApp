@@ -190,7 +190,7 @@ body { font-family: var(--fb); background: var(--bg); color: var(--ink); height:
 .cmsg-coach .cmsg-bub { background:var(--bg-w); border:0.5px solid var(--line); border-radius:4px 14px 14px 14px; padding:10px 13px; color:var(--ink); }
 .cmsg-user .cmsg-bub { background:var(--ink); border-radius:14px 14px 4px 14px; padding:10px 13px; color:var(--gold-l); font-style:italic; }
 .cmsg-typing .cmsg-bub { background:var(--bg-w); border:0.5px solid var(--line); border-radius:4px 14px 14px 14px; padding:12px 14px; }
-.coach-input-bar { border-top:0.5px solid var(--line); padding:10px 16px calc(var(--safe-bot)+12px); display:flex; align-items:center; gap:8px; background:var(--bg); flex-shrink:0; }
+.coach-input-bar { border-top:0.5px solid var(--line); padding:10px 16px 12px; display:flex; align-items:center; gap:8px; background:var(--bg); flex-shrink:0; position:sticky; bottom:0; z-index:10; }
 .coach-input { flex:1; font-family:var(--fd); font-size:.95rem; font-style:italic; color:var(--ink); border:0.5px solid var(--line); border-radius:100px; padding:10px 16px; background:var(--bg-w); outline:none; transition:border-color .2s; -webkit-appearance:none; }
 .coach-input:focus { border-color:var(--gold); background:var(--gold-p); }
 .coach-input::placeholder { color:var(--ink-s); }
@@ -1097,39 +1097,74 @@ function buildCtx(){
 
 // ─── DETTATURA VOCALE ──────────────────────────────────────
 let _micRec=null;
+let _micWantActive=false;  // iOS Safari: distingue stop manuale da stop automatico del browser
 function startDictation(taId,btnId,hintId){
   const ta=document.getElementById(taId);
   const btn=document.getElementById(btnId);
   const hint=hintId?document.getElementById(hintId):null;
   const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
   if(!SR){alert('Il tuo browser non supporta la dettatura vocale. Usa Safari su iOS.');return;}
-  if(_micRec){_micRec.stop();return;}
-  const rec=new SR();
-  rec.lang='it-IT';rec.continuous=true;rec.interimResults=true;
-  _micRec=rec;
+  // Stop manuale: utente preme il bottone mentre sta registrando
+  if(_micWantActive){
+    _micWantActive=false;
+    if(_micRec){try{_micRec.stop();}catch(e){}}
+    return;
+  }
+  _micWantActive=true;
   const lbl=btn.querySelector('.mic-lbl');
+  btn.classList.remove('done');
   btn.classList.add('listening');
   if(lbl)lbl.textContent='● Stop';
   ta.classList.add('mic-active');
   if(hint){hint.textContent='● Trascrizione in corso — parla pure';hint.classList.add('active');}
-  const base=ta.value;
-  rec.onresult=e=>{
-    let interim='';let final='';
-    for(let i=e.resultIndex;i<e.results.length;i++){
-      if(e.results[i].isFinal)final+=e.results[i][0].transcript;
-      else interim+=e.results[i][0].transcript;
-    }
-    ta.value=base+(base&&final?' ':'')+final+(interim?' '+interim:'');
-  };
-  rec.onerror=()=>{_stopDictation(ta,btn,hint);};
-  rec.onend=()=>{
-    if(ta.value!==base)sd[taId.replace('f-','')]=ta.value;
-    _stopDictation(ta,btn,hint);
-  };
-  rec.start();
+
+  function _startRec(){
+    if(!_micWantActive) return;
+    const rec=new SR();
+    rec.lang='it-IT';rec.continuous=true;rec.interimResults=true;
+    _micRec=rec;
+    rec.onresult=e=>{
+      let interim='';let final_t='';
+      for(let i=e.resultIndex;i<e.results.length;i++){
+        if(e.results[i].isFinal)final_t+=e.results[i][0].transcript;
+        else interim+=e.results[i][0].transcript;
+      }
+      if(final_t){
+        ta.value=(ta.value+' '+final_t).trim();
+        ta.dataset.saved=ta.value;  // salva il testo finale accumulato
+      } else if(interim && ta.dataset.saved!==undefined){
+        // mostra interim senza perdere il testo già finalizzato
+        ta.value=(ta.dataset.saved+' '+interim).trim();
+      }
+    };
+    rec.onerror=(e)=>{
+      if(e.error==='no-speech' && _micWantActive){
+        // iOS: pausa di silenzio — riavvia senza fermarsi
+        try{_micRec.stop();}catch(err){}
+      } else {
+        _micWantActive=false;
+        _stopDictation(ta,btn,hint);
+      }
+    };
+    rec.onend=()=>{
+      _micRec=null;
+      if(_micWantActive){
+        // iOS Safari termina continuous automaticamente dopo ~60s o su pausa
+        // → riavvio trasparente senza interrompere l'utente
+        setTimeout(_startRec, 200);
+      } else {
+        if(ta.value) sd[taId.replace('f-','')]=ta.value;
+        _stopDictation(ta,btn,hint);
+      }
+    };
+    rec.start();
+  }
+  _startRec();
 }
 function _stopDictation(ta,btn,hint){
+  _micWantActive=false;
   _micRec=null;
+  delete ta.dataset.saved;
   btn.classList.remove('listening');btn.classList.add('done');
   ta.classList.remove('mic-active');
   const lbl=btn.querySelector('.mic-lbl');
@@ -1438,11 +1473,11 @@ function copyForClaude(){
   const ap_c=getActiveProtocol();
   if(ap_c&&ap_c.status==='active'){
     const proto_c=PROTOCOL_REGISTRY[ap_c.id];
-    // FIX v2: dopo completeProtocolDay(), currentDay è già incrementato (es. era 4 → ora è 5).
-    // Il giorno eseguito oggi è sempre currentDay-1.
-    // La prova che è stato completato oggi è dayCompleted[currentDay-2] (indice base-0 del giorno eseguito).
-    const reportDay_c=ap_c.currentDay-1;
-    const completedToday_c=ap_c.dayCompleted&&ap_c.dayCompleted[reportDay_c-1];
+    // FIX: se il giorno corrente è già stato completato (dayCompleted[currentDay-1]===true),
+    // completeProtocolDay() ha già fatto currentDay++ → il giorno eseguito oggi è currentDay-1
+    // Se invece non ancora completato, il giorno corrente è currentDay
+    const completedToday_c=ap_c.dayCompleted&&ap_c.dayCompleted[ap_c.currentDay-1];
+    const reportDay_c=completedToday_c?ap_c.currentDay-1:ap_c.currentDay;
     const dayObj_c=proto_c&&proto_c.days[reportDay_c-1];
     text+='\n--- Protocollo Attivo ---\n';
     text+='Protocollo: '+ap_c.id+'\n';
