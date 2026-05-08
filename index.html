@@ -1438,11 +1438,11 @@ function copyForClaude(){
   const ap_c=getActiveProtocol();
   if(ap_c&&ap_c.status==='active'){
     const proto_c=PROTOCOL_REGISTRY[ap_c.id];
-    // FIX: se il giorno corrente è già stato completato (dayCompleted[currentDay-1]===true),
-    // completeProtocolDay() ha già fatto currentDay++ → il giorno eseguito oggi è currentDay-1
-    // Se invece non ancora completato, il giorno corrente è currentDay
-    const completedToday_c=ap_c.dayCompleted&&ap_c.dayCompleted[ap_c.currentDay-1];
-    const reportDay_c=completedToday_c?ap_c.currentDay-1:ap_c.currentDay;
+    // FIX v2: dopo completeProtocolDay(), currentDay è già incrementato (es. era 4 → ora è 5).
+    // Il giorno eseguito oggi è sempre currentDay-1.
+    // La prova che è stato completato oggi è dayCompleted[currentDay-2] (indice base-0 del giorno eseguito).
+    const reportDay_c=ap_c.currentDay-1;
+    const completedToday_c=ap_c.dayCompleted&&ap_c.dayCompleted[reportDay_c-1];
     const dayObj_c=proto_c&&proto_c.days[reportDay_c-1];
     text+='\n--- Protocollo Attivo ---\n';
     text+='Protocollo: '+ap_c.id+'\n';
