@@ -616,7 +616,7 @@ function isBiweeklyDay(){
 // Soglie alert contestuali
 const ALERT_THRESHOLDS = {
   deepSleepPct: 15,   // % deep sleep sotto cui scatta alert
-  hrv: 45,            // ms HRV sotto cui scatta alert
+  hrv: 24,            // ms HRV sotto cui scatta alert (circa -15% sotto baseline personale 28ms)
   biocharge: 40,      // % biocharge sotto cui scatta alert
   stressLevel: 7,     // livello stress (1-10) sopra cui scatta alert
   habitStreakMiss: 3  // giorni consecutivi senza habit
@@ -1476,8 +1476,8 @@ function copyForClaude(){
     // FIX: se il giorno corrente è già stato completato (dayCompleted[currentDay-1]===true),
     // completeProtocolDay() ha già fatto currentDay++ → il giorno eseguito oggi è currentDay-1
     // Se invece non ancora completato, il giorno corrente è currentDay
-    const completedToday_c=ap_c.dayCompleted&&ap_c.dayCompleted[ap_c.currentDay-1];
-    const reportDay_c=completedToday_c?ap_c.currentDay-1:ap_c.currentDay;
+    const reportDay_c=ap_c.currentDay-1;
+    const completedToday_c=ap_c.dayCompleted&&ap_c.dayCompleted[reportDay_c-1];
     const dayObj_c=proto_c&&proto_c.days[reportDay_c-1];
     text+='\n--- Protocollo Attivo ---\n';
     text+='Protocollo: '+ap_c.id+'\n';
