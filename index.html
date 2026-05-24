@@ -626,7 +626,6 @@ const STEPS = {
   reflection:[
     {t:'moodw', id:'moodw', lbl:'Come ti senti',    q:'Come ti senti adesso?'},
     {t:'ta',    id:'refl',  lbl:'Riflessione',       q:()=>gp(PR.refl)},
-    {t:'aif',   id:'air',   lbl:'AI',                q:''},
     {t:'win',   id:'win',   lbl:'Win del giorno',    q:'Le tue vittorie di oggi'},
     {t:'hab',   id:'hab',   lbl:'Habits',            q:'Come sono andati gli habit di oggi?'},
     {t:'rat',   id:'rat',   lbl:'Giornata',          q:'Come valuti questa giornata?'},
@@ -648,7 +647,6 @@ const STEPS = {
     {t:'hab',   id:'hab',   lbl:'Habits',            q:'Come sono andati gli habit?'},
     {t:'ta',    id:'hi',    lbl:'Highlight',         q:()=>gp(PR.hi)},
     {t:'rat',   id:'rat',   lbl:'Giornata',          q:'Come valuti questa giornata?'},
-    {t:'aif',   id:'air',   lbl:'AI',                q:''},
   ]
 };
 
@@ -1036,26 +1034,7 @@ function startBr(){
   breathInt=setInterval(tick,1000);tick();
 }
 
-async function fetchAI(){
-  const ctx=buildCtx();
-  const p=`Sei un coach personale empatico per Edoardo (Milano, CrossFit 4-5x/settimana, target peso 82kg). Sessione serale (${sd.mode}).
 
-SCALE DI RIFERIMENTO PER GLI INSIGHT:
-- HRV Zepp (RMSSD, baseline personale 28ms): Ottimale = allineato/sopra baseline | Bilanciato = range normale | Basso = significativamente sotto baseline | Critico = molto lontano dalla baseline
-- Sleep score Zepp: Eccellente 90-100 | Buono 80-89 | Sufficiente 60-79 | Basso <60
-- Deep sleep: target 20-25% (attuale baseline 13.2%)
-- Score Hume settimanale (max 900): Eccellente 765-900 | Buono 585-764 | Moderato 450-584 | Sufficiente 297-449 | Basso ≤296
-
-${ctx}
-
-Scrivi 1 pensiero riflessivo (max 3 frasi) in italiano. Caldo, diretto, specifico. Se ci sono dati biometrici, usali per contestualizzare — non solo citarli. Niente consigli generici.`;
-  try{
-    const r=await fetch(AI_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:AI_MODEL,max_tokens:1000,messages:[{role:'user',content:p}]})});
-    const d=await r.json();const txt=d.content?.[0]?.text||'Non disponibile.';
-    sd.air=txt;const el=document.getElementById('ai-r');if(el)el.innerHTML=txt;
-    const nb=document.getElementById('btn-nx');if(nb)nb.disabled=false;
-  }catch{const el=document.getElementById('ai-r');if(el)el.textContent='Non disponibile.';const nb=document.getElementById('btn-nx');if(nb)nb.disabled=false;}
-}
 
 function buildCtx(){
   const p=[];
