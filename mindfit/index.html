@@ -1359,7 +1359,9 @@ function copyMindFitSession(){
   const nome=sessNomi[s.id]||s.id;
   const cat=catNomi[s.catKey]||s.catKey;
   const ap=getActiveProtocol();
-  const protoLine=ap?`\nProtocollo attivo: ${ap.name} (Giorno ${ap.giornoCorrente}/${ap.durTot})`:'';
+  const today_cp=new Date().toISOString().split('T')[0];
+  const reportGiorno=ap?(ap.completati.includes(today_cp)?ap.completati.length:ap.giornoCorrente):0;
+  const protoLine=ap?`\nProtocollo attivo: ${ap.name} (Giorno ${reportGiorno}/${ap.durTot})`:'';
   const txt=
 `MINDFIT — SESSIONE COMPLETATA
 Data: ${today}
