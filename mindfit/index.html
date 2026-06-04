@@ -1198,6 +1198,7 @@ function openPlayer(sessionId){
   document.getElementById('play-lbl').textContent='Play';
   document.getElementById('copy-mf-wrap').style.display='none';
   stopSpeech();
+  preloadAudio(sessionId);
   renderStep(0);
   updateVoiceBtn();
   goScreen('player');
@@ -1209,7 +1210,7 @@ function renderStep(idx){
   document.getElementById('breath-phase').textContent=step.phase;
   document.getElementById('breath-instruction').textContent=step.instruction;
   document.getElementById('guide-text').textContent=step.guide;
-  speak(step.guide);
+  speak(s, idx);
   if(step.isCycle){startBreathCycle();}
   else{clearInterval(PS.cycleTimer);document.getElementById('breath-count').textContent='';resetRings();}
 }
@@ -1243,8 +1244,17 @@ function expandRings(exp){
 }
 function resetRings(){document.getElementById('breath-outer').style.transform='scale(1.0)';document.getElementById('breath-inner').style.transform='scale(1.0)';document.getElementById('breath-inner').style.background='#243527';}
 
-// ── TTS VOCE GUIDA ──────────────────────────────────────
+// ── AUDIO MP3 GUIDA ──────────────────────────────────────
 let ttsEnabled = localStorage.getItem('mf_voice') !== '0';
+let mfAudio = null;
+
+// Calcola l'offset in secondi dell'inizio dello step idx nell'MP3 della sessione
+function stepOffset(session, idx){
+  let t = 0;
+  for(let i = 0; i < idx && i < session.steps.length; i++) t += session.steps[i].dur;
+  return t;
+}
+
 function updateVoiceBtn(){
   const btn = document.getElementById('voice-toggle-btn');
   if(!btn) return;
@@ -1252,40 +1262,42 @@ function updateVoiceBtn(){
   btn.style.background = ttsEnabled ? 'var(--forest)' : 'none';
   btn.style.color = ttsEnabled ? '#EDF5EE' : 'var(--forest)';
 }
+
 function toggleVoice(){
   ttsEnabled = !ttsEnabled;
   localStorage.setItem('mf_voice', ttsEnabled ? '1' : '0');
   updateVoiceBtn();
   if(!ttsEnabled) stopSpeech();
+  else if(PS.session && PS.isPlaying) speak(PS.session, PS.stepIdx);
 }
-let _cachedVoice = null;
-function getItalianVoice(cb){
-  const voices = window.speechSynthesis.getVoices();
-  if(voices.length > 0){
-    cb(voices.find(v => v.name === 'Alice') || voices.find(v => v.lang && v.lang.startsWith('it')) || null);
-  } else {
-    window.speechSynthesis.onvoiceschanged = () => {
-      const v2 = window.speechSynthesis.getVoices();
-      cb(v2.find(v => v.name === 'Alice') || v2.find(v => v.lang && v.lang.startsWith('it')) || null);
-    };
+
+function speak(session, stepIdx){
+  if(!ttsEnabled || !session) return;
+  const offset = stepOffset(session, stepIdx);
+  // Se l'audio è già caricato per questa sessione, fai seek; altrimenti carica
+  if(!mfAudio || mfAudio._sessionId !== session.id){
+    if(mfAudio){ mfAudio.pause(); mfAudio.src = ''; }
+    mfAudio = new Audio('/mindfit/audio/' + session.id + '.mp3');
+    mfAudio._sessionId = session.id;
+    mfAudio.preload = 'auto';
   }
+  mfAudio.currentTime = offset;
+  mfAudio.play().catch(() => {}); // silenzio su autoplay policy
 }
-function speak(text){
-  if(!ttsEnabled || !text || !window.speechSynthesis) return;
-  stopSpeech();
-  const utt = new SpeechSynthesisUtterance(text);
-  utt.lang = 'it-IT';
-  utt.rate = 0.88;
-  utt.pitch = 1.0;
-  getItalianVoice(voice => {
-    if(voice) utt.voice = voice;
-    window.speechSynthesis.speak(utt);
-  });
-}
+
 function stopSpeech(){
-  if(window.speechSynthesis) window.speechSynthesis.cancel();
+  if(mfAudio){ mfAudio.pause(); }
 }
-// ── FINE TTS ─────────────────────────────────────────────
+
+function preloadAudio(sessionId){
+  // Precarica l'MP3 quando si apre il player, prima che l'utente tocchi play
+  if(mfAudio && mfAudio._sessionId === sessionId) return;
+  if(mfAudio){ mfAudio.pause(); mfAudio.src = ''; }
+  mfAudio = new Audio('/mindfit/audio/' + sessionId + '.mp3');
+  mfAudio._sessionId = sessionId;
+  mfAudio.preload = 'auto';
+}
+// ── FINE AUDIO MP3 ───────────────────────────────────────
 
 function togglePlay(){PS.isPlaying?pausePlayer():startPlayer();}
 
