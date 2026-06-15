@@ -831,10 +831,17 @@ function renderMorning(){
     <input class="morning-num" id="m-biocharge" type="number" min="0" max="100" placeholder="es. 72">
   </div>`;
 
-  // HRV
+  // HRV Zepp
   html+=`<div class="morning-field">
-    <span class="morning-label">💓 HRV mattutino (ms)</span>
-    <input class="morning-num" id="m-hrv" type="number" min="0" max="200" placeholder="es. 54">
+    <span class="morning-label">💓 HRV Zepp (ms)</span>
+    <input class="morning-num" id="m-hrv" type="number" min="0" max="200" placeholder="es. 28">
+  </div>`;
+
+  // HRV4Training (rMSSD reale, da 1 luglio 2026)
+  html+=`<div class="morning-field">
+    <span class="morning-label">📱 HRV4Training rMSSD (ms)</span>
+    <input class="morning-num" id="m-hrv4t" type="number" min="0" max="200" placeholder="es. 42">
+    <p style="font-size:10px;color:var(--ink-s);margin-top:4px">Misura mattutina con fotocamera iPhone · app HRV4Training</p>
   </div>`;
 
   // Slancio Hume
@@ -893,6 +900,7 @@ function saveMorningData(){
     intention: document.getElementById('m-intention')?.value.trim()||'',
     biocharge: parseFloat(document.getElementById('m-biocharge')?.value)||null,
     hrv: parseFloat(document.getElementById('m-hrv')?.value)||null,
+    hrv4t: parseFloat(document.getElementById('m-hrv4t')?.value)||null,
     slancio: parseFloat(document.getElementById('m-slancio')?.value)||null,
     deepSleepPct: parseFloat(document.getElementById('m-deepsleep')?.value)||null,
     sleepScore: parseFloat(document.getElementById('m-sleepscore')?.value)||null,
@@ -1046,7 +1054,8 @@ function buildCtx(){
     if(todayM.energy)   p.push('Energia mattutina: '+todayM.energy+'/5');
     if(todayM.intention)p.push('Intenzione del giorno: "'+todayM.intention+'"');
     if(todayM.biocharge)p.push('Biocharge Zepp: '+todayM.biocharge+'%');
-    if(todayM.hrv)      p.push('HRV: '+todayM.hrv+' ms');
+    if(todayM.hrv)      p.push('HRV Zepp: '+todayM.hrv+' ms');
+    if(todayM.hrv4t)    p.push('HRV4Training rMSSD: '+todayM.hrv4t+' ms');
     if(todayM.slancio)  p.push('Slancio metabolico Hume: '+todayM.slancio);
     if(todayM.deepSleepPct) p.push('Deep sleep ieri: '+todayM.deepSleepPct+'%');
     if(todayM.sleepScore)   p.push('Sleep score Zepp: '+todayM.sleepScore+'/100');
@@ -1424,7 +1433,8 @@ function copyForClaude(){
     if(todayM.energy)    text+='Energia: '+todayM.energy+'/5\n';
     if(todayM.intention) text+='Intenzione: '+todayM.intention+'\n';
     if(todayM.biocharge) text+='Biocharge Zepp: '+todayM.biocharge+'%\n';
-    if(todayM.hrv)       text+='HRV: '+todayM.hrv+' ms\n';
+    if(todayM.hrv)       text+='HRV Zepp: '+todayM.hrv+' ms\n';
+    if(todayM.hrv4t)     text+='HRV4Training rMSSD: '+todayM.hrv4t+' ms\n';
     if(todayM.slancio)   text+='Slancio Hume: '+todayM.slancio+'\n';
     if(todayM.deepSleepPct) text+='Deep sleep ieri: '+todayM.deepSleepPct+'%\n';
     if(todayM.sleepScore)   text+='Sleep score Zepp: '+todayM.sleepScore+'/100\n';
