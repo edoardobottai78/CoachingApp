@@ -10,7 +10,6 @@
 <meta name="description" content="Daily evening reflection & journaling">
 <title>Evening Reflection</title>
 
-<!-- PWA Manifest inline -->
 <script>
 const manifestData = {
   name: "Evening Reflection",
@@ -31,7 +30,6 @@ const manifestURL = URL.createObjectURL(blob);
 document.write('<link rel="manifest" href="'+manifestURL+'">');
 </script>
 
-<!-- Apple Touch Icon inline SVG -->
 <link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAACXBIWXMAAAsTAAALEwEAmpwYAAAF8WlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgOS4xLWMwMDEgNzkuMTQ2Mjg5OSwgMjAyMy8wNi8yNS0yMDowMTo1NSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIDI1LjAgKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6RjhGRTYwNzdFRTYyMTFFRUI4RTFEMkE2NkFEMDM4REMiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6RjhGRTYwNzhFRTYyMTFFRUI4RTFEMkE2NkFEMDM4REMiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpGOEZFNjA3NUVFNjIxMUVFQjhFMUQyQTY2QUQwMzhEQyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpGOEZFNjA3NkVFNjIxMUVFQjhFMUQyQTY2QUQwMzhEQyIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Pn2rAZAAAANCSURBVHja7NoxAQAAAMKg9U9tCU+gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAeAMBuAABHgAAAABJRU5ErkJggg==">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -43,6 +41,8 @@ document.write('<link rel="manifest" href="'+manifestURL+'">');
   --ink: #1C1A17; --ink-m: #4A4540; --ink-s: #8A8178;
   --bg: #FDFBF7; --bg-w: #F5F0E8; --line: rgba(201,169,110,.22);
   --green: #3B6D11; --gbg: #EAF3DE;
+  --blue: #185FA5; --bluebg: #E6F1FB;
+  --purple: #6B3FA0; --purplebg: #F0EAF9;
   --r: 16px; --r-sm: 12px;
   --fd: 'Cormorant Garamond', Georgia, serif;
   --fb: 'DM Sans', system-ui, sans-serif;
@@ -51,105 +51,93 @@ document.write('<link rel="manifest" href="'+manifestURL+'">');
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 html { height: 100%; overscroll-behavior: none; }
-body {
-  font-family: var(--fb); background: var(--bg); color: var(--ink);
-  height: 100%; overflow: hidden;
-  -webkit-font-smoothing: antialiased;
-}
+body { font-family: var(--fb); background: var(--bg); color: var(--ink); height: 100%; overflow: hidden; -webkit-font-smoothing: antialiased; }
 #app { height: 100vh; height: 100dvh; display: flex; flex-direction: column; overflow: hidden; }
 
-/* ── SCREENS ── */
 .screen { display: none; flex-direction: column; height: 100%; overflow: hidden; }
 .screen.active { display: flex; }
 
-/* ── STATUS BAR SAFE AREA ── */
 .safe-top { padding-top: calc(var(--safe-top) + 12px); }
 .safe-bot { padding-bottom: calc(var(--safe-bot) + 12px); }
 
-/* ── HEADER ── */
 .app-header {
-  background: var(--bg);
-  border-bottom: 0.5px solid var(--line);
+  background: var(--bg); border-bottom: 0.5px solid var(--line);
   padding: calc(var(--safe-top) + 12px) 20px 12px;
-  display: flex; align-items: center; justify-content: space-between;
-  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
 }
 .app-header-title { font-family: var(--fd); font-size: 1.05rem; font-style: italic; color: var(--ink-m); }
 .icon-btn { background: none; border: none; color: var(--ink-s); font-size: 18px; cursor: pointer; padding: 6px; border-radius: 8px; display: flex; align-items: center; }
-
-/* ── SCROLLABLE CONTENT ── */
 .scroll-body { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 20px; }
-
-/* ── PROGRESS BAR ── */
 .pbar-w { height: 2px; background: var(--gold-l); flex-shrink: 0; }
 .pbar-f { height: 100%; background: var(--gold); transition: width .4s; }
 
-/* ── BOTTOM NAV ── */
-.bottom-nav {
-  display: flex; border-top: 0.5px solid var(--line); background: var(--bg);
-  padding-bottom: var(--safe-bot);
-  flex-shrink: 0;
-}
-.nav-item {
-  flex: 1; display: flex; flex-direction: column; align-items: center;
-  padding: 10px 8px; background: none; border: none; cursor: pointer;
-  color: var(--ink-s); transition: color .2s; gap: 3px;
-}
+.bottom-nav { display: flex; border-top: 0.5px solid var(--line); background: var(--bg); padding-bottom: var(--safe-bot); flex-shrink: 0; }
+.nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 10px 8px; background: none; border: none; cursor: pointer; color: var(--ink-s); transition: color .2s; gap: 3px; }
 .nav-item.act { color: var(--gold); }
 .nav-icon { font-size: 18px; line-height: 1; }
-.nav-lbl { font-size: 9px; font-weight: 500; letter-spacing: .05em; text-transform: uppercase; }
+.nav-lbl { font-size: 8px; font-weight: 500; letter-spacing: .04em; text-transform: uppercase; }
 
-/* ── TYPOGRAPHY ── */
 .eyebrow { font-size: 10px; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); margin-bottom: .5rem; }
 .hero { font-family: var(--fd); font-size: 2.4rem; font-weight: 300; line-height: 1.1; margin-bottom: .35rem; }
 .hero em { font-style: italic; color: var(--gold); }
 .sub { font-family: var(--fd); font-size: .9rem; font-style: italic; color: var(--ink-s); }
 
-/* ── CARDS ── */
 .card { background: var(--bg-w); border: 0.5px solid var(--line); border-radius: var(--r); padding: 14px 16px; }
 .card + .card { margin-top: 10px; }
 .clbl { font-size: 10px; letter-spacing: .13em; text-transform: uppercase; color: var(--ink-s); margin-bottom: 4px; }
 .cval { font-family: var(--fd); font-size: .95rem; font-weight: 300; color: var(--ink); line-height: 1.5; }
 .divider { height: 0.5px; background: var(--line); margin: 16px 0; }
 
-/* ── BUTTONS ── */
 .btn-primary {
   width: 100%; background: var(--ink); color: var(--gold-l);
   border: none; padding: 16px 24px; border-radius: 100px;
   font-family: var(--fb); font-size: 15px; cursor: pointer; transition: all .2s;
-  display: flex; align-items: center; justify-content: center; gap: 8px;
-  -webkit-appearance: none;
+  display: flex; align-items: center; justify-content: center; gap: 8px; -webkit-appearance: none;
 }
 .btn-primary:active { transform: scale(.98); background: var(--ink-m); }
 .btn-primary:disabled { opacity: .35; }
-.btn-secondary {
-  width: 100%; background: none; border: 0.5px solid var(--gold);
-  color: var(--gold); padding: 14px 24px; border-radius: 100px;
-  font-family: var(--fb); font-size: 14px; cursor: pointer; transition: all .2s;
-  -webkit-appearance: none;
-}
+.btn-secondary { width: 100%; background: none; border: 0.5px solid var(--gold); color: var(--gold); padding: 14px 24px; border-radius: 100px; font-family: var(--fb); font-size: 14px; cursor: pointer; transition: all .2s; -webkit-appearance: none; }
 .btn-secondary:active { background: var(--gold-p); }
-.btn-ghost {
-  width: 100%; background: none; border: 0.5px solid var(--line);
-  color: var(--ink-s); padding: 14px 24px; border-radius: 100px;
-  font-family: var(--fb); font-size: 14px; cursor: pointer;
-  -webkit-appearance: none;
+.btn-ghost { width: 100%; background: none; border: 0.5px solid var(--line); color: var(--ink-s); padding: 14px 24px; border-radius: 100px; font-family: var(--fb); font-size: 14px; cursor: pointer; -webkit-appearance: none; }
+
+/* ── ALERT BANNER ── */
+.alert-banner {
+  background: var(--bluebg); border: 1px solid rgba(24,95,165,.25);
+  border-radius: 12px; padding: 12px 14px; margin-bottom: 14px;
+  display: flex; align-items: flex-start; gap: 10px;
 }
+.alert-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+.alert-text { font-size: 12.5px; color: var(--blue); line-height: 1.5; }
+.alert-text strong { font-weight: 600; display: block; margin-bottom: 2px; }
+
+
+.alert-banner.proto { background: var(--purplebg); border-color: rgba(107,63,160,.25); }
+.alert-banner.proto .alert-text { color: var(--purple); }
+/* ── CHECK-IN MATTUTINO ── */
+.morning-field { margin-bottom: 16px; }
+.morning-label { font-size: 10px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; display: block; }
+.morning-input {
+  width: 100%; padding: 13px 16px; border: 0.5px solid var(--line);
+  border-radius: 12px; background: var(--bg-w); font-family: var(--fd);
+  font-size: 1rem; font-weight: 300; color: var(--ink); -webkit-appearance: none;
+  outline: none; transition: border-color .2s;
+}
+.morning-input:focus { border-color: var(--gold); background: var(--gold-p); }
+.morning-input::placeholder { color: var(--ink-s); font-style: italic; }
+.morning-num { width: 100%; padding: 13px 16px; border: 0.5px solid var(--line); border-radius: 12px; background: var(--bg-w); font-family: var(--fd); font-size: 1.1rem; font-weight: 300; color: var(--ink); -webkit-appearance: none; outline: none; transition: border-color .2s; -moz-appearance: textfield; }
+.morning-num::-webkit-outer-spin-button, .morning-num::-webkit-inner-spin-button { -webkit-appearance: none; }
+.morning-num:focus { border-color: var(--gold); background: var(--gold-p); }
+.energy-row { display: flex; gap: 8px; }
+.energy-btn { flex: 1; padding: 14px 8px; border: 0.5px solid var(--line); border-radius: 12px; background: var(--bg-w); font-size: 13px; font-weight: 500; color: var(--ink-m); cursor: pointer; text-align: center; -webkit-appearance: none; transition: all .15s; }
+.energy-btn.sel { border-color: var(--gold); background: var(--gold-p); color: var(--ink); border-width: 1.5px; }
+.hume-badge { background: var(--bluebg); border: 0.5px solid rgba(24,95,165,.2); border-radius: 8px; padding: 8px 12px; font-size: 11px; color: var(--blue); margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
 
 /* ── HOME ── */
 .streak-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0 20px; }
-.badge {
-  background: var(--gold-p); border: 0.5px solid var(--gold-l);
-  border-radius: 100px; padding: 7px 14px; font-size: 12px; color: var(--ink-m);
-  display: inline-flex; align-items: center; gap: 5px;
-}
+.badge { background: var(--gold-p); border: 0.5px solid var(--gold-l); border-radius: 100px; padding: 7px 14px; font-size: 12px; color: var(--ink-m); display: inline-flex; align-items: center; gap: 5px; }
+.badge.proto-badge { background: var(--purplebg); border-color: rgba(107,63,160,.3); color: var(--purple); }
 .modes { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
-.mcard {
-  background: var(--bg-w); border: 0.5px solid var(--line);
-  border-radius: var(--r); padding: 14px 16px; cursor: pointer;
-  display: flex; align-items: center; gap: 12px; transition: all .15s;
-  -webkit-appearance: none; width: 100%; text-align: left;
-}
+.mcard { background: var(--bg-w); border: 0.5px solid var(--line); border-radius: var(--r); padding: 14px 16px; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: all .15s; -webkit-appearance: none; width: 100%; text-align: left; }
 .mcard:active, .mcard.sel { border-color: var(--gold); background: var(--gold-p); }
 .mcard.sel { border-width: 1.5px; }
 .mi { font-size: 1.1rem; width: 26px; text-align: center; flex-shrink: 0; }
@@ -161,30 +149,82 @@ body {
 @keyframes fu { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 .tlbl { font-size: 10px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); margin-bottom: .45rem; }
 .q { font-family: var(--fd); font-size: 1.75rem; font-weight: 300; line-height: 1.25; color: var(--ink); margin-bottom: 1.1rem; }
-.jta {
-  width: 100%; min-height: 130px; padding: 14px 16px;
-  border: 0.5px solid var(--line); border-radius: var(--r);
-  background: var(--bg-w); font-family: var(--fd);
-  font-size: 1rem; font-weight: 300; font-style: italic;
-  color: var(--ink); resize: none; line-height: 1.7;
-  -webkit-appearance: none; outline: none;
-  transition: border-color .2s;
-}
+.jta { width: 100%; min-height: 130px; padding: 14px 16px; border: 0.5px solid var(--line); border-radius: var(--r); background: var(--bg-w); font-family: var(--fd); font-size: 1rem; font-weight: 300; font-style: italic; color: var(--ink); resize: none; line-height: 1.7; -webkit-appearance: none; outline: none; transition: border-color .2s; }
 .jta:focus { border-color: var(--gold); background: var(--gold-p); }
 .jta::placeholder { color: var(--ink-s); }
+.jta.mic-active { border-color: #E24B4A; background: #FEF2F2; }
+
+/* ── MIC DETTATURA ── */
+.mic-row { display:flex; justify-content:flex-end; margin-bottom:6px; }
+.mic-btn-voice { display:flex; align-items:center; gap:5px; padding:6px 13px; border-radius:100px; border:0.5px solid var(--line); background:var(--bg-w); font-family:var(--fb); font-size:11px; font-weight:500; color:var(--ink-s); cursor:pointer; -webkit-appearance:none; transition:all .2s; }
+.mic-btn-voice.listening { border-color:#E24B4A; background:#FEF2F2; color:#E24B4A; }
+.mic-btn-voice.done { border-color:var(--gold); color:var(--gold); }
+.mic-dot { width:6px; height:6px; border-radius:50%; background:currentColor; display:none; }
+.mic-btn-voice.listening .mic-dot { display:block; animation:micpulse 1s infinite; }
+@keyframes micpulse { 0%,100%{opacity:1} 50%{opacity:.25} }
+.mic-hint { font-family:var(--fd); font-size:.75rem; font-style:italic; color:var(--ink-s); margin-top:5px; text-align:right; }
+.mic-hint.active { color:#E24B4A; font-style:normal; font-size:.7rem; font-family:var(--fb); }
+
+/* ── COACH AI ── */
+.coach-card-home { background:var(--gold-p); border:1px solid var(--gold-l); border-radius:var(--r); padding:14px 16px; display:flex; align-items:center; gap:12px; margin-bottom:12px; cursor:pointer; -webkit-appearance:none; width:100%; text-align:left; transition:all .15s; }
+.coach-card-home:active { border-color:var(--gold); }
+.coach-card-icon { width:34px; height:34px; border-radius:50%; background:var(--gold-l); display:flex; align-items:center; justify-content:center; font-size:1rem; flex-shrink:0; }
+.coach-card-lbl { font-size:14px; font-weight:500; color:var(--ink); font-family:var(--fb); }
+.coach-card-sub { font-size:11px; color:var(--ink-m); font-family:var(--fb); margin-top:2px; }
+.coach-new-badge { font-size:8px; font-weight:500; letter-spacing:.08em; text-transform:uppercase; background:var(--gold); color:var(--bg); border-radius:100px; padding:3px 8px; font-family:var(--fb); margin-left:auto; flex-shrink:0; }
+.coach-cta-sum { background:var(--gold-p); border:0.5px solid var(--gold-l); border-radius:12px; padding:10px 14px; display:flex; align-items:center; gap:10px; margin-top:10px; cursor:pointer; -webkit-appearance:none; width:100%; text-align:left; transition:all .15s; }
+.coach-cta-sum:active { border-color:var(--gold); }
+.coach-cta-lbl { font-size:13px; font-weight:500; color:var(--ink-m); font-family:var(--fb); }
+.coach-cta-sub { font-size:10px; color:var(--ink-s); font-family:var(--fb); margin-top:1px; }
+.coach-screen-header { background:var(--bg); border-bottom:0.5px solid var(--line); padding:calc(var(--safe-top)+12px) 20px 10px; display:flex; align-items:center; gap:12px; flex-shrink:0; }
+.coach-ctx-strip { background:var(--gold-p); border:0.5px solid var(--gold-l); border-radius:12px; padding:9px 12px; margin:12px 20px 0; flex-shrink:0; }
+.coach-ctx-lbl { font-size:8px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--gold); font-family:var(--fb); margin-bottom:5px; }
+.coach-ctx-pills { display:flex; flex-wrap:wrap; gap:4px; }
+.coach-pill { font-size:10px; font-family:var(--fb); color:var(--ink-m); background:var(--bg); border:0.5px solid var(--gold-l); border-radius:100px; padding:3px 8px; }
+.coach-pill.warn { background:#FEF2F2; border-color:rgba(226,75,74,.3); color:#E24B4A; }
+.coach-messages { flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; padding:12px 20px 8px; display:flex; flex-direction:column; gap:10px; }
+.cmsg-coach { align-self:flex-start; max-width:88%; }
+.cmsg-user { align-self:flex-end; max-width:85%; }
+.cmsg-sender { font-size:8px; font-weight:500; letter-spacing:.1em; text-transform:uppercase; color:var(--gold); font-family:var(--fb); margin-bottom:3px; padding-left:2px; }
+.cmsg-bub { font-family:var(--fd); font-size:.95rem; font-weight:300; line-height:1.6; }
+.cmsg-coach .cmsg-bub { background:var(--bg-w); border:0.5px solid var(--line); border-radius:4px 14px 14px 14px; padding:10px 13px; color:var(--ink); }
+.cmsg-user .cmsg-bub { background:var(--ink); border-radius:14px 14px 4px 14px; padding:10px 13px; color:var(--gold-l); font-style:italic; }
+.cmsg-typing .cmsg-bub { background:var(--bg-w); border:0.5px solid var(--line); border-radius:4px 14px 14px 14px; padding:12px 14px; }
+.coach-input-bar { border-top:0.5px solid var(--line); padding:10px 16px 12px; display:flex; align-items:center; gap:8px; background:var(--bg); flex-shrink:0; position:sticky; bottom:0; z-index:10; }
+.coach-input { flex:1; font-family:var(--fd); font-size:.95rem; font-style:italic; color:var(--ink); border:0.5px solid var(--line); border-radius:100px; padding:10px 16px; background:var(--bg-w); outline:none; transition:border-color .2s; -webkit-appearance:none; }
+.coach-input:focus { border-color:var(--gold); background:var(--gold-p); }
+.coach-input::placeholder { color:var(--ink-s); }
+.coach-mic-btn { width:36px; height:36px; border-radius:50%; background:var(--bg-w); border:0.5px solid var(--line); display:flex; align-items:center; justify-content:center; flex-shrink:0; color:var(--ink-s); font-size:16px; cursor:pointer; -webkit-appearance:none; }
+.coach-mic-btn.listening { background:#FEF2F2; border-color:#E24B4A; color:#E24B4A; }
+.coach-send-btn { width:36px; height:36px; border-radius:50%; background:var(--ink); border:none; display:flex; align-items:center; justify-content:center; flex-shrink:0; color:var(--gold-l); font-size:15px; cursor:pointer; -webkit-appearance:none; }
+.coach-send-btn:active { background:var(--ink-m); }
+.coach-tts-row { display:flex; align-items:center; gap:8px; padding:6px 20px 0; flex-shrink:0; }
+.coach-tts-lbl { font-size:10px; color:var(--ink-s); font-family:var(--fb); }
+.coach-tts-toggle { position:relative; width:32px; height:18px; flex-shrink:0; cursor:pointer; }
+.coach-tts-toggle input { opacity:0; width:0; height:0; }
+.coach-tts-slider { position:absolute; inset:0; border-radius:9px; background:var(--line); transition:background .2s; border:0.5px solid var(--gold-l); }
+.coach-tts-slider::after { content:''; position:absolute; width:14px; height:14px; border-radius:50%; background:var(--bg); top:2px; left:2px; transition:transform .2s; }
+.coach-tts-toggle input:checked + .coach-tts-slider { background:var(--gold); }
+.coach-tts-toggle input:checked + .coach-tts-slider::after { transform:translateX(14px); }
+.divider-lbl { font-size:9px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-s); font-family:var(--fb); margin:4px 0 10px; }
+
+/* ── WIN DEL GIORNO ── */
+.win-grid { display: flex; flex-direction: column; gap: 12px; }
+.win-card { background: var(--bg-w); border: 0.5px solid var(--line); border-radius: 12px; padding: 14px 16px; }
+.win-lbl { font-size: 10px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; margin-bottom: 8px; }
+.win-lbl.phys { color: var(--green); }
+.win-lbl.ment { color: var(--gold); }
+.win-lbl.rel  { color: var(--blue); }
+.win-input { width: 100%; padding: 10px 12px; border: 0.5px solid var(--line); border-radius: 8px; background: var(--bg); font-family: var(--fd); font-size: .95rem; font-style: italic; font-weight: 300; color: var(--ink); -webkit-appearance: none; outline: none; transition: border-color .2s; }
+.win-input:focus { border-color: var(--gold); background: var(--gold-p); }
+.win-input::placeholder { color: var(--ink-s); }
 
 /* ── MOOD ── */
-.mood-g { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
-.mbtn {
-  border: 0.5px solid var(--line); border-radius: 12px; padding: 12px 8px;
-  background: var(--bg-w); cursor: pointer; text-align: center;
-  display: flex; flex-direction: column; align-items: center; gap: 4px;
-  -webkit-appearance: none; transition: all .15s;
-}
-.mbtn:active, .mbtn.sel { border-color: var(--gold); background: var(--gold-p); }
-.mbtn.sel { border-width: 1.5px; }
-.mem { font-size: 1.6rem; }
-.mlb { font-size: 10px; color: var(--ink-m); }
+.mood-words { display: grid; grid-template-columns: repeat(3,1fr); gap: 6px; margin-bottom: 8px; }
+.mword { border: 0.5px solid var(--line); border-radius: 8px; padding: 8px 4px; background: var(--bg-w); cursor: pointer; text-align: center; font-size: 12px; font-weight: 400; color: var(--ink-m); -webkit-appearance: none; transition: all .15s; line-height: 1.2; }
+.mword:active, .mword.sel { border-color: var(--gold); background: var(--gold-p); color: var(--ink); font-weight: 500; }
+.mword.sel { border-width: 1.5px; }
+.mood-section-lbl { font-size: 9px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-s); margin: 10px 0 5px; }
 
 /* ── RATING ── */
 .rrow { display: flex; gap: 4px; justify-content: flex-start; padding: 4px 0; }
@@ -194,73 +234,34 @@ body {
 
 /* ── BREATHING ── */
 .bwrap { display: flex; flex-direction: column; align-items: center; gap: 20px; padding: 10px 0; }
-.bcircle {
-  width: 120px; height: 120px; border-radius: 50%;
-  border: 1.5px solid var(--gold-l);
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--fd); font-size: 1.8rem; color: var(--ink-s);
-  transition: all .1s linear;
-}
+.bcircle { width: 120px; height: 120px; border-radius: 50%; border: 1.5px solid var(--gold-l); display: flex; align-items: center; justify-content: center; font-family: var(--fd); font-size: 1.8rem; color: var(--ink-s); transition: all .1s linear; }
 .binstr { font-family: var(--fd); font-size: 1.1rem; font-style: italic; color: var(--ink-m); }
 .btimer { font-size: 2rem; font-weight: 300; color: var(--gold); font-family: var(--fd); visibility: hidden; }
-.btn-br {
-  background: none; border: 0.5px solid var(--gold); color: var(--gold);
-  padding: 12px 32px; border-radius: 100px; font-size: 14px; cursor: pointer;
-  font-family: var(--fb); -webkit-appearance: none;
-}
+.btn-br { background: none; border: 0.5px solid var(--gold); color: var(--gold); padding: 12px 32px; border-radius: 100px; font-size: 14px; cursor: pointer; font-family: var(--fb); -webkit-appearance: none; }
 .btn-br:active { background: var(--gold-p); }
 
 /* ── GRATITUDE ── */
 .glist { display: flex; flex-direction: column; gap: 10px; }
 .grow { display: flex; align-items: center; gap: 10px; }
-.gnum {
-  width: 24px; height: 24px; border-radius: 50%;
-  background: var(--gold-p); border: 0.5px solid var(--gold-l);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 11px; color: var(--gold); flex-shrink: 0; font-family: var(--fd);
-}
-.gin {
-  flex: 1; padding: 12px 14px; border: 0.5px solid var(--line);
-  border-radius: 10px; background: var(--bg-w);
-  font-family: var(--fd); font-size: 1rem; font-style: italic;
-  font-weight: 300; color: var(--ink); -webkit-appearance: none; outline: none;
-  transition: border-color .2s;
-}
+.gnum { width: 24px; height: 24px; border-radius: 50%; background: var(--gold-p); border: 0.5px solid var(--gold-l); display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--gold); flex-shrink: 0; font-family: var(--fd); }
+.gin { flex: 1; padding: 12px 14px; border: 0.5px solid var(--line); border-radius: 10px; background: var(--bg-w); font-family: var(--fd); font-size: 1rem; font-style: italic; font-weight: 300; color: var(--ink); -webkit-appearance: none; outline: none; transition: border-color .2s; }
 .gin:focus { border-color: var(--gold); background: var(--gold-p); }
 .gin::placeholder { color: var(--ink-s); }
 
 /* ── HABITS ── */
 .hgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.hcard {
-  border: 0.5px solid var(--line); border-radius: 12px; padding: 14px 12px;
-  background: var(--bg-w); cursor: pointer;
-  display: flex; align-items: center; gap: 10px; transition: all .15s;
-  -webkit-appearance: none; width: 100%; text-align: left;
-}
+.hgrid .hcard:last-child:nth-child(odd) { grid-column: span 2; }
+.hcard { border: 0.5px solid var(--line); border-radius: 12px; padding: 14px 12px; background: var(--bg-w); cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all .15s; -webkit-appearance: none; width: 100%; text-align: left; }
 .hcard:active { opacity: .7; }
 .hcard.done { border-color: var(--green); background: var(--gbg); border-width: 1.5px; }
-.hchk {
-  width: 22px; height: 22px; border-radius: 50%;
-  border: 1.5px solid var(--ink-s); display: flex; align-items: center;
-  justify-content: center; flex-shrink: 0; font-size: 11px; transition: all .15s;
-}
+.hchk { width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(--ink-s); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 11px; transition: all .15s; }
 .hcard.done .hchk { border-color: var(--green); background: var(--green); color: #fff; }
 .hnm { font-size: 13px; font-weight: 500; color: var(--ink); }
 .hcard.done .hnm { color: var(--green); }
 
 /* ── AI BUBBLE ── */
-.ai-bub {
-  background: var(--gold-p); border: 0.5px solid var(--gold-l);
-  border-radius: 0 var(--r) var(--r) var(--r);
-  padding: 14px 16px;
-  font-family: var(--fd); font-size: .95rem; font-weight: 300;
-  line-height: 1.7; color: var(--ink-m); font-style: italic;
-  animation: fu .4s ease; position: relative;
-}
-.ai-bub::before {
-  content: ''; position: absolute; top: 0; left: -.5px;
-  width: 2px; height: 100%; background: var(--gold); border-radius: 1px;
-}
+.ai-bub { background: var(--gold-p); border: 0.5px solid var(--gold-l); border-radius: 0 var(--r) var(--r) var(--r); padding: 14px 16px; font-family: var(--fd); font-size: .95rem; font-weight: 300; line-height: 1.7; color: var(--ink-m); font-style: italic; animation: fu .4s ease; position: relative; }
+.ai-bub::before { content: ''; position: absolute; top: 0; left: -.5px; width: 2px; height: 100%; background: var(--gold); border-radius: 1px; }
 .ald { display: flex; gap: 6px; align-items: center; padding: 4px 0; }
 .ald span { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); animation: dot 1.2s ease infinite; }
 .ald span:nth-child(2) { animation-delay: .2s; }
@@ -268,17 +269,9 @@ body {
 @keyframes dot { 0%,80%,100% { opacity:.2; transform:scale(.8); } 40% { opacity:1; transform:scale(1); } }
 
 /* ── SESSION FOOTER ── */
-.session-footer {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 12px 20px calc(var(--safe-bot) + 12px);
-  border-top: 0.5px solid var(--line); background: var(--bg); flex-shrink: 0;
-}
+.session-footer { display: flex; justify-content: space-between; align-items: center; padding: 12px 20px calc(var(--safe-bot) + 12px); border-top: 0.5px solid var(--line); background: var(--bg); flex-shrink: 0; }
 .btn-bk { background: none; border: none; color: var(--ink-s); font-size: 13px; cursor: pointer; padding: 10px 4px; font-family: var(--fb); }
-.btn-nx {
-  background: var(--ink); color: var(--gold-l); border: none;
-  padding: 12px 28px; border-radius: 100px; font-family: var(--fb);
-  font-size: 14px; cursor: pointer; -webkit-appearance: none;
-}
+.btn-nx { background: var(--ink); color: var(--gold-l); border: none; padding: 12px 28px; border-radius: 100px; font-family: var(--fb); font-size: 14px; cursor: pointer; -webkit-appearance: none; }
 .btn-nx:active { background: var(--ink-m); }
 .btn-nx:disabled { opacity: .35; }
 
@@ -316,44 +309,123 @@ body {
 
 /* ── EXPORT ── */
 .month-sel { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
-.msel-btn {
-  background: var(--bg-w); border: 0.5px solid var(--line);
-  border-radius: 100px; padding: 8px 16px; font-size: 12px; color: var(--ink-m); cursor: pointer;
-  -webkit-appearance: none; transition: all .2s;
-}
+.msel-btn { background: var(--bg-w); border: 0.5px solid var(--line); border-radius: 100px; padding: 8px 16px; font-size: 12px; color: var(--ink-m); cursor: pointer; -webkit-appearance: none; transition: all .2s; }
 .msel-btn.act { border-color: var(--gold); background: var(--gold-p); color: var(--ink); }
 .exp-preview { background: var(--bg-w); border: 0.5px solid var(--line); border-radius: var(--r); padding: 14px 16px; margin-bottom: 16px; }
 .exp-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 0.5px solid var(--line); font-size: .85rem; }
 .exp-row:last-child { border-bottom: none; }
 .exp-lbl { color: var(--ink-s); }
 .exp-val { color: var(--ink); font-weight: 500; }
+
+/* ── PROTOCOLLO ── */
+.proto-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+.proto-card { background: var(--bg-w); border: 0.5px solid var(--line); border-radius: var(--r); padding: 16px; cursor: pointer; display: flex; align-items: flex-start; gap: 14px; transition: all .15s; -webkit-appearance: none; width: 100%; text-align: left; }
+.proto-card:active { border-color: var(--purple); background: var(--purplebg); }
+.proto-card.locked { opacity: .45; cursor: default; }
+.proto-icon { font-size: 1.6rem; flex-shrink: 0; width: 34px; text-align: center; }
+.proto-title { font-size: 14px; font-weight: 500; color: var(--ink); margin-bottom: 3px; }
+.proto-desc { font-size: 11px; color: var(--ink-s); line-height: 1.4; }
+.proto-tag { display: inline-block; font-size: 9px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; background: var(--purplebg); color: var(--purple); border-radius: 100px; padding: 3px 8px; margin-top: 5px; }
+.proto-tag.coming { background: var(--bg-w); color: var(--ink-s); border: 0.5px solid var(--line); }
+.proto-active-card { background: var(--purplebg); border: 1.5px solid rgba(107,63,160,.3); border-radius: var(--r); padding: 16px; margin-bottom: 16px; position: relative; overflow: hidden; }
+.proto-active-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--purple), transparent); }
+.proto-day-label { font-size: 10px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: var(--purple); margin-bottom: 4px; }
+.proto-day-title { font-family: var(--fd); font-size: 1.3rem; font-weight: 300; color: var(--ink); margin-bottom: 8px; }
+.proto-progress-bar { height: 4px; background: rgba(107,63,160,.15); border-radius: 2px; margin-bottom: 8px; }
+.proto-progress-fill { height: 100%; background: var(--purple); border-radius: 2px; transition: width .4s; }
+.proto-progress-txt { font-size: 10px; color: var(--purple); display: flex; justify-content: space-between; }
+.ds-chart-wrap { background: var(--bg-w); border: 0.5px solid var(--line); border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; }
+.ds-chart-title { font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-s); margin-bottom: 10px; }
+.ds-target-note { font-size: 10px; color: var(--green); margin-top: 6px; }
+.day-exercise-card { background: var(--bg-w); border: 0.5px solid var(--line); border-radius: var(--r); padding: 16px; margin-bottom: 14px; }
+.day-ex-label { font-size: 10px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+.day-ex-title { font-family: var(--fd); font-size: 1.15rem; font-weight: 300; color: var(--ink); margin-bottom: 8px; line-height: 1.3; }
+.day-ex-body { font-size: 13px; color: var(--ink-m); line-height: 1.6; margin-bottom: 12px; }
+.day-ex-q { font-family: var(--fd); font-size: .95rem; font-style: italic; color: var(--ink-s); padding-top: 10px; border-top: 0.5px solid var(--line); line-height: 1.5; }
+.day-note-area { width: 100%; min-height: 80px; padding: 12px 14px; border: 0.5px solid var(--line); border-radius: 10px; background: var(--bg); font-family: var(--fd); font-size: .95rem; font-style: italic; font-weight: 300; color: var(--ink); resize: none; -webkit-appearance: none; outline: none; transition: border-color .2s; margin-top: 10px; }
+.day-note-area:focus { border-color: var(--gold); background: var(--gold-p); }
+.day-note-area::placeholder { color: var(--ink-s); }
+.btn-complete { width: 100%; background: var(--purple); color: #fff; border: none; padding: 16px 24px; border-radius: 100px; font-family: var(--fb); font-size: 15px; cursor: pointer; transition: all .2s; display: flex; align-items: center; justify-content: center; gap: 8px; -webkit-appearance: none; }
+.btn-complete:active { transform: scale(.98); opacity: .85; }
+.btn-complete.done-today { background: var(--green); }
+.proto-streak { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+.proto-streak .badge { background: var(--purplebg); border-color: rgba(107,63,160,.25); color: var(--purple); }
+.sabotatore-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+.sab-btn { border: 0.5px solid var(--line); border-radius: 12px; padding: 14px 12px; background: var(--bg-w); cursor: pointer; text-align: center; font-size: 12px; font-weight: 500; color: var(--ink-m); -webkit-appearance: none; transition: all .15s; }
+.sab-btn.sel { border-color: var(--purple); background: var(--purplebg); color: var(--purple); border-width: 1.5px; }
+.sab-icon { font-size: 1.4rem; display: block; margin-bottom: 5px; }
+.routine-steps { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+.routine-step-row { display: flex; align-items: center; gap: 10px; }
+.routine-step-num { width: 26px; height: 26px; border-radius: 50%; background: var(--purplebg); border: 0.5px solid rgba(107,63,160,.25); display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--purple); flex-shrink: 0; font-family: var(--fd); }
+.routine-step-in { flex: 1; padding: 11px 14px; border: 0.5px solid var(--line); border-radius: 10px; background: var(--bg-w); font-family: var(--fd); font-size: .95rem; font-style: italic; font-weight: 300; color: var(--ink); -webkit-appearance: none; outline: none; transition: border-color .2s; }
+.routine-step-in:focus { border-color: var(--purple); background: var(--purplebg); }
+.routine-step-in::placeholder { color: var(--ink-s); }
+.closing-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+.cstat { background: var(--bg-w); border: 0.5px solid var(--line); border-radius: 12px; padding: 14px 12px; text-align: center; }
+.cstat-n { font-family: var(--fd); font-size: 1.6rem; font-weight: 300; color: var(--purple); }
+.cstat-l { font-size: 9px; color: var(--ink-s); margin-top: 2px; }
+.cstat.up .cstat-n { color: var(--green); }
+.history-list { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
+.history-item { background: var(--bg-w); border: 0.5px solid var(--line); border-radius: 12px; padding: 12px 14px; }
+.history-hd { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px; }
+.history-name { font-size: 13px; font-weight: 500; color: var(--ink); }
+.history-status { font-size: 10px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; padding: 3px 8px; border-radius: 100px; }
+.history-status.completed { background: var(--gbg); color: var(--green); }
+.history-status.abandoned { background: var(--bg-w); color: var(--ink-s); border: 0.5px solid var(--line); }
+.history-dates { font-size: 10px; color: var(--ink-s); }
 </style>
 </head>
 <body>
 <div id="app">
 
-<!-- ── HOME ── -->
-<div id="shome" class="screen active">
+<!-- ── CHECK-IN MATTUTINO ── -->
+<div id="smorning" class="screen">
   <div style="background:var(--bg);border-bottom:0.5px solid var(--line);padding:calc(var(--safe-top) + 16px) 20px 14px;flex-shrink:0">
-    <div class="eyebrow">Evening Reflection</div>
+    <div class="eyebrow">Check-in mattutino</div>
+    <h1 class="hero">Buongiorno<br><em>Edoardo</em></h1>
+    <p class="sub" id="mdate"></p>
+  </div>
+  <div class="scroll-body" id="morning-body">
+    <!-- Contenuto generato da JS: alert + campi -->
+  </div>
+</div>
+
+<!-- ── HOME ── -->
+<div id="shome" class="screen">
+  <div style="background:var(--bg);border-bottom:0.5px solid var(--line);padding:calc(var(--safe-top) + 16px) 20px 14px;flex-shrink:0">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div class="eyebrow">Evening Reflection</div>
+      <button onclick="openMindFit()" style="background:#3B6D11;color:#fff;border:none;border-radius:100px;padding:6px 14px;font-size:11px;font-weight:500;font-family:inherit;cursor:pointer;">🧘 MindFit</button>
+    </div>
     <h1 class="hero">Come stai<br><em>stasera?</em></h1>
     <p class="sub" id="hdate"></p>
     <div class="streak-row">
       <div class="badge">🔥 <span id="stk-txt">Caricamento…</span></div>
       <div class="badge" id="last-b" style="display:none"></div>
+      <div class="badge proto-badge" id="proto-home-badge" style="display:none"></div>
     </div>
   </div>
   <div class="scroll-body">
+    <div id="home-proto-alert"></div>
+    <button class="coach-card-home" onclick="openCoach(false)">
+      <div class="coach-card-icon">✦</div>
+      <div>
+        <div class="coach-card-lbl">Coach AI</div>
+        <div class="coach-card-sub">Chat con i tuoi dati di oggi</div>
+      </div>
+      <span class="coach-new-badge">Nuovo</span>
+    </button>
+    <div class="divider-lbl">Sessione guidata</div>
     <div class="modes">
-      <button class="mcard sel" data-mode="reflection" onclick="selM(this)">
+      <button class="mcard sel" data-mode="reflection" onclick="selMode(this)">
         <div class="mi">✦</div>
         <div><div class="ml">Riflessione guidata</div><div class="md">Domande AI adattive · 5 min</div></div>
       </button>
-      <button class="mcard" data-mode="mindfulness" onclick="selM(this)">
+      <button class="mcard" data-mode="mindfulness" onclick="selMode(this)">
         <div class="mi">◌</div>
         <div><div class="ml">Mindfulness + respiro</div><div class="md">Tecnica 4-7-8 · 4 min</div></div>
       </button>
-      <button class="mcard" data-mode="gratitude" onclick="selM(this)">
+      <button class="mcard" data-mode="gratitude" onclick="selMode(this)">
         <div class="mi">◇</div>
         <div><div class="ml">Gratitudine strutturata</div><div class="md">3 elementi + highlight · 3 min</div></div>
       </button>
@@ -363,6 +435,7 @@ body {
   <div class="bottom-nav">
     <button class="nav-item act" onclick="goScreen('home')"><div class="nav-icon">◈</div><div class="nav-lbl">Home</div></button>
     <button class="nav-item" onclick="goScreen('week')"><div class="nav-icon">◉</div><div class="nav-lbl">Settimana</div></button>
+    <button class="nav-item" onclick="goScreen('protocol')"><div class="nav-icon">🌙</div><div class="nav-lbl">Protocollo</div></button>
     <button class="nav-item" onclick="goScreen('export')"><div class="nav-icon">◎</div><div class="nav-lbl">Export</div></button>
   </div>
 </div>
@@ -391,7 +464,7 @@ body {
   </div>
   <div class="scroll-body">
     <div class="eyebrow" style="margin-bottom:.5rem">Riepilogo serata</div>
-    <h2 class="hero" style="font-size:2rem;margin-bottom:16px">La tua <em>serata</em></h2>
+    <h2 class="hero" style="font-size:2rem">La tua <em>serata</em></h2>
     <div id="sum-cards"></div>
     <div id="hsum" style="display:none;margin-top:10px" class="card">
       <div class="clbl">Habits del giorno</div>
@@ -403,7 +476,16 @@ body {
       <div class="itxt" id="itxt"><div class="ald"><span></span><span></span><span></span></div></div>
     </div>
     <div class="sum-actions">
-      <button class="btn-primary" id="btn-save" onclick="saveNotion()">Salva su Notion →</button>
+      <button class="btn-primary" id="btn-save" onclick="copyForClaude()">📋 Copia per Claude →</button>
+      <button class="btn-secondary" style="margin-top:10px" onclick="openMindFit()">🧘 Apri MindFit</button>
+      <button class="coach-cta-sum" onclick="openCoach(true)">
+        <div class="coach-card-icon" style="width:28px;height:28px;font-size:.85rem">✦</div>
+        <div>
+          <div class="coach-cta-lbl">Approfondisci con il Coach</div>
+          <div class="coach-cta-sub">Domande sui tuoi dati di stasera</div>
+        </div>
+        <span style="margin-left:auto;color:var(--gold);font-size:16px">→</span>
+      </button>
       <button class="btn-ghost" onclick="goScreen('home')">Scarta</button>
     </div>
     <div class="status-msg" id="save-st"></div>
@@ -422,6 +504,22 @@ body {
   <div class="bottom-nav">
     <button class="nav-item" onclick="goScreen('home')"><div class="nav-icon">◈</div><div class="nav-lbl">Home</div></button>
     <button class="nav-item act" onclick="goScreen('week')"><div class="nav-icon">◉</div><div class="nav-lbl">Settimana</div></button>
+    <button class="nav-item" onclick="goScreen('protocol')"><div class="nav-icon">🌙</div><div class="nav-lbl">Protocollo</div></button>
+    <button class="nav-item" onclick="goScreen('export')"><div class="nav-icon">◎</div><div class="nav-lbl">Export</div></button>
+  </div>
+</div>
+
+<!-- ── PROTOCOLLO ── -->
+<div id="sprotocol" class="screen">
+  <div style="background:var(--bg);border-bottom:0.5px solid var(--line);padding:calc(var(--safe-top)+16px) 20px 14px;flex-shrink:0">
+    <div class="eyebrow">Protocolli attivi</div>
+    <h2 class="hero" style="font-size:2rem">Il tuo <em>percorso</em></h2>
+  </div>
+  <div class="scroll-body" id="proto-body"></div>
+  <div class="bottom-nav">
+    <button class="nav-item" onclick="goScreen('home')"><div class="nav-icon">◈</div><div class="nav-lbl">Home</div></button>
+    <button class="nav-item" onclick="goScreen('week')"><div class="nav-icon">◉</div><div class="nav-lbl">Settimana</div></button>
+    <button class="nav-item act" onclick="goScreen('protocol')"><div class="nav-icon">🌙</div><div class="nav-lbl">Protocollo</div></button>
     <button class="nav-item" onclick="goScreen('export')"><div class="nav-icon">◎</div><div class="nav-lbl">Export</div></button>
   </div>
 </div>
@@ -444,7 +542,26 @@ body {
   <div class="bottom-nav">
     <button class="nav-item" onclick="goScreen('home')"><div class="nav-icon">◈</div><div class="nav-lbl">Home</div></button>
     <button class="nav-item" onclick="goScreen('week')"><div class="nav-icon">◉</div><div class="nav-lbl">Settimana</div></button>
+    <button class="nav-item" onclick="goScreen('protocol')"><div class="nav-icon">🌙</div><div class="nav-lbl">Protocollo</div></button>
     <button class="nav-item act" onclick="goScreen('export')"><div class="nav-icon">◎</div><div class="nav-lbl">Export</div></button>
+  </div>
+</div>
+<!-- ── COACH AI ── -->
+<div id="scoach" class="screen">
+  <div class="coach-screen-header">
+    <button class="icon-btn" id="coach-back-btn" onclick="goScreen('home')" style="font-size:16px">←</button>
+    <span style="font-family:var(--fd);font-size:1.05rem;font-style:italic;color:var(--ink-m);">Coach ✦</span>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:8px">
+      <span class="coach-tts-lbl">Voce</span>
+      <label class="coach-tts-toggle"><input type="checkbox" id="coach-tts-chk" onchange="toggleTTS(this)"><span class="coach-tts-slider"></span></label>
+    </div>
+  </div>
+  <div class="coach-ctx-strip" id="coach-ctx-strip"></div>
+  <div class="coach-messages" id="coach-messages"></div>
+  <div class="coach-input-bar">
+    <input class="coach-input" id="coach-input" type="text" placeholder="Scrivi o detta…" onkeydown="if(event.key==='Enter')sendCoachMsg()">
+    <button class="coach-mic-btn" id="coach-mic" onclick="coachDictation()" aria-label="Dettatura">🎤</button>
+    <button class="coach-send-btn" onclick="sendCoachMsg()" aria-label="Invia">→</button>
   </div>
 </div>
 
@@ -453,67 +570,136 @@ body {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
 // ─── CONSTANTS ───────────────────────────────────────────
-const JDS='1aadac0a-f6b2-8320-adc4-0767f76264b7';
-const HL=['Take Vitamins','Make Bed','Read a book','Take a Walk'];
-const HI={'Take Vitamins':'💊','Make Bed':'🛏','Read a book':'📖','Take a Walk':'🚶'};
-const HIT={'Take Vitamins':'Vitamina','Make Bed':'Letto','Read a book':'Lettura','Take a Walk':'Camminata'};
-const MM={'😄':'😄 Happy','☹️':'☹️ Sad','😠':'😠 Angry','😊':'😊 Excited','😐':'😐 Neutral','😰':'😰Anxious'};
-const ML={'😄':'Felice','☹️':'Triste','😠':'Arrabbiato','😊':'Entusiasta','😐':'Neutro','😰':'Ansioso'};
-const RM={1:'⭐',2:'⭐⭐',3:'⭐⭐⭐',4:'⭐⭐⭐⭐',5:'⭐⭐⭐⭐⭐'};
-const PR={
-  refl:['Cos\'è rimasto con te di questa giornata?','Cosa hai imparato su te stesso oggi?','Quale momento ti ha sorpreso?','Se potessi rivivere un momento di oggi, quale sarebbe?','Cosa ti ha dato più energia? Cosa te l\'ha tolta?','C\'è qualcosa che avresti fatto diversamente?','Qual è stata la conversazione più significativa?','Come ti senti rispetto al tuo percorso?'],
-  hi:['Qual è stato il momento migliore di oggi?','Cosa ti ha fatto sorridere oggi?','Qual è stata la tua piccola vittoria?','Cosa hai fatto oggi di cui sei soddisfatto?','Chi o cosa ti ha dato forza oggi?'],
-  rel:['Cosa vuoi lasciare andare di questa giornata?','Cosa ti pesa ancora?','Quale pensiero non ti serve più?','Cosa hai portato oggi che non ti serve nel domani?'],
-  mg:['Una cosa per cui sei grato oggi','Cosa hai avuto oggi che non dai per scontato?','Chi ti ha supportato di recente?']
+const AI_URL   = '/api/ai';
+const AI_MODEL = 'claude-sonnet-4-6';
+
+const HL  = ['Vitamins','Fotografia/Video','Reading','Allenamento','Stretching'];
+const HI  = {'Vitamins':'💊','Fotografia/Video':'📸','Reading':'📖','Allenamento':'🏋️','Stretching':'🧘'};
+const HIT = {'Vitamins':'Vitamins','Fotografia/Video':'Fotografia/Video','Reading':'Reading','Allenamento':'Allenamento','Stretching':'Stretching'};
+const RM  = {1:'⭐',2:'⭐⭐',3:'⭐⭐⭐',4:'⭐⭐⭐⭐',5:'⭐⭐⭐⭐⭐'};
+
+const MOOD_WORDS = [
+  {w:'Positive',g:'+'},{w:'Happy',g:'+'},{w:'Hopeful',g:'+'},{w:'Glad',g:'+'},{w:'Excited',g:'+'},{w:'Inspired',g:'+'},
+  {w:'Energetic',g:'+'},{w:'Confident',g:'+'},{w:'Grateful',g:'+'},{w:'Content',g:'+'},{w:'Calm',g:'+'},{w:'Strong',g:'+'},
+  {w:'Determined',g:'+'},{w:'Alive',g:'+'},{w:'Relieved',g:'+'},{w:'Proud',g:'+'},
+  {w:'Surprised',g:'~'},{w:'Neutral',g:'~'},
+  {w:'Stressed',g:'-'},{w:'Nervous',g:'-'},{w:'Tense',g:'-'},{w:'Anxious',g:'-'},{w:'Worried',g:'-'},{w:'Insecure',g:'-'},
+  {w:'Confused',g:'-'},{w:'Bored',g:'-'},{w:'Tired',g:'-'},{w:'Hurt',g:'-'},{w:'Angry',g:'-'},{w:'Irritated',g:'-'},
+  {w:'Disappointed',g:'-'},{w:'Negative',g:'-'},{w:'Annoyed',g:'-'},{w:'Frustrated',g:'-'},{w:'Furious',g:'-'},
+  {w:'Unhappy',g:'-'},{w:'Regretful',g:'-'},{w:'Lonely',g:'-'},{w:'Low',g:'-'},{w:'Restless',g:'-'},
+  {w:'Overwhelmed',g:'-'},{w:'Sad',g:'-'},{w:'Scared',g:'-'},{w:'Trapped',g:'-'},{w:'Guilty',g:'-'},
+  {w:'Bitter',g:'-'},{w:'Shocked',g:'-'},{w:'Unsure',g:'-'},
+];
+
+const PR = {
+  refl:["Cos'è rimasto con te di questa giornata?","Cosa hai imparato su te stesso oggi?","Quale momento ti ha sorpreso?","Se potessi rivivere un momento di oggi, quale sarebbe?","Cosa ti ha dato più energia? Cosa te l'ha tolta?","C'è qualcosa che avresti fatto diversamente?","Qual è stata la conversazione più significativa?","Come ti senti rispetto al tuo percorso?"],
+  hi:["Qual è stato il momento migliore di oggi?","Cosa ti ha fatto sorridere oggi?","Qual è stata la tua piccola vittoria?","Cosa hai fatto oggi di cui sei soddisfatto?","Chi o cosa ti ha dato forza oggi?"],
+  rel:["Cosa vuoi lasciare andare di questa giornata?","Cosa ti pesa ancora?","Quale pensiero non ti serve più?","Cosa hai portato oggi che non ti serve nel domani?"],
+  mg:["Una cosa per cui sei grato oggi","Cosa hai avuto oggi che non dai per scontato?","Chi ti ha supportato di recente?"]
 };
 function gp(p){return p[new Date().getDate()%p.length];}
 
-const STEPS={
+const DEEP_REFLECTIONS = [
+  {id:'relationships',lbl:'Riflessione profonda',title:'Rifletti sulle tue relazioni',q:'Pensa alle relazioni che hai avuto nella tua vita. Come ti hanno influenzato? Cosa hai imparato da ciascuna?',placeholder:'Le relazioni che mi hanno formato di più…'},
+  {id:'stress_bucket',lbl:'Riflessione profonda',title:'Il tuo secchio dello stress',q:'Elenca tutto ciò che ti causa stress. Poi: cosa ti aiuta a svuotare il secchio? Come potresti reagire in modo più positivo?',placeholder:'Cosa mi riempie il secchio… cosa lo svuota…'},
+  {id:'missing',lbl:'Riflessione profonda',title:'Cosa manca nella tua vita?',q:'Potrebbe essere senso di scopo, passione, significato, divertimento o avventura. Cosa potresti fare per trovarne di più? Cosa ti trattiene?',placeholder:'Ciò che sento mancare…'}
+];
+function getBiweeklyDeepReflection(){
+  const doy=Math.floor((new Date()-new Date(new Date().getFullYear(),0,0))/86400000);
+  return DEEP_REFLECTIONS[Math.floor(doy/14)%DEEP_REFLECTIONS.length];
+}
+function isBiweeklyDay(){
+  const doy=Math.floor((new Date()-new Date(new Date().getFullYear(),0,0))/86400000);
+  return doy%14===0;
+}
+
+// Soglie alert contestuali
+const ALERT_THRESHOLDS = {
+  deepSleepPct: 15,   // % deep sleep sotto cui scatta alert
+  hrv: 24,            // ms HRV sotto cui scatta alert (circa -15% sotto baseline personale 28ms)
+  biocharge: 40,      // % biocharge sotto cui scatta alert
+  stressLevel: 7,     // livello stress (1-10) sopra cui scatta alert
+  habitStreakMiss: 3  // giorni consecutivi senza habit
+};
+
+const STEPS = {
   reflection:[
-    {t:'mood',id:'mood',lbl:'Umore',q:'Come ti senti adesso?'},
-    {t:'ta',id:'refl',lbl:'Riflessione',q:()=>gp(PR.refl)},
-    {t:'aif',id:'air',lbl:'AI',q:''},
-    {t:'hab',id:'hab',lbl:'Habits',q:'Come sono andati gli habit di oggi?'},
-    {t:'rat',id:'rat',lbl:'Giornata',q:'Come valuti questa giornata?'},
-    {t:'ta',id:'hi',lbl:'Highlight',q:()=>gp(PR.hi)},
+    {t:'moodw', id:'moodw', lbl:'Come ti senti',    q:'Come ti senti adesso?'},
+    {t:'ta',    id:'refl',  lbl:'Riflessione',       q:()=>gp(PR.refl)},
+    {t:'win',   id:'win',   lbl:'Win del giorno',    q:'Le tue vittorie di oggi'},
+    {t:'hab',   id:'hab',   lbl:'Habits',            q:'Come sono andati gli habit di oggi?'},
+    {t:'rat',   id:'rat',   lbl:'Giornata',          q:'Come valuti questa giornata?'},
+    {t:'ta',    id:'hi',    lbl:'Highlight',         q:()=>gp(PR.hi)},
   ],
   mindfulness:[
-    {t:'br',id:'br',lbl:'Respiro',q:'Tecnica 4–7–8 per scaricare la tensione'},
-    {t:'mood',id:'mood',lbl:'Umore',q:'Dopo il respiro, come ti senti?'},
-    {t:'ta',id:'refl',lbl:'Rilascio',q:()=>gp(PR.rel)},
-    {t:'hab',id:'hab',lbl:'Habits',q:'Come sono andati gli habit di oggi?'},
-    {t:'rat',id:'rat',lbl:'Giornata',q:'Come valuti questa giornata?'},
-    {t:'ta',id:'hi',lbl:'Highlight',q:()=>gp(PR.mg)},
+    {t:'br',    id:'br',    lbl:'Respiro',           q:'Tecnica 4–7–8 per scaricare la tensione'},
+    {t:'moodw', id:'moodw', lbl:'Come ti senti',    q:'Dopo il respiro, come ti senti?'},
+    {t:'ta',    id:'refl',  lbl:'Rilascio',          q:()=>gp(PR.rel)},
+    {t:'win',   id:'win',   lbl:'Win del giorno',    q:'Le tue vittorie di oggi'},
+    {t:'hab',   id:'hab',   lbl:'Habits',            q:'Come sono andati gli habit di oggi?'},
+    {t:'rat',   id:'rat',   lbl:'Giornata',          q:'Come valuti questa giornata?'},
+    {t:'ta',    id:'hi',    lbl:'Highlight',         q:()=>gp(PR.mg)},
   ],
   gratitude:[
-    {t:'grat',id:'grat',lbl:'Gratitudine',q:'Tre cose per cui sei grato oggi'},
-    {t:'mood',id:'mood',lbl:'Umore',q:'Come ti senti?'},
-    {t:'hab',id:'hab',lbl:'Habits',q:'Come sono andati gli habit?'},
-    {t:'ta',id:'hi',lbl:'Highlight',q:()=>gp(PR.hi)},
-    {t:'rat',id:'rat',lbl:'Giornata',q:'Come valuti questa giornata?'},
-    {t:'aif',id:'air',lbl:'AI',q:''},
+    {t:'grat',  id:'grat',  lbl:'Gratitudine',       q:'Tre cose per cui sei grato oggi'},
+    {t:'moodw', id:'moodw', lbl:'Come ti senti',    q:'Come ti senti?'},
+    {t:'win',   id:'win',   lbl:'Win del giorno',    q:'Le tue vittorie di oggi'},
+    {t:'hab',   id:'hab',   lbl:'Habits',            q:'Come sono andati gli habit?'},
+    {t:'ta',    id:'hi',    lbl:'Highlight',         q:()=>gp(PR.hi)},
+    {t:'rat',   id:'rat',   lbl:'Giornata',          q:'Come valuti questa giornata?'},
   ]
 };
 
 // ─── STATE ───────────────────────────────────────────────
-let selM_='reflection', step=0, sd={}, steps=[], breathInt=null;
-let exportEntries=[], selMonth=null;
+let selMode_ = 'reflection', step = 0, sd = {}, steps = [], breathInt = null;
+let exportEntries = [], selMonth = null;
+let morningData = {};   // dati check-in mattutino del giorno
+
+// ─── UTILS localStorage ──────────────────────────────────
+function lsG(k){try{return localStorage.getItem(k)}catch{return null}}
+function lsS(k,v){try{localStorage.setItem(k,v)}catch{}}
+function lsSessions(){try{const r=lsG('er_sessions');return r?JSON.parse(r):[];}catch{return[];}}
+function lsMornings(){try{const r=lsG('er_mornings');return r?JSON.parse(r):[];}catch{return[];}}
+
+function saveSession(entry){
+  try{
+    const sessions=lsSessions();
+    const filtered=sessions.filter(e=>e.date!==entry.date);
+    filtered.push(entry);
+    const cutoff=new Date();cutoff.setDate(cutoff.getDate()-90);
+    const trimmed=filtered.filter(e=>new Date(e.date)>=cutoff);
+    lsS('er_sessions',JSON.stringify(trimmed));
+  }catch(e){console.warn('saveSession error',e);}
+}
+
+function saveMorning(entry){
+  try{
+    const mornings=lsMornings();
+    const filtered=mornings.filter(e=>e.date!==entry.date);
+    filtered.push(entry);
+    const cutoff=new Date();cutoff.setDate(cutoff.getDate()-90);
+    const trimmed=filtered.filter(e=>new Date(e.date)>=cutoff);
+    lsS('er_mornings',JSON.stringify(trimmed));
+  }catch(e){console.warn('saveMorning error',e);}
+}
+
+function todayStr(){return new Date().toISOString().split('T')[0];}
+function isMonday(){return new Date().getDay()===1;}
 
 // ─── NAVIGATION ──────────────────────────────────────────
 function goScreen(name){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  const map={home:'shome',week:'sweek',export:'sexport',session:'ss',summary:'ssum'};
+  const map={home:'shome',morning:'smorning',week:'sweek',export:'sexport',session:'ss',summary:'ssum',protocol:'sprotocol',coach:'scoach'};
   document.getElementById(map[name]||('s'+name)).classList.add('active');
-  if(name==='week')loadWeek();
-  if(name==='export')initExport();
+  if(name==='week')   loadWeek();
+  if(name==='export') initExport();
+  if(name==='protocol') renderProtocol();
 }
 
 // ─── STREAK ──────────────────────────────────────────────
-function lsG(k){try{return localStorage.getItem(k)}catch{return null}}
-function lsS(k,v){try{localStorage.setItem(k,v)}catch{}}
 function loadStreak(){try{const r=lsG('er_sk');return r?JSON.parse(r):{count:0,last:null}}catch{return{count:0,last:null}}}
 function saveStreakDay(){
-  const today=new Date().toISOString().split('T')[0];
+  const today=todayStr();
   let s=loadStreak();if(s.last===today)return;
   const yest=new Date(Date.now()-86400000).toISOString().split('T')[0];
   s.count=s.last===yest?s.count+1:1;s.last=today;lsS('er_sk',JSON.stringify(s));
@@ -523,19 +709,234 @@ function renderStreak(){
   document.getElementById('stk-txt').textContent=s.count===0?'Inizia la tua streak':s.count===1?'1 giorno di fila':s.count+' giorni di fila';
   const lb=document.getElementById('last-b');
   if(s.last){const d=new Date(s.last+'T12:00:00');lb.textContent='Ultima: '+d.toLocaleDateString('it-IT',{day:'numeric',month:'short'});lb.style.display='inline-flex';}
+  const ap=getActiveProtocol();
+  const pb=document.getElementById('proto-home-badge');
+  if(pb){if(ap&&ap.status==='active'){pb.textContent='🌙 Giorno '+ap.currentDay+'/14';pb.style.display='inline-flex';}else{pb.style.display='none';}}
 }
 
 // ─── MODE SELECTION ──────────────────────────────────────
-function selM(el){
+function selMode(el){
   document.querySelectorAll('.mcard').forEach(c=>c.classList.remove('sel'));
-  el.classList.add('sel');selM_=el.dataset.mode;
+  el.classList.add('sel');selMode_=el.dataset.mode;
+}
+
+// ─── CHECK-IN MATTUTINO ──────────────────────────────────
+function shouldShowMorning(){
+  const today=todayStr();
+  const mornings=lsMornings();
+  return !mornings.find(m=>m.date===today);
+}
+
+function buildAlerts(lastMorning){
+  const alerts=[];
+  if(!lastMorning) return alerts;
+
+  // Deep sleep alert
+  if(lastMorning.deepSleepPct && lastMorning.deepSleepPct < ALERT_THRESHOLDS.deepSleepPct){
+    alerts.push({
+      icon:'🌙',
+      title:'Deep sleep basso ieri: '+lastMorning.deepSleepPct+'%',
+      body:'Target: 20-25%. Questa sera l\'app ti chiederà informazioni sulla routine pre-sonno.'
+    });
+  }
+  // HRV alert
+  if(lastMorning.hrv && lastMorning.hrv < ALERT_THRESHOLDS.hrv){
+    alerts.push({
+      icon:'💓',
+      title:'HRV sotto baseline: '+lastMorning.hrv+' ms',
+      body:'Il tuo sistema nervoso è sotto stress. Considera un allenamento leggero oggi.'
+    });
+  }
+  // Biocharge alert
+  if(lastMorning.biocharge && lastMorning.biocharge < ALERT_THRESHOLDS.biocharge){
+    alerts.push({
+      icon:'⚡',
+      title:'Biocharge basso: '+lastMorning.biocharge+'%',
+      body:'Corpo in recupero. Privilegia qualità sul volume oggi.'
+    });
+  }
+  // Habit streak miss
+  const sessions=lsSessions();
+  const last3=sessions.slice(-3);
+  if(last3.length===3){
+    HL.forEach(h=>{
+      const miss=last3.every(s=>s.hab&&!s.hab[h]);
+      if(miss) alerts.push({icon:'📋',title:HIT[h]+' mancante da 3 giorni',body:'Vuoi riprendere oggi?'});
+    });
+  }
+  return alerts;
+}
+
+function renderMorning(){
+  const today=todayStr();
+  const mornings=lsMornings();
+  const yesterday=new Date(Date.now()-86400000).toISOString().split('T')[0];
+  const lastMorning=mornings.find(m=>m.date===yesterday)||mornings[mornings.length-1];
+
+  document.getElementById('mdate').textContent=new Date().toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long'});
+
+  const alerts=buildAlerts(lastMorning);
+  const isMonday_=isMonday();
+
+  let html='';
+
+  // Alert banner
+  if(alerts.length>0){
+    html+='<div style="margin-bottom:20px">';
+    alerts.forEach(a=>{
+      html+=`<div class="alert-banner">
+        <div class="alert-icon">${a.icon}</div>
+        <div class="alert-text"><strong>${a.title}</strong>${a.body}</div>
+      </div>`;
+    });
+    html+='</div>';
+  }
+
+  // Campo energia
+  // Suggerimento protocollo se deep sleep basso
+  const ap_m=getActiveProtocol();
+  if(lastMorning&&lastMorning.deepSleepPct&&lastMorning.deepSleepPct<ALERT_THRESHOLDS.deepSleepPct&&(!ap_m||ap_m.status!=='active')){
+    html+=`<div class="alert-banner proto" style="margin-bottom:16px"><div class="alert-icon">🌙</div><div class="alert-text"><strong>Deep sleep critico (\${lastMorning.deepSleepPct}%)</strong>Vuoi attivare il Protocollo 14 giorni?<button onclick="activateProtocol('deep-sleep-14');goScreen('protocol')" style="display:inline-block;margin-top:6px;background:var(--purple);color:#fff;border:none;padding:6px 14px;border-radius:100px;font-size:11px;cursor:pointer;font-family:var(--fb)">Attiva →</button></div></div>`;
+  }
+  html+=`<div class="morning-field">
+    <span class="morning-label">⚡ Energia mattutina</span>
+    <div class="energy-row">
+      ${[1,2,3,4,5].map(n=>`<button class="energy-btn" data-e="${n}" onclick="setEnergy(${n},this)">${n}</button>`).join('')}
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-top:4px;padding:0 2px">
+      <span style="font-size:10px;color:var(--ink-s)">Esausto</span>
+      <span style="font-size:10px;color:var(--ink-s)">Carico</span>
+    </div>
+  </div>`;
+
+  // Intenzione del giorno
+  html+=`<div class="morning-field">
+    <span class="morning-label">🎯 Intenzione del giorno</span>
+    <input class="morning-input" id="m-intention" type="text" placeholder="Oggi voglio…" maxlength="120">
+  </div>`;
+
+  // Divisore biometrico
+  html+=`<div style="margin:20px 0 14px">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+      <div style="flex:1;height:0.5px;background:var(--line)"></div>
+      <span style="font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-s)">Dati biometrici</span>
+      <div style="flex:1;height:0.5px;background:var(--line)"></div>
+    </div>
+    <p style="font-size:11px;color:var(--ink-s);font-family:var(--fd);font-style:italic;margin-bottom:12px">Guarda Zepp e Hume, inserisci i valori di stamattina</p>
+  </div>`;
+
+  // Biocharge Zepp
+  html+=`<div class="morning-field">
+    <span class="morning-label">⚡ Biocharge Zepp (%)</span>
+    <input class="morning-num" id="m-biocharge" type="number" min="0" max="100" placeholder="es. 72">
+  </div>`;
+
+  // HRV Zepp
+  html+=`<div class="morning-field">
+    <span class="morning-label">💓 HRV Zepp (ms)</span>
+    <input class="morning-num" id="m-hrv" type="number" min="0" max="200" placeholder="es. 28">
+  </div>`;
+
+  // HRV4Training (rMSSD reale, da 1 luglio 2026)
+  html+=`<div class="morning-field">
+    <span class="morning-label">📱 HRV4Training rMSSD (ms)</span>
+    <input class="morning-num" id="m-hrv4t" type="number" min="0" max="200" placeholder="es. 42">
+    <p style="font-size:10px;color:var(--ink-s);margin-top:4px">Misura mattutina con fotocamera iPhone · app HRV4Training</p>
+  </div>`;
+
+  // Slancio Hume
+  html+=`<div class="morning-field">
+    <div class="hume-badge">📘 Hume Health</div>
+    <span class="morning-label">🔋 Slancio metabolico Hume</span>
+    <input class="morning-num" id="m-slancio" type="number" min="0" max="100" placeholder="es. 68">
+  </div>`;
+
+  // Deep sleep (da Zepp, inserito manualmente la mattina)
+  html+=`<div class="morning-field">
+    <span class="morning-label">🌙 Deep sleep ieri (%)</span>
+    <input class="morning-num" id="m-deepsleep" type="number" min="0" max="100" placeholder="es. 13">
+    <p style="font-size:10px;color:var(--ink-s);margin-top:4px">Trovi il dato in Zepp → Sonno di ieri</p>
+  </div>`;
+
+  // Sleep score Zepp
+  html+=`<div class="morning-field">
+    <span class="morning-label">😴 Sleep score Zepp (0–100)</span>
+    <input class="morning-num" id="m-sleepscore" type="number" min="0" max="100" placeholder="es. 74">
+    <p style="font-size:10px;color:var(--ink-s);margin-top:4px">Zepp → Sonno di ieri → Punteggio</p>
+  </div>`;
+
+  // Score Hume settimanale — solo il lunedì
+  if(isMonday_){
+    html+=`<div class="morning-field" style="background:var(--bluebg);border:0.5px solid rgba(24,95,165,.2);border-radius:12px;padding:14px 16px">
+      <div class="hume-badge" style="margin-bottom:8px">📘 Solo lunedì</div>
+      <span class="morning-label" style="color:var(--blue)">🏅 Score salute Hume (settimana)</span>
+      <input class="morning-num" id="m-hume-score" type="number" min="0" max="100" placeholder="es. 78" style="border-color:rgba(24,95,165,.3)">
+      <p style="font-size:10px;color:var(--blue);margin-top:4px;opacity:.8">Hume pubblica lo score ogni lunedì mattina</p>
+    </div>`;
+  }
+
+  // Pulsante salva
+  html+=`<div style="margin-top:24px;padding-bottom:8px">
+    <button class="btn-primary" onclick="saveMorningData()">Inizia la giornata →</button>
+    <button class="btn-ghost" style="margin-top:10px" onclick="skipMorning()">Salta per oggi</button>
+  </div>`;
+
+  document.getElementById('morning-body').innerHTML=html;
+}
+
+let morningEnergy=0;
+function setEnergy(n,el){
+  morningEnergy=n;
+  document.querySelectorAll('.energy-btn').forEach(b=>b.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+function saveMorningData(){
+  const today=todayStr();
+  const isMonday_=isMonday();
+  const entry={
+    date: today,
+    energy: morningEnergy||null,
+    intention: document.getElementById('m-intention')?.value.trim()||'',
+    biocharge: parseFloat(document.getElementById('m-biocharge')?.value)||null,
+    hrv: parseFloat(document.getElementById('m-hrv')?.value)||null,
+    hrv4t: parseFloat(document.getElementById('m-hrv4t')?.value)||null,
+    slancio: parseFloat(document.getElementById('m-slancio')?.value)||null,
+    deepSleepPct: parseFloat(document.getElementById('m-deepsleep')?.value)||null,
+    sleepScore: parseFloat(document.getElementById('m-sleepscore')?.value)||null,
+    humeScore: isMonday_ ? (parseFloat(document.getElementById('m-hume-score')?.value)||null) : null
+  };
+  saveMorning(entry);
+  morningData=entry;
+  advanceProtocolDay();
+  goScreen('home');
+}
+
+function skipMorning(){
+  // Salva un record vuoto per oggi così non riappare
+  const today=todayStr();
+  saveMorning({date:today,skipped:true});
+  goScreen('home');
 }
 
 // ─── SESSION ─────────────────────────────────────────────
 function startSession(){
-  steps=STEPS[selM_].map(s=>({...s,q:typeof s.q==='function'?s.q():s.q}));
-  step=0;sd={mode:selM_,date:new Date(),hab:{}};
-  document.getElementById('slbl').textContent=selM_==='reflection'?'Riflessione':selM_==='mindfulness'?'Mindfulness':'Gratitudine';
+  let baseSteps=STEPS[selMode_].map(s=>({...s,q:typeof s.q==='function'?s.q():s.q}));
+  if(selMode_==='reflection' && isBiweeklyDay()){
+    const dr=getBiweeklyDeepReflection();
+    baseSteps.splice(2,0,{...dr,t:'deep'});
+  }
+  // Se deep sleep ieri era basso, inietta domanda specifica
+  const today=todayStr();
+  const mornings=lsMornings();
+  const todayMorning=mornings.find(m=>m.date===today);
+  if(todayMorning && todayMorning.deepSleepPct && todayMorning.deepSleepPct < ALERT_THRESHOLDS.deepSleepPct){
+    baseSteps.splice(1,0,{t:'ta',id:'sleep_ctx',lbl:'Deep sleep basso',q:'Cosa hai fatto nelle 2 ore prima di dormire ieri sera?'});
+  }
+
+  steps=baseSteps;
+  step=0;sd={mode:selMode_,date:new Date(),hab:{},moodWords:[],wins:{}};
+  document.getElementById('slbl').textContent=selMode_==='reflection'?'Riflessione':selMode_==='mindfulness'?'Mindfulness':'Gratitudine';
   goScreen('session');renderStep();
 }
 
@@ -550,11 +951,48 @@ function renderStep(){
 
   if(s.t==='ta'){
     bl.innerHTML=`<div class="tlbl">${s.lbl}</div><div class="q">${s.q}</div>
-    <textarea class="jta" id="f-${s.id}" placeholder="Scrivi qui…" rows="5">${sd[s.id]||''}</textarea>`;
-  } else if(s.t==='mood'){
-    const ms=['😄','😊','😐','☹️','😠','😰'];
-    bl.innerHTML=`<div class="tlbl">${s.lbl}</div><div class="q">${s.q}</div>
-    <div class="mood-g">${ms.map(m=>`<button class="mbtn ${sd.mood===m?'sel':''}" onclick="pickMood('${m}',this)"><span class="mem">${m}</span><span class="mlb">${ML[m]}</span></button>`).join('')}</div>`;
+    <div class="mic-row"><button class="mic-btn-voice" id="mic-${s.id}" onclick="startDictation('f-${s.id}','mic-${s.id}','mh-${s.id}')"><span class="mic-dot"></span><span class="mic-lbl">🎤 Detta</span></button></div>
+    <textarea class="jta" id="f-${s.id}" placeholder="Scrivi qui…" rows="5">${sd[s.id]||''}</textarea>
+    <div class="mic-hint" id="mh-${s.id}">Tocca per scrivere · o detta con il mic</div>`;
+  } else if(s.t==='moodw'){
+    const pos=MOOD_WORDS.filter(m=>m.g==='+');
+    const neu=MOOD_WORDS.filter(m=>m.g==='~');
+    const neg=MOOD_WORDS.filter(m=>m.g==='-');
+    const cur=sd.moodWords||[];
+    const wordBtn=m=>`<button class="mword ${cur.includes(m.w)?'sel':''}" onclick="toggleMoodWord('${m.w}',this)">${m.w}</button>`;
+    bl.innerHTML=`<div class="tlbl">${s.lbl}</div><div class="q" style="font-size:1.4rem">${s.q}</div>
+    <p style="font-size:12px;color:var(--ink-s);margin-bottom:8px;font-family:var(--fd);font-style:italic">Seleziona tutto ciò che senti</p>
+    <div class="mood-section-lbl">✦ Positivo</div>
+    <div class="mood-words">${pos.map(wordBtn).join('')}</div>
+    <div class="mood-section-lbl">— Neutro / misto</div>
+    <div class="mood-words">${neu.map(wordBtn).join('')}</div>
+    <div class="mood-section-lbl">↓ Difficile</div>
+    <div class="mood-words">${neg.map(wordBtn).join('')}</div>`;
+  } else if(s.t==='win'){
+    const w=sd.wins||{};
+    bl.innerHTML=`<div class="tlbl">${s.lbl}</div><div class="q" style="font-size:1.5rem">${s.q}</div>
+    <p style="font-size:12px;color:var(--ink-s);margin-bottom:14px;font-family:var(--fd);font-style:italic">Anche piccole. Una per categoria.</p>
+    <div class="win-grid">
+      <div class="win-card">
+        <div class="win-lbl phys">🏋️ Fisico</div>
+        <input class="win-input" id="win-phys" placeholder="Es: allenamento completato, camminata…" value="${w.phys||''}">
+      </div>
+      <div class="win-card">
+        <div class="win-lbl ment">🧠 Mentale</div>
+        <input class="win-input" id="win-ment" placeholder="Es: focus su un task difficile…" value="${w.ment||''}">
+      </div>
+      <div class="win-card">
+        <div class="win-lbl rel">🤝 Relazionale</div>
+        <input class="win-input" id="win-rel" placeholder="Es: chiamata con un amico…" value="${w.rel||''}">
+      </div>
+    </div>`;
+  } else if(s.t==='deep'){
+    bl.innerHTML=`<div class="tlbl" style="color:var(--ink-m)">${s.lbl} · ogni 2 settimane</div>
+    <div class="q" style="font-size:1.35rem">${s.title}</div>
+    <p style="font-family:var(--fd);font-size:.95rem;font-style:italic;color:var(--ink-m);margin-bottom:14px;line-height:1.6">${s.q}</p>
+    <div class="mic-row"><button class="mic-btn-voice" id="mic-${s.id}" onclick="startDictation('f-${s.id}','mic-${s.id}','mh-${s.id}')"><span class="mic-dot"></span><span class="mic-lbl">🎤 Detta</span></button></div>
+    <textarea class="jta" id="f-${s.id}" placeholder="${s.placeholder}" rows="6">${sd[s.id]||''}</textarea>
+    <div class="mic-hint" id="mh-${s.id}">Tocca per scrivere · o detta con il mic</div>`;
   } else if(s.t==='rat'){
     const cur=sd.rat||0;
     bl.innerHTML=`<div class="tlbl">${s.lbl}</div><div class="q">${s.q}</div>
@@ -576,11 +1014,14 @@ function renderStep(){
     document.getElementById('btn-nx').disabled=true;
     fetchAI();
   }
-  body.appendChild(bl);
-  body.scrollTop=0;
+  body.appendChild(bl);body.scrollTop=0;
 }
 
-function pickMood(m,el){document.querySelectorAll('.mbtn').forEach(b=>b.classList.remove('sel'));el.classList.add('sel');sd.mood=m;}
+function toggleMoodWord(w,el){
+  sd.moodWords=sd.moodWords||[];
+  if(sd.moodWords.includes(w)){sd.moodWords=sd.moodWords.filter(x=>x!==w);el.classList.remove('sel');}
+  else{sd.moodWords.push(w);el.classList.add('sel');}
+}
 function setRat(n){sd.rat=n;document.querySelectorAll('.sbtn').forEach(b=>b.classList.toggle('lit',parseInt(b.dataset.s)<=n));}
 function togH(h,el){sd.hab=sd.hab||{};sd.hab[h]=!sd.hab[h];el.classList.toggle('done',sd.hab[h]);el.querySelector('.hchk').textContent=sd.hab[h]?'✓':'';}
 
@@ -601,32 +1042,135 @@ function startBr(){
   breathInt=setInterval(tick,1000);tick();
 }
 
-async function fetchAI(){
-  const ctx=buildCtx();
-  const p=`Sei un coach personale empatico. Sessione serale (${sd.mode}).\n\n${ctx}\n\nScrivi 1 pensiero riflessivo (max 3 frasi) in italiano, tu. Caldo, diretto, specifico. Niente consigli generici.`;
-  try{
-    const r=await fetch('/api/proxy',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,messages:[{role:'user',content:p}]})});
-    const d=await r.json();const txt=d.content?.[0]?.text||'Non disponibile.';
-    sd.air=txt;const el=document.getElementById('ai-r');if(el)el.innerHTML=txt;
-    const nb=document.getElementById('btn-nx');if(nb)nb.disabled=false;
-  }catch{const el=document.getElementById('ai-r');if(el)el.textContent='Non disponibile.';const nb=document.getElementById('btn-nx');if(nb)nb.disabled=false;}
-}
+
 
 function buildCtx(){
   const p=[];
-  if(sd.mood)p.push('Umore: '+(ML[sd.mood]||sd.mood));
-  if(sd.refl)p.push('Riflessione: "'+sd.refl+'"');
-  if(sd.hi)p.push('Highlight: "'+sd.hi+'"');
+  // Dati mattutini
+  const today=todayStr();
+  const mornings=lsMornings();
+  const todayM=mornings.find(m=>m.date===today);
+  if(todayM && !todayM.skipped){
+    if(todayM.energy)   p.push('Energia mattutina: '+todayM.energy+'/5');
+    if(todayM.intention)p.push('Intenzione del giorno: "'+todayM.intention+'"');
+    if(todayM.biocharge)p.push('Biocharge Zepp: '+todayM.biocharge+'%');
+    if(todayM.hrv)      p.push('HRV Zepp: '+todayM.hrv+' ms');
+    if(todayM.hrv4t)    p.push('HRV4Training rMSSD: '+todayM.hrv4t+' ms');
+    if(todayM.slancio)  p.push('Slancio metabolico Hume: '+todayM.slancio);
+    if(todayM.deepSleepPct) p.push('Deep sleep ieri: '+todayM.deepSleepPct+'%');
+    if(todayM.sleepScore)   p.push('Sleep score Zepp: '+todayM.sleepScore+'/100');
+    if(todayM.humeScore)p.push('Score salute Hume (settimana): '+todayM.humeScore);
+  }
+  // Dati sessione serale
+  if(sd.moodWords&&sd.moodWords.length)p.push('Come mi sento: '+sd.moodWords.join(', '));
+  if(sd.refl)  p.push('Riflessione: "'+sd.refl+'"');
+  if(sd.hi)    p.push('Highlight: "'+sd.hi+'"');
+  if(sd.sleep_ctx) p.push('Routine pre-sonno ieri: "'+sd.sleep_ctx+'"');
   if(sd.grat&&sd.grat.some(Boolean))p.push('Gratitudine: '+sd.grat.filter(Boolean).join(', '));
-  if(sd.rat)p.push('Voto: '+sd.rat+'/5');
-  if(sd.hab){const dn=HL.filter(h=>sd.hab[h]).map(h=>HIT[h]);const ms=HL.filter(h=>!sd.hab[h]).map(h=>HIT[h]);if(dn.length)p.push('Habit OK: '+dn.join(', '));if(ms.length)p.push('Habit miss: '+ms.join(', '));}
+  if(sd.rat)   p.push('Voto giornata: '+sd.rat+'/5');
+  if(sd.wins&&(sd.wins.phys||sd.wins.ment||sd.wins.rel)){
+    const ws=[];
+    if(sd.wins.phys)p.push('Win fisico: "'+sd.wins.phys+'"');
+    if(sd.wins.ment)p.push('Win mentale: "'+sd.wins.ment+'"');
+    if(sd.wins.rel) p.push('Win relazionale: "'+sd.wins.rel+'"');
+  }
+  if(sd.hab){
+    const dn=HL.filter(h=>sd.hab[h]).map(h=>HIT[h]);
+    const ms=HL.filter(h=>!sd.hab[h]).map(h=>HIT[h]);
+    if(dn.length)p.push('Habit OK: '+dn.join(', '));
+    if(ms.length)p.push('Habit miss: '+ms.join(', '));
+  }
   return p.join('\n')||'Nessun dato';
+}
+
+// ─── DETTATURA VOCALE ──────────────────────────────────────
+let _micRec=null;
+let _micWantActive=false;  // iOS Safari: distingue stop manuale da stop automatico del browser
+function startDictation(taId,btnId,hintId){
+  const ta=document.getElementById(taId);
+  const btn=document.getElementById(btnId);
+  const hint=hintId?document.getElementById(hintId):null;
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){alert('Il tuo browser non supporta la dettatura vocale. Usa Safari su iOS.');return;}
+  // Stop manuale: utente preme il bottone mentre sta registrando
+  if(_micWantActive){
+    _micWantActive=false;
+    if(_micRec){try{_micRec.stop();}catch(e){}}
+    return;
+  }
+  _micWantActive=true;
+  const lbl=btn.querySelector('.mic-lbl');
+  btn.classList.remove('done');
+  btn.classList.add('listening');
+  if(lbl)lbl.textContent='● Stop';
+  ta.classList.add('mic-active');
+  if(hint){hint.textContent='● Trascrizione in corso — parla pure';hint.classList.add('active');}
+
+  function _startRec(){
+    if(!_micWantActive) return;
+    const rec=new SR();
+    rec.lang='it-IT';rec.continuous=true;rec.interimResults=true;
+    _micRec=rec;
+    rec.onresult=e=>{
+      let interim='';let final_t='';
+      for(let i=e.resultIndex;i<e.results.length;i++){
+        if(e.results[i].isFinal)final_t+=e.results[i][0].transcript;
+        else interim+=e.results[i][0].transcript;
+      }
+      if(final_t){
+        ta.value=(ta.value+' '+final_t).trim();
+        ta.dataset.saved=ta.value;  // salva il testo finale accumulato
+      } else if(interim && ta.dataset.saved!==undefined){
+        // mostra interim senza perdere il testo già finalizzato
+        ta.value=(ta.dataset.saved+' '+interim).trim();
+      }
+    };
+    rec.onerror=(e)=>{
+      if(e.error==='no-speech' && _micWantActive){
+        // iOS: pausa di silenzio — riavvia senza fermarsi
+        try{_micRec.stop();}catch(err){}
+      } else {
+        _micWantActive=false;
+        _stopDictation(ta,btn,hint);
+      }
+    };
+    rec.onend=()=>{
+      _micRec=null;
+      if(_micWantActive){
+        // iOS Safari termina continuous automaticamente dopo ~60s o su pausa
+        // → riavvio trasparente senza interrompere l'utente
+        setTimeout(_startRec, 200);
+      } else {
+        if(ta.value) sd[taId.replace('f-','')]=ta.value;
+        _stopDictation(ta,btn,hint);
+      }
+    };
+    rec.start();
+  }
+  _startRec();
+}
+function _stopDictation(ta,btn,hint){
+  _micWantActive=false;
+  _micRec=null;
+  delete ta.dataset.saved;
+  btn.classList.remove('listening');btn.classList.add('done');
+  ta.classList.remove('mic-active');
+  const lbl=btn.querySelector('.mic-lbl');
+  if(lbl)lbl.textContent='🎤 Ridetta';
+  if(hint){hint.textContent='Puoi modificare il testo o dettare di nuovo';hint.classList.remove('active');}
 }
 
 function saveSd(){
   const s=steps[step];
-  if(s.t==='ta'){const el=document.getElementById('f-'+s.id);if(el)sd[s.id]=el.value.trim();}
+  if(s.t==='ta'||s.t==='deep'){const el=document.getElementById('f-'+s.id);if(el)sd[s.id]=el.value.trim();}
   else if(s.t==='grat')sd.grat=[1,2,3].map(n=>{const el=document.getElementById('g-'+n);return el?el.value.trim():'';});
+  else if(s.t==='win'){
+    sd.wins={
+      phys: document.getElementById('win-phys')?.value.trim()||'',
+      ment: document.getElementById('win-ment')?.value.trim()||'',
+      rel:  document.getElementById('win-rel')?.value.trim()||''
+    };
+  }
 }
 function nextStep(){saveSd();if(step<steps.length-1){step++;renderStep();}else showSum();}
 function prevStep(){saveSd();if(step>0){step--;renderStep();}}
@@ -636,12 +1180,17 @@ function showSum(){
   goScreen('summary');
   const c=document.getElementById('sum-cards');c.innerHTML='';
   const items=[];
-  if(sd.mood)items.push({l:'Umore',v:sd.mood+' '+ML[sd.mood]});
+  if(sd.moodWords&&sd.moodWords.length)items.push({l:'Come mi sento',v:sd.moodWords.join(' · ')});
   if(sd.rat)items.push({l:'Rating',v:RM[sd.rat]});
+  if(sd.wins&&(sd.wins.phys||sd.wins.ment||sd.wins.rel)){
+    const wl=[sd.wins.phys,sd.wins.ment,sd.wins.rel].filter(Boolean).join(' · ');
+    items.push({l:'Win del giorno',v:wl.length>100?wl.slice(0,100)+'…':wl});
+  }
   if(sd.hi)items.push({l:'Highlight',v:sd.hi.length>100?sd.hi.slice(0,100)+'…':sd.hi});
   if(sd.refl)items.push({l:'Riflessione',v:sd.refl.length>110?sd.refl.slice(0,110)+'…':sd.refl});
   if(sd.grat&&sd.grat.some(Boolean))items.push({l:'Gratitudine',v:sd.grat.filter(Boolean).join(' · ')});
   items.forEach(i=>{const d=document.createElement('div');d.className='card';d.innerHTML=`<div class="clbl">${i.l}</div><div class="cval">${i.v}</div>`;c.appendChild(d);});
+
   const hsum=document.getElementById('hsum');
   if(sd.hab&&Object.keys(sd.hab).length){
     hsum.style.display='block';const chips=document.getElementById('hchips');chips.innerHTML='';
@@ -653,55 +1202,312 @@ function showSum(){
 async function fetchInsight(){
   const p=`Analizza questa sessione serale, dai 1 insight breve (max 3 frasi) in italiano:\n\n${buildCtx()}\n\nOsservazione genuina, non ovvia.`;
   try{
-    const r=await fetch('/api/proxy',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,messages:[{role:'user',content:p}]})});
-    const d=await r.json();const el=document.getElementById('itxt');if(el)el.textContent=d.content?.[0]?.text||'';
+    const r=await fetch(AI_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:AI_MODEL,max_tokens:1000,messages:[{role:'user',content:p}]})});
+    const d=await r.json();
+    // FIX: sovrascrive sd.air con la riflessione finale (completa, basata su tutta la sessione)
+    // così copyForClaude esporta questa invece di quella parziale generata durante la sessione
+    const txt=d.content?.[0]?.text||'';
+    sd.air=txt;
+    const el=document.getElementById('itxt');if(el)el.textContent=txt;
   }catch{const el=document.getElementById('itxt');if(el)el.textContent='Non disponibile.';}
 }
 
-async function saveNotion(){
+// ─── COACH AI ─────────────────────────────────────────────
+let _coachHistory = [];   // [{role:'user'|'assistant', content:'...'}]
+let _coachMicRec  = null;
+let _coachTTS     = false;
+let _coachBackTo  = 'home'; // schermata da cui si è entrati
+
+function openCoach(fromSummary){
+  _coachBackTo = fromSummary ? 'summary' : 'home';
+  _coachHistory = [];
+  document.getElementById('coach-back-btn').onclick = ()=>goScreen(_coachBackTo);
+
+  // Context strip
+  const today = todayStr();
+  const mornings = lsMornings();
+  const m = mornings.find(x=>x.date===today&&!x.skipped)||{};
+  const pills = [];
+  if(m.biocharge)     pills.push({t:'⚡ Biocharge '+m.biocharge+'%', w: m.biocharge<40});
+  if(m.hrv)           pills.push({t:'💓 HRV '+m.hrv+' ms', w: m.hrv<28});
+  if(m.deepSleepPct)  pills.push({t:'🌙 Deep sleep '+m.deepSleepPct+'%', w: m.deepSleepPct<15});
+  if(m.energy)        pills.push({t:'⚡ Energia '+m.energy+'/5', w: m.energy<=2});
+  if(sd.rat)          pills.push({t:'★ Rating '+sd.rat+'/5', w:false});
+  if(sd.moodWords&&sd.moodWords.length) pills.push({t:sd.moodWords.slice(0,2).join(' · '), w:false});
+  const strip = document.getElementById('coach-ctx-strip');
+  if(pills.length>0){
+    strip.style.display='block';
+    strip.innerHTML=`<div class="coach-ctx-lbl">Contesto oggi</div><div class="coach-ctx-pills">${pills.map(p=>`<span class="coach-pill${p.w?' warn':''}">${p.t}</span>`).join('')}</div>`;
+  } else {
+    strip.style.display='none';
+  }
+
+  // Svuota messaggi e avvia
+  document.getElementById('coach-messages').innerHTML='';
+  goScreen('coach');
+  _coachOpeningMsg();
+}
+
+async function _coachOpeningMsg(){
+  _addCoachTyping();
+  const sys = _buildCoachSystemPrompt();
+  const opening = 'Analizza il contesto e apri la conversazione con UNA domanda specifica e contestuale. Max 2 frasi. Italiano. Diretto, caldo, non generico.';
+  try{
+    const r = await fetch(AI_URL,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:AI_MODEL,max_tokens:300,
+        system: sys,
+        messages:[{role:'user',content:opening}]
+      })
+    });
+    const d = await r.json();
+    const txt = d.content?.[0]?.text||'Come posso aiutarti a riflettere su questa giornata?';
+    _removeTyping();
+    _addCoachMsg('assistant', txt);
+    _coachHistory.push({role:'assistant', content:txt});
+    if(_coachTTS) _speakTTS(txt);
+  }catch{
+    _removeTyping();
+    const txt = 'Ciao Edoardo — come posso aiutarti a riflettere su questa giornata?';
+    _addCoachMsg('assistant', txt);
+    _coachHistory.push({role:'assistant', content:txt});
+  }
+}
+
+async function sendCoachMsg(){
+  const inp = document.getElementById('coach-input');
+  const txt = inp.value.trim();
+  if(!txt) return;
+  inp.value='';
+  _addCoachMsg('user', txt);
+  _coachHistory.push({role:'user', content:txt});
+  _addCoachTyping();
+  try{
+    const r = await fetch(AI_URL,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:AI_MODEL,max_tokens:400,
+        system: _buildCoachSystemPrompt(),
+        messages: _coachHistory
+      })
+    });
+    const d = await r.json();
+    const reply = d.content?.[0]?.text||'Non disponibile.';
+    _removeTyping();
+    _addCoachMsg('assistant', reply);
+    _coachHistory.push({role:'assistant', content:reply});
+    if(_coachTTS) _speakTTS(reply);
+  }catch{
+    _removeTyping();
+    const reply='Mi dispiace, errore di connessione. Riprova.';
+    _addCoachMsg('assistant', reply);
+  }
+}
+
+function _buildCoachSystemPrompt(){
+  const ctx = buildCtx();
+  return `Sei un coach personale empatico per Edoardo (Milano, CrossFit 4-5x/settimana, target peso 82kg, HRV baseline 28ms RMSSD, target deep sleep 20-25%).
+
+DATI DELLA GIORNATA:
+${ctx}
+
+SCALE DI RIFERIMENTO:
+- HRV Zepp RMSSD: Ottimale = sopra/allineato baseline 28ms | Bilanciato = range normale | Basso = sotto baseline | Critico = molto sotto
+- Sleep score: Eccellente 90-100 | Buono 80-89 | Sufficiente 60-79 | Basso <60
+- Deep sleep: target 20-25% (baseline attuale ~13%)
+- Score Hume (max 900): Eccellente 765-900 | Buono 585-764 | Moderato 450-584 | Sufficiente 297-449 | Basso ≤296
+
+ISTRUZIONI:
+- Rispondi sempre in italiano
+- Usa i dati reali del contesto — non fare domande su informazioni già presenti
+- Fai UNA domanda alla volta, mai più
+- Tono caldo, diretto, non paternalistico
+- Max 3-4 frasi per risposta
+- Se i dati biometrici mostrano qualcosa di rilevante (deep sleep basso, HRV sotto baseline) collegalo a ciò che l'utente ha scritto`;
+}
+
+function _addCoachMsg(role, text){
+  const wrap = document.getElementById('coach-messages');
+  const div = document.createElement('div');
+  div.className = role==='assistant' ? 'cmsg-coach' : 'cmsg-user';
+  div.innerHTML = (role==='assistant'?'<div class="cmsg-sender">Coach ✦</div>':'')
+    + `<div class="cmsg-bub">${text}</div>`;
+  wrap.appendChild(div);
+  wrap.scrollTop = wrap.scrollHeight;
+}
+
+function _addCoachTyping(){
+  const wrap = document.getElementById('coach-messages');
+  const div = document.createElement('div');
+  div.className='cmsg-coach cmsg-typing';div.id='coach-typing';
+  div.innerHTML='<div class="cmsg-bub"><div class="ald"><span></span><span></span><span></span></div></div>';
+  wrap.appendChild(div);wrap.scrollTop=wrap.scrollHeight;
+}
+
+function _removeTyping(){
+  const el=document.getElementById('coach-typing');if(el)el.remove();
+}
+
+function toggleTTS(chk){
+  _coachTTS = chk.checked;
+  if(!_coachTTS && window.speechSynthesis) window.speechSynthesis.cancel();
+}
+
+function _speakTTS(text){
+  if(!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const utt = new SpeechSynthesisUtterance(text);
+  utt.lang='it-IT'; utt.rate=0.92; utt.pitch=1;
+  window.speechSynthesis.speak(utt);
+}
+
+function coachDictation(){
+  const inp = document.getElementById('coach-input');
+  const btn = document.getElementById('coach-mic');
+  const SR = window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){alert('Dettatura non supportata. Usa Safari su iOS.');return;}
+  if(_coachMicRec){_coachMicRec.stop();return;}
+  const rec = new SR();
+  rec.lang='it-IT';rec.continuous=false;rec.interimResults=false;
+  _coachMicRec=rec;
+  btn.classList.add('listening');btn.textContent='⏹';
+  rec.onresult=e=>{inp.value=(inp.value+' '+e.results[0][0].transcript).trim();};
+  rec.onend=()=>{_coachMicRec=null;btn.classList.remove('listening');btn.textContent='🎤';};
+  rec.onerror=()=>{_coachMicRec=null;btn.classList.remove('listening');btn.textContent='🎤';};
+  rec.start();
+}
+
+// ─── APRI MINDFIT ────────────────────────────────────────
+function openMindFit(){
+  const today=new Date().toISOString().split('T')[0];
+  const mornings=lsMornings();
+  const m=mornings.find(x=>x.date===today&&!x.skipped)||{};
+  const params=new URLSearchParams();
+  if(m.biocharge) params.set('bc',m.biocharge);
+  if(m.hrv)       params.set('hrv',m.hrv);
+  if(m.energy)    params.set('en',m.energy);
+  if(m.deepSleepPct) params.set('ds',m.deepSleepPct);
+  if(m.slancio)   params.set('sl',m.slancio);
+  window.location.href='/mindfit?'+params.toString();
+}
+// ─── COPIA PER CLAUDE (sessione serale) ──────────────────
+function copyForClaude(){
   const btn=document.getElementById('btn-save');
   const st=document.getElementById('save-st');
-  btn.disabled=true;btn.textContent='Salvataggio…';
-  st.className='status-msg vis';st.textContent='Connessione a Notion…';
   const today=new Date();
   const ds=today.toISOString().split('T')[0];
   const nm=today.toLocaleDateString('it-IT',{day:'numeric',month:'long',year:'numeric'});
-  const mN=sd.mood?MM[sd.mood]:null;const rN=sd.rat?RM[sd.rat]:null;
-  let body='';
-  if(sd.refl)body+=`## Riflessione\n${sd.refl}\n\n`;
-  if(sd.hi)body+=`## Highlight del giorno\n${sd.hi}\n\n`;
-  if(sd.grat&&sd.grat.some(Boolean))body+=`## Gratitudine\n${sd.grat.filter(Boolean).map((g,i)=>`${i+1}. ${g}`).join('\n')}\n\n`;
-  if(sd.hab){const dn=HL.filter(h=>sd.hab[h]).map(h=>HIT[h]);const ms=HL.filter(h=>!sd.hab[h]).map(h=>HIT[h]);body+=`## Habits\n`;if(dn.length)body+=`✓ ${dn.join(', ')}\n`;if(ms.length)body+=`✗ ${ms.join(', ')}\n`;body+='\n';}
-  if(sd.air)body+=`## Riflessione AI\n${sd.air}`;
-  const prompt=`Hai accesso al database Notion Daily Journal (data source ID: ${JDS}).\nCrea una nuova pagina:\n- Name: "${nm}"\n- Date of Entry: "${ds}"\n- Mood: ${mN?`["${mN}"]`:'null'}\n- Rate The Day: ${rN?`"${rN}"`:'null'}\n- Body:\n"""\n${body}\n"""\nUsa notion-create-pages con parent data_source_id: ${JDS}.\nRispondi solo: SAVED_OK`;
-  try{
-    const r=await fetch('/api/proxy',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,mcp_servers:[{type:'url',url:'https://mcp.notion.com/mcp',name:'notion-mcp'}],messages:[{role:'user',content:prompt}]})});
-    const d=await r.json();
-    const allTxt=d.content.filter(b=>b.type==='text').map(b=>b.text).join('');
-    const toolUsed=d.content.some(b=>b.type==='mcp_tool_use');
-    if(allTxt.includes('SAVED_OK')||toolUsed){saveStreakDay();renderStreak();st.className='status-msg vis ok';st.textContent='✓ Salvato nel Daily Journal su Notion';btn.textContent='Salvato ✓';}
-    else throw new Error();
-  }catch{st.className='status-msg vis err';st.textContent='Errore. Riprova.';btn.disabled=false;btn.textContent='Salva su Notion →';}
+
+  // Mood → Notion multi_select
+  const wordToNotionMood={Happy:'😄 Happy',Excited:'😊 Excited',Neutral:'😐 Neutral',Sad:'☹️ Sad',Angry:'😠 Angry',Anxious:'😰Anxious'};
+  const moodWordList=sd.moodWords||[];
+  let mN=null;
+  for(const w of moodWordList){if(wordToNotionMood[w]){mN=wordToNotionMood[w];break;}}
+  const rN=sd.rat?RM[sd.rat]:null;
+
+  // Salva in localStorage
+  const mornings=lsMornings();
+  const todayM=mornings.find(m=>m.date===ds);
+  const entry={
+    date:ds, name:nm,
+    mood:mN||'', moodWords:moodWordList,
+    rating:sd.rat||0,
+    refl:sd.refl||'', hi:sd.hi||'',
+    sleep_ctx:sd.sleep_ctx||'',
+    wins:sd.wins||{},
+    grat:sd.grat||[],
+    hab:sd.hab||{},
+    air:sd.air||'',
+    morning:todayM||null
+  };
+  saveSession(entry);
+  saveStreakDay();renderStreak();
+
+  // Costruisci testo per Claude
+  let text='SALVA_JOURNAL\n';
+  text+='Data: '+nm+' ('+ds+')\n';
+  if(mN)  text+='Mood: '+mN+'\n';
+  if(moodWordList.length) text+='Come mi sento: '+moodWordList.join(', ')+'\n';
+  if(rN)  text+='Rating: '+rN+'\n';
+
+  // Dati mattutini
+  if(todayM && !todayM.skipped){
+    text+='\n--- Check-in mattutino ---\n';
+    if(todayM.energy)    text+='Energia: '+todayM.energy+'/5\n';
+    if(todayM.intention) text+='Intenzione: '+todayM.intention+'\n';
+    if(todayM.biocharge) text+='Biocharge Zepp: '+todayM.biocharge+'%\n';
+    if(todayM.hrv)       text+='HRV Zepp: '+todayM.hrv+' ms\n';
+    if(todayM.hrv4t)     text+='HRV4Training rMSSD: '+todayM.hrv4t+' ms\n';
+    if(todayM.slancio)   text+='Slancio Hume: '+todayM.slancio+'\n';
+    if(todayM.deepSleepPct) text+='Deep sleep ieri: '+todayM.deepSleepPct+'%\n';
+    if(todayM.sleepScore)   text+='Sleep score Zepp: '+todayM.sleepScore+'/100\n';
+    if(todayM.humeScore) text+='Score salute Hume (settimana): '+todayM.humeScore+'\n';
+    text+='\n';
+  }
+
+  if(sd.refl) text+='Riflessione: '+sd.refl+'\n';
+  if(sd.sleep_ctx) text+='Routine pre-sonno: '+sd.sleep_ctx+'\n';
+  if(sd.hi)   text+='Highlight: '+sd.hi+'\n';
+  if(sd.wins){
+    if(sd.wins.phys)text+='Win fisico: '+sd.wins.phys+'\n';
+    if(sd.wins.ment)text+='Win mentale: '+sd.wins.ment+'\n';
+    if(sd.wins.rel) text+='Win relazionale: '+sd.wins.rel+'\n';
+  }
+  if(sd.grat&&sd.grat.some(Boolean)) text+='Gratitudine: '+sd.grat.filter(Boolean).join(' | ')+'\n';
+  if(sd.hab){
+    const dn=HL.filter(h=>sd.hab[h]).map(h=>HIT[h]);
+    const ms=HL.filter(h=>!sd.hab[h]).map(h=>HIT[h]);
+    if(dn.length) text+='Habits OK: '+dn.join(', ')+'\n';
+    if(ms.length) text+='Habits miss: '+ms.join(', ')+'\n';
+  }
+  if(sd.air) text+='Riflessione AI: '+sd.air+'\n';
+  // Protocollo attivo
+  const ap_c=getActiveProtocol();
+  if(ap_c&&ap_c.status==='active'){
+    const proto_c=PROTOCOL_REGISTRY[ap_c.id];
+    // FIX: se il giorno corrente è già stato completato (dayCompleted[currentDay-1]===true),
+    // completeProtocolDay() ha già fatto currentDay++ → il giorno eseguito oggi è currentDay-1
+    // Se invece non ancora completato, il giorno corrente è currentDay
+    const reportDay_c=ap_c.currentDay-1;
+    const completedToday_c=ap_c.dayCompleted&&ap_c.dayCompleted[reportDay_c-1];
+    const dayObj_c=proto_c&&proto_c.days[reportDay_c-1];
+    text+='\n--- Protocollo Attivo ---\n';
+    text+='Protocollo: '+ap_c.id+'\n';
+    text+='Giorno: '+reportDay_c+'/'+ap_c.totalDays+'\n';
+    if(dayObj_c) text+='Esercizio: '+dayObj_c.title+'\n';
+    const pNote_c=lsG('proto_note_'+ap_c.id+'_'+reportDay_c);
+    if(pNote_c) text+='Nota protocollo: '+pNote_c+'\n';
+    text+='Completato oggi: '+(completedToday_c?'Si':'No')+'\n';
+  }
+
+  navigator.clipboard.writeText(text).then(()=>{
+    btn.textContent='✓ Copiato!';
+    st.className='status-msg vis ok';
+    st.textContent='Sessione salvata 🌙 Incolla in chat con Claude per salvare su Notion';
+  }).catch(()=>{
+    window.prompt('Copia questo testo e incollalo in chat con Claude:',text);
+    st.className='status-msg vis ok';
+    st.textContent='Sessione salvata 🌙';
+  });
 }
 
-// ─── WEEKLY ──────────────────────────────────────────────
-async function loadWeek(){
+// ─── WEEKLY (da localStorage) ───────────────────────────
+function loadWeek(){
   const wc=document.getElementById('week-content');
-  wc.innerHTML='<div class="ald" style="justify-content:center;padding:2rem 0"><span></span><span></span><span></span></div>';
   const startOfWeek=new Date();startOfWeek.setDate(startOfWeek.getDate()-6);
   const startStr=startOfWeek.toISOString().split('T')[0];
-  const prompt=`Hai accesso al database Notion Daily Journal (data source ID: ${JDS}).\nRecupera entries degli ultimi 7 giorni (da ${startStr}).\nRispondi SOLO con JSON array:\n[{"date":"2026-03-25","name":"25 marzo","mood":"😊","rating":4,"snippet":"testo..."},...]\nSe nessuna entry: []`;
-  try{
-    const r=await fetch('/api/proxy',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,mcp_servers:[{type:'url',url:'https://mcp.notion.com/mcp',name:'notion-mcp'}],messages:[{role:'user',content:prompt}]})});
-    const d=await r.json();
-    const allTxt=d.content.filter(b=>b.type==='text').map(b=>b.text).join('');
-    let entries=[];
-    try{const m=allTxt.replace(/```json|```/g,'').trim().match(/\[[\s\S]*\]/);if(m)entries=JSON.parse(m[0]);}catch{}
-    renderWeek(entries,startOfWeek);
-  }catch{wc.innerHTML='<p style="font-family:var(--fd);font-style:italic;color:var(--ink-s)">Errore caricamento.</p>';}
+  const all=lsSessions();
+  const entries=all.filter(e=>e.date>=startStr).sort((a,b)=>a.date.localeCompare(b.date));
+  renderWeek(entries,startOfWeek);
 }
 
-function moodToEmoji(m){if(!m)return'';if(m.includes('Happy'))return'😄';if(m.includes('Excited'))return'😊';if(m.includes('Neutral'))return'😐';if(m.includes('Sad'))return'☹️';if(m.includes('Angry'))return'😠';if(m.includes('Anxious'))return'😰';return m.split(' ')[0]||'';}
+function moodToEmoji(m){
+  if(!m)return'';
+  if(m.includes('Happy'))return'😄';
+  if(m.includes('Excited'))return'😊';
+  if(m.includes('Neutral'))return'😐';
+  if(m.includes('Sad'))return'☹️';
+  if(m.includes('Angry'))return'😠';
+  if(m.includes('Anxious'))return'😰';
+  return m.split(' ')[0]||'';
+}
 
 function renderWeek(entries,start){
   const wc=document.getElementById('week-content');
@@ -711,6 +1517,7 @@ function renderWeek(entries,start){
   entries.forEach(e=>{dwd++;if(e.rating){tr+=e.rating;rc++;}if(e.mood){const em=moodToEmoji(e.mood);mc[em]=(mc[em]||0)+1;}});
   const avg=rc?Math.round(tr/rc):0;
   const tm=Object.entries(mc).sort((a,b)=>b[1]-a[1])[0];
+
   let html=`<div class="week-grid">`;
   days.forEach(d=>{
     const ds=d.toISOString().split('T')[0];
@@ -722,28 +1529,113 @@ function renderWeek(entries,start){
     <div class="wstat"><div class="wstat-n">${avg?'★'.repeat(avg):'—'}</div><div class="wstat-l">media</div></div>
     <div class="wstat"><div class="wstat-n">${tm?tm[0]:'—'}</div><div class="wstat-l">mood freq.</div></div>
   </div>`;
-  if(dwd>0){html+=`<div class="icard" style="margin-bottom:16px"><div class="ilbl">Insight settimanale</div><div class="itxt" id="wins"><div class="ald"><span></span><span></span><span></span></div></div></div>`;}
+
+  if(dwd>0){
+    html+=`<div class="icard" style="margin-bottom:16px">
+      <div class="ilbl">Insight settimanale AI</div>
+      <div class="itxt" id="wins"><div class="ald"><span></span><span></span><span></span></div></div>
+    </div>`;
+    // Pulsante export settimanale
+    html+=`<div style="margin-bottom:16px">
+      <button class="btn-secondary" onclick="copyWeeklyForClaude()">📋 Export settimanale per Claude →</button>
+      <div class="status-msg" id="weekly-st" style="margin-top:8px"></div>
+    </div>`;
+  }
+
   if(entries.length>0){
     html+=`<div class="wentries">`;
     entries.slice().reverse().forEach(e=>{
       const em=moodToEmoji(e.mood||'');const rs=e.rating?'★'.repeat(e.rating):'';
-      html+=`<div class="wentry"><div class="wentry-hd"><span class="wentry-date">${e.name||e.date}</span><span>${em} <span class="wentry-r">${rs}</span></span></div>${e.snippet?`<div class="wentry-txt">${e.snippet.slice(0,100)}${e.snippet.length>100?'…':''}</div>`:''}</div>`;
+      const snip=e.refl||e.hi||'';
+      html+=`<div class="wentry"><div class="wentry-hd"><span class="wentry-date">${e.name||e.date}</span><span>${em} <span class="wentry-r">${rs}</span></span></div>${snip?`<div class="wentry-txt">${snip.slice(0,100)}${snip.length>100?'…':''}</div>`:''}</div>`;
     });
     html+=`</div>`;
-  } else {html+=`<p style="font-family:var(--fd);font-style:italic;color:var(--ink-s);text-align:center;padding:1.5rem">Nessuna sessione questa settimana</p>`;}
+  } else {
+    html+=`<p style="font-family:var(--fd);font-style:italic;color:var(--ink-s);text-align:center;padding:1.5rem">Nessuna sessione questa settimana</p>`;
+  }
   wc.innerHTML=html;
-  if(dwd>0)fetchWeekInsight(entries);
+  if(dwd>0) fetchWeekInsight(entries);
 }
 
 async function fetchWeekInsight(entries){
-  const ctx=entries.map(e=>`${e.date}: ${e.mood||'?'} rating:${e.rating||'?'} ${e.snippet||''}`).join('\n');
+  const ctx=entries.map(e=>`${e.date}: mood:${e.mood||'?'} rating:${e.rating||'?'} ${[e.refl,e.hi].filter(Boolean).join(' ').slice(0,80)}`).join('\n');
   try{
-    const r=await fetch('/api/proxy',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,messages:[{role:'user',content:`Analizza questa settimana di journaling (2-3 frasi in italiano):\n\n${ctx}\n\nPattern, progressi, aree attenzione. Diretto.`}]})});
+    const r=await fetch(AI_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:AI_MODEL,max_tokens:1000,messages:[{role:'user',content:`Analizza questa settimana di journaling per Edoardo (CrossFit 4-5x/sett, target deep sleep 20-25%, HRV baseline 28ms, scale Hume max 900: Eccellente 765-900 | Buono 585-764 | Moderato 450-584).\n\n${ctx}\n\nPattern, progressi, aree attenzione. 2-3 frasi in italiano. Diretto.`}]})});
     const d=await r.json();const el=document.getElementById('wins');if(el)el.textContent=d.content?.[0]?.text||'';
   }catch{const el=document.getElementById('wins');if(el)el.textContent='Non disponibile.';}
 }
 
-// ─── EXPORT PDF ───────────────────────────────────────────
+// ─── EXPORT SETTIMANALE PER CLAUDE → NOTION ──────────────
+function copyWeeklyForClaude(){
+  const startOfWeek=new Date();startOfWeek.setDate(startOfWeek.getDate()-6);
+  const startStr=startOfWeek.toISOString().split('T')[0];
+  const endStr=todayStr();
+  const all=lsSessions();
+  const entries=all.filter(e=>e.date>=startStr).sort((a,b)=>a.date.localeCompare(b.date));
+  const mornings=lsMornings();
+  const weekMornings=mornings.filter(m=>m.date>=startStr&&!m.skipped);
+
+  if(entries.length===0){
+    const st=document.getElementById('weekly-st');
+    if(st){st.className='status-msg vis err';st.textContent='Nessuna sessione questa settimana';}
+    return;
+  }
+
+  // Calcola medie biometriche
+  const biocharges=weekMornings.map(m=>m.biocharge).filter(Boolean);
+  const hrvs=weekMornings.map(m=>m.hrv).filter(Boolean);
+  const slanci=weekMornings.map(m=>m.slancio).filter(Boolean);
+  const deepSleeps=weekMornings.map(m=>m.deepSleepPct).filter(Boolean);
+  const avg=(arr)=>arr.length?Math.round(arr.reduce((a,b)=>a+b,0)/arr.length):null;
+  const humeScoreEntry=weekMornings.find(m=>m.humeScore);
+
+  const avgRating=entries.filter(e=>e.rating).reduce((a,b)=>a+b.rating,0)/(entries.filter(e=>e.rating).length||1);
+  const moodList=entries.map(e=>e.moodWords||[]).flat();
+  const moodFreq={};moodList.forEach(w=>{moodFreq[w]=(moodFreq[w]||0)+1;});
+  const topMoods=Object.entries(moodFreq).sort((a,b)=>b[1]-a[1]).slice(0,5).map(e=>e[0]);
+  const habCount={};HL.forEach(h=>{habCount[h]=entries.filter(e=>e.hab&&e.hab[h]).length;});
+
+  const weekLabel=startOfWeek.toLocaleDateString('it-IT',{day:'numeric',month:'long'})+' – '+new Date().toLocaleDateString('it-IT',{day:'numeric',month:'long',year:'numeric'});
+
+  let text='SALVA_WEEKLY_REPORT\n';
+  text+='Settimana: '+weekLabel+'\n';
+  text+='Periodo: '+startStr+' / '+endStr+'\n\n';
+
+  text+='--- Dati qualitativi ---\n';
+  text+='Sessioni completate: '+entries.length+'/7\n';
+  text+='Rating medio: '+avgRating.toFixed(1)+'/5\n';
+  text+='Mood prevalenti: '+topMoods.join(', ')+'\n';
+  text+='Habits (giorni su '+entries.length+'): '+HL.map(h=>HIT[h]+' '+habCount[h]).join(', ')+'\n\n';
+
+  if(weekMornings.length>0){
+    text+='--- Dati biometrici (medie settimana) ---\n';
+    if(avg(biocharges)) text+='Biocharge Zepp medio: '+avg(biocharges)+'%\n';
+    if(avg(hrvs))       text+='HRV medio: '+avg(hrvs)+' ms\n';
+    if(avg(slanci))     text+='Slancio metabolico Hume medio: '+avg(slanci)+'\n';
+    if(avg(deepSleeps)) text+='Deep sleep medio: '+avg(deepSleeps)+'%\n';
+    if(humeScoreEntry)  text+='Score salute Hume: '+humeScoreEntry.humeScore+'\n';
+    text+='\n';
+  }
+
+  text+='--- Dettaglio giorni ---\n';
+  entries.forEach(e=>{
+    text+=e.date+': rating '+e.rating+'/5, mood: '+(e.moodWords||[]).join(',')||e.mood||'?';
+    if(e.wins&&(e.wins.phys||e.wins.ment||e.wins.rel)){
+      text+=' | win: '+[e.wins.phys,e.wins.ment,e.wins.rel].filter(Boolean).join(' / ');
+    }
+    if(e.morning&&e.morning.deepSleepPct) text+=' | deep sleep: '+e.morning.deepSleepPct+'%';
+    text+='\n';
+  });
+
+  navigator.clipboard.writeText(text).then(()=>{
+    const st=document.getElementById('weekly-st');
+    if(st){st.className='status-msg vis ok';st.textContent='✓ Copiato! Incolla in chat con Claude per salvare su Notion';}
+  }).catch(()=>{
+    window.prompt('Copia e incolla in chat con Claude:',text);
+  });
+}
+
+// ─── EXPORT PDF (mensile, da localStorage) ───────────────
 function initExport(){
   const ms=document.getElementById('month-sel');ms.innerHTML='';
   const now=new Date();
@@ -756,44 +1648,52 @@ function initExport(){
     btn.onclick=()=>{document.querySelectorAll('.msel-btn').forEach(b=>b.classList.remove('act'));btn.classList.add('act');selMonth={year:d.getFullYear(),month:d.getMonth()};loadExportPreview(selMonth);};
     ms.appendChild(btn);
   }
-  selMonth={year:now.getFullYear(),month:now.getMonth()};loadExportPreview(selMonth);
+  selMonth={year:now.getFullYear(),month:now.getMonth()};
+  loadExportPreview(selMonth);
 }
 
 async function loadExportPreview(sm){
   document.getElementById('btn-pdf').disabled=true;
-  const prev=document.getElementById('exp-prev');prev.style.display='block';
-  prev.innerHTML='<div class="ald" style="justify-content:center"><span></span><span></span><span></span></div>';
-  const s=new Date(sm.year,sm.month,1).toISOString().split('T')[0];
-  const e=new Date(sm.year,sm.month+1,0).toISOString().split('T')[0];
+  const prev=document.getElementById('exp-prev');
+  prev.style.display='block';
+  const startDate=new Date(sm.year,sm.month,1).toISOString().split('T')[0];
+  const endDate=new Date(sm.year,sm.month+1,0).toISOString().split('T')[0];
   const mname=new Date(sm.year,sm.month,1).toLocaleDateString('it-IT',{month:'long',year:'numeric'});
-  const prompt=`Database Notion Daily Journal (ID: ${JDS}).\nRecupera entries di ${mname} (da ${s} a ${e}).\nJSON:\n{"month":"${mname}","count":N,"avgRating":N,"topMood":"...","entries":[{"date":"...","name":"...","mood":"...","rating":N,"content":"..."}]}\nSe nessuna entry: entries vuoto.`;
-  try{
-    const r=await fetch('/api/proxy',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,mcp_servers:[{type:'url',url:'https://mcp.notion.com/mcp',name:'notion-mcp'}],messages:[{role:'user',content:prompt}]})});
-    const d=await r.json();const allTxt=d.content.filter(b=>b.type==='text').map(b=>b.text).join('');
-    let data={count:0,entries:[]};
-    try{const m=allTxt.replace(/```json|```/g,'').trim().match(/\{[\s\S]*\}/);if(m)data=JSON.parse(m[0]);}catch{}
-    exportEntries=data.entries||[];
-    prev.innerHTML=`<h3 style="font-family:var(--fd);font-size:1.1rem;font-weight:400;margin-bottom:10px">${data.month||mname}</h3>
-    <div class="exp-row"><span class="exp-lbl">Sessioni</span><span class="exp-val">${data.count||exportEntries.length}</span></div>
-    <div class="exp-row"><span class="exp-lbl">Rating medio</span><span class="exp-val">${data.avgRating?'★'.repeat(Math.round(data.avgRating)):'—'}</span></div>
-    <div class="exp-row"><span class="exp-lbl">Mood prevalente</span><span class="exp-val">${data.topMood||'—'}</span></div>`;
-    document.getElementById('btn-pdf').disabled=exportEntries.length===0;
-  }catch{prev.innerHTML='<p style="color:var(--ink-s);font-size:.85rem">Errore caricamento.</p>';}
+  const all=lsSessions();
+  exportEntries=all.filter(e=>e.date>=startDate&&e.date<=endDate).sort((a,b)=>a.date.localeCompare(b.date));
+  const count=exportEntries.length;
+  const avgR=count?exportEntries.filter(e=>e.rating).reduce((a,b)=>a+b.rating,0)/(exportEntries.filter(e=>e.rating).length||1):0;
+  const mc={};exportEntries.forEach(e=>{if(e.mood)mc[e.mood]=(mc[e.mood]||0)+1;});
+  const topMood=Object.entries(mc).sort((a,b)=>b[1]-a[1])[0];
+  prev.innerHTML=`
+    <h3 style="font-family:var(--fd);font-size:1.1rem;font-weight:400;margin-bottom:10px">${mname}</h3>
+    <div class="exp-row"><span class="exp-lbl">Sessioni</span><span class="exp-val">${count}</span></div>
+    <div class="exp-row"><span class="exp-lbl">Rating medio</span><span class="exp-val">${avgR?'★'.repeat(Math.round(avgR)):'—'}</span></div>
+    <div class="exp-row"><span class="exp-lbl">Mood prevalente</span><span class="exp-val">${topMood?topMood[0]:'—'}</span></div>`;
+  document.getElementById('btn-pdf').disabled=count===0;
+  if(count===0){
+    prev.innerHTML+=`<p style="font-size:.8rem;color:var(--ink-s);margin-top:8px;font-family:var(--fd);font-style:italic">Nessuna sessione salvata per questo mese.</p>`;
+  }
 }
 
 async function generatePDF(){
-  const btn=document.getElementById('btn-pdf');const st=document.getElementById('pdf-st');
+  const btn=document.getElementById('btn-pdf');
+  const st=document.getElementById('pdf-st');
   btn.disabled=true;btn.textContent='Generazione…';
   st.className='status-msg vis';st.textContent='Generando PDF…';
   const sm=selMonth||{year:new Date().getFullYear(),month:new Date().getMonth()};
   const mname=new Date(sm.year,sm.month,1).toLocaleDateString('it-IT',{month:'long',year:'numeric'});
   let aiSum='';
   if(exportEntries.length>0){
-    const ctx=exportEntries.map(e=>`${e.date}: ${e.mood||'?'} r:${e.rating||'?'} ${(e.content||'').slice(0,100)}`).join('\n');
-    try{const r=await fetch('/api/proxy',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,messages:[{role:'user',content:`Sintesi mensile (4-5 frasi) in italiano di questo journal di ${mname}:\n\n${ctx}\n\nPattern emotivi, progressi, temi.`}]})});const d=await r.json();aiSum=d.content?.[0]?.text||'';}catch{}
+    const ctx=exportEntries.map(e=>`${e.date}: mood:${e.mood||'?'} rating:${e.rating||'?'} ${([e.refl,e.hi].filter(Boolean).join(' ').slice(0,100))}`).join('\n');
+    try{
+      const r=await fetch(AI_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:AI_MODEL,max_tokens:1000,messages:[{role:'user',content:`Sintesi mensile (4-5 frasi) in italiano di questo journal di ${mname}:\n\n${ctx}\n\nPattern emotivi, progressi, temi principali.`}]})});
+      const d=await r.json();aiSum=d.content?.[0]?.text||'';
+    }catch{}
   }
   try{
-    const {jsPDF}=window.jspdf;const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+    const {jsPDF}=window.jspdf;
+    const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
     const W=210,M=18;let y=M;
     doc.setFillColor(247,240,227);doc.rect(0,0,W,38,'F');
     doc.setFontSize(8);doc.setTextColor(138,129,120);doc.text('EVENING REFLECTION · JOURNAL',M,13);
@@ -819,32 +1719,464 @@ async function generatePDF(){
       doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(28,26,23);doc.text(e.name||e.date,M,y);
       if(e.rating){doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(201,169,110);doc.text('★'.repeat(e.rating),W-M-12,y);}
       y+=4;
-      if(e.content){
+      const snippet=[e.refl,e.hi].filter(Boolean).join(' · ').slice(0,250)||'';
+      if(snippet){
         doc.setFont('helvetica','italic');doc.setFontSize(8);doc.setTextColor(74,69,64);
-        const snip=e.content.replace(/##[^\n]*/g,'').replace(/\n+/g,' ').trim().slice(0,250);
-        const lines=doc.splitTextToSize(snip,W-M*2);doc.text(lines.slice(0,3),M,y);y+=Math.min(lines.length,3)*3.5+5;
+        const lines=doc.splitTextToSize(snippet,W-M*2);doc.text(lines.slice(0,3),M,y);y+=Math.min(lines.length,3)*3.5+5;
       } else {y+=3;}
     });
     const pgs=doc.internal.getNumberOfPages();
-    for(let i=1;i<=pgs;i++){doc.setPage(i);doc.setDrawColor(201,169,110);doc.setLineWidth(.3);doc.line(M,287,W-M,287);doc.setFontSize(7);doc.setTextColor(138,129,120);doc.text('Evening Reflection · '+new Date().toLocaleDateString('it-IT'),M,291);doc.text(i+'/'+pgs,W-M,291,'right');}
+    for(let i=1;i<=pgs;i++){
+      doc.setPage(i);doc.setDrawColor(201,169,110);doc.setLineWidth(.3);doc.line(M,287,W-M,287);
+      doc.setFontSize(7);doc.setTextColor(138,129,120);
+      doc.text('Evening Reflection · '+new Date().toLocaleDateString('it-IT'),M,291);
+      doc.text(i+'/'+pgs,W-M,291,'right');
+    }
     doc.save('journal-'+mname.replace(/ /g,'-')+'.pdf');
     st.className='status-msg vis ok';st.textContent='✓ PDF scaricato';
     btn.disabled=false;btn.textContent='Genera e scarica PDF →';
-  }catch(e){st.className='status-msg vis err';st.textContent='Errore. Riprova.';btn.disabled=false;btn.textContent='Genera e scarica PDF →';}
+  }catch(e){
+    st.className='status-msg vis err';st.textContent='Errore PDF: '+e.message;
+    btn.disabled=false;btn.textContent='Genera e scarica PDF →';
+  }
+}
+
+
+// ═══════════════════════════════════════════════════════
+// ── ARCHITETTURA TEMA ATTIVO + PROTOCOLLO DEEP SLEEP ──
+// ═══════════════════════════════════════════════════════
+
+// ── REGISTRO PROTOCOLLI ──
+// Per aggiungere nuovi protocolli: aggiungere qui. Zero modifiche altrove.
+const PROTOCOL_REGISTRY = {
+  'deep-sleep-14': {
+    id: 'deep-sleep-14', name: 'Deep Sleep', emoji: '🌙', totalDays: 14,
+    tagline: '14 giorni · Sonno profondo',
+    description: 'Porta il deep sleep dal 13% al target 20-25% con tecniche evidence-based giorno per giorno.',
+    days: [
+      {day:1,phase:'Reset',title:'Temperatura corporea',exercise:'Fai una doccia fresca 90 minuti prima di dormire. Abbassa la core temperature: il trigger più potente per il deep sleep. La caffeina ha emivita 5-6 ore — un caffè alle 16 è ancora attivo a mezzanotte.',question:"A che ora sei andato a letto ieri? Hai fatto qualcosa per segnalare al corpo che era ora di dormire?"},
+      {day:2,phase:'Reset',title:'Taglio stimolanti',exercise:'Stop caffè/pre-workout dopo le 14:00. Niente schermi 60 minuti prima del letto. La luce blu sopprime la melatonina anche a bassa intensità.',question:"Qual è stata la tua ultima fonte di stimolazione ieri sera prima di dormire?"},
+      {day:3,phase:'Reset',title:'Orario costante',exercise:"Scegli il tuo orario di coricamento target e rispettalo ±15 minuti per i prossimi 12 giorni. La costanza del ritmo circadiano vale più di qualsiasi supplemento.",question:"A che ora vai a letto solitamente? Quanto varia nei giorni di allenamento vs rest day?"},
+      {day:4,phase:'Reset',title:'Ambiente camera',exercise:'Ottimizza 3 variabili: (1) Temperatura 18-20°C, (2) Oscuramento totale o mascherina, (3) Niente device in carica sul comodino — il LED di ricarica disturba la melatonina.',question:"Descrivi il tuo ambiente di sonno attuale. Quale delle 3 variabili puoi migliorare subito?"},
+      {day:5,phase:'Attivazione',title:'Respiro 4-7-8',exercise:"Esegui 4 cicli 4-7-8: inspira 4 sec → trattieni 7 sec → espira 8 sec. Attiva il parasimpatico, riduce il cortisolo serale. Usa il tab Mindfulness per la guida animata.",question:"Come ti sei sentito dopo l'esercizio? Hai notato differenza nella tensione muscolare?"},
+      {day:6,phase:'Attivazione',title:'Body scan 5 minuti',exercise:"Sdraiato a letto, porta attenzione dai piedi → polpacci → cosce → addome → petto → braccia → testa. Per ogni zona: inspira e con l'espirazione lascia andare la tensione. 5 minuti totali.",question:"Dove hai sentito più tensione nel corpo stasera? C'è una zona che non si rilasciava?"},
+      {day:7,phase:'Attivazione',title:'Svuotamento mentale',exercise:'Prima di dormire: scrivi tutto quello che hai in testa — preoccupazioni, task irrisolti, pensieri ricorrenti. Trasferirli sulla carta riduce l\'arousal cognitivo notturno.',question:"Quanti pensieri attivi stavi portando a letto prima di questo esercizio?"},
+      {day:8,phase:'Attivazione',title:'Timing allenamento',exercise:"CrossFit intenso dopo le 18:00 alza FC e cortisolo per 3-4 ore — diretti sabotatori del deep sleep. Nota l'orario del tuo ultimo WOD e come ti senti fisicamente adesso.",question:"A che ora ti sei allenato oggi? Come te la senti fisicamente in questo momento?"},
+      {day:9,phase:'Attivazione',title:'Magnesio',exercise:'Il magnesio bisglicinato (200-400mg sera) è il supplemento con maggiore evidenza sul deep sleep. Controlla se lo stai già prendendo nelle Vitamins. Se no, valuta di aggiungerlo.',question:"Stai già assumendo magnesio? Hai notato differenze nei giorni in cui prendi le Vitamins vs quelli in cui le salti?"},
+      {day:10,phase:'Consolidamento',title:'Pattern check: giorni 1-9',exercise:"Guarda il grafico del tuo deep sleep% qui sopra. L'AI analizzerà quale azione ha correlato di più con i tuoi risultati migliori.",question:"Guardando il grafico, cosa noti? C'è un giorno in cui il deep sleep è stato meglio? Cosa hai fatto quel giorno di diverso?"},
+      {day:11,phase:'Consolidamento',title:'Il tuo sabotatore principale',exercise:'Identifica il fattore che sabota di più il tuo deep sleep tra i quattro sotto. La tua scelta personalizza l\'esercizio di domani.',question:null,isSabotatore:true},
+      {day:12,phase:'Consolidamento',title:'Ottimizza il sabotatore',exercise:null,question:"Hai applicato la tecnica specifica per il tuo sabotatore? Descrivi come è andata."},
+      {day:13,phase:'Consolidamento',title:'La tua routine pre-sonno',exercise:'Costruisci i tuoi 3 step definitivi pre-sonno — quelli che vuoi mantenere per sempre. Semplici, fattibili ogni sera anche dopo un WOD pesante.',question:"Questi 3 step ti sembrano sostenibili a lungo termine?",isRoutine:true},
+      {day:14,phase:'Completamento',title:'Closing day',exercise:"Guarda il tuo progresso completo: deep sleep% media settimana 1 vs settimana 2 vs baseline (13.2%). L'AI genera il tuo insight finale personalizzato.",question:"Cosa porti con te di questo protocollo? Quale cambiamento vuoi mantenere definitivamente?",isClosing:true}
+    ]
+  }
+  ,
+  'stress-7': {
+    id: 'stress-7', name: 'Centramento sotto stress', emoji: '⚡', totalDays: 7,
+    tagline: '7 giorni · Regolazione & Focus',
+    description: 'Tecniche evidence-based per mantenere focus e calma nelle settimane ad alta intensità.',
+    days: [
+      {day:1,phase:'Consapevolezza',title:'Mappa il tuo stress',exercise:'Prima di tutto: riconosci cosa ti sta pesando. Fai una lista rapida (3-5 voci) di tutto ciò che ti crea tensione questa settimana — lavoro, fisico, relazioni, incertezze. Non giudicare, solo elencare. Il riconoscimento è il primo passo del controllo.',question:"Guardando la lista: c'è un elemento che pesa più degli altri? È qualcosa su cui hai controllo diretto, parziale o zero?"},
+      {day:2,phase:'Consapevolezza',title:'Separare ciò che controlli',exercise:"Prendi la lista di ieri. Per ogni voce scrivi: C (Controllo diretto), P (Parziale), 0 (Nessun controllo). Poi: per le voci C e P scrivi 1 azione concreta che puoi fare domani. Per le voci 0: pratica il rilascio — non è resa, è efficienza cognitiva.",question:"Quante voci erano davvero fuori dal tuo controllo? Ti ha sorpreso?"},
+      {day:3,phase:'Regolazione',title:'Box breathing pre-stress',exercise:"Il Box Breathing è usato dai Navy SEAL per regolarsi prima di situazioni ad alta pressione. 4 secondi inspira → 4 trattieni → 4 espira → 4 trattieni. Ripeti 4 cicli. Fallo ORA, poi ricordati di applicarlo domani prima di qualsiasi momento ad alta tensione (riunione, WOD pesante, conversazione difficile).",question:"Come ti sei sentito durante i 4 cicli? Dove hai sentito la risposta nel corpo?"},
+      {day:4,phase:'Regolazione',title:'Il segnale fisico dello stress',exercise:"Il corpo segnala lo stress prima della mente. Oggi: identifica il tuo segnale personale. Tensione alle spalle? Mascella stretta? Respiro superficiale? Stomaco? Una volta identificato, diventa il tuo trigger di rientro — quando lo senti, esegui 3 respiri profondi e rilascia consapevolmente quella zona.",question:"Qual è il tuo segnale fisico principale? Hai già iniziato a riconoscerlo automaticamente oggi?"},
+      {day:5,phase:'Ancoraggio',title:'La tecnica 5-4-3-2-1',exercise:"Quando la mente gira, questo grounding immediato la riporta al presente: 5 cose che vedi → 4 che puoi toccare → 3 che senti → 2 che puoi annusare → 1 che puoi assaporare. Praticala adesso per familiarizzare. Poi usala ogni volta che senti la mente che accelera o catastrofizza.",question:"Quanto ci hai messo a 'ritornare'? C'è stato un senso specifico che ti ha ancorato meglio?"},
+      {day:6,phase:'Ancoraggio',title:'Scudo cognitivo: riformulare',exercise:"Lo stress cronico nasce spesso da una narrazione interna catastrofante. Prendi la fonte di stress principale di questa settimana e riscrivila con questi filtri: (1) Qual è il worst case realistico — non immaginario? (2) Qual è il best case? (3) Qual è lo scenario più probabile? Scrivere li rende gestibili.",question:"Lo scenario 'più probabile' è davvero così grave come lo stavi vivendo nella testa?"},
+      {day:7,phase:'Integrazione',title:'Il tuo kit anti-stress personale',exercise:"Hai 6 strumenti: mappatura, separazione controllo, box breathing, segnale fisico, 5-4-3-2-1, riformulazione. Scegli i 2-3 che hanno funzionato meglio e costruisci il tuo protocollo personale di 60 secondi per i momenti ad alta tensione. Scrivilo qui sotto — deve essere abbastanza semplice da ricordare sotto pressione.",question:"In quale situazione specifica delle prossime settimane prevedi di usarlo? Come ti prepareresti?",isClosing:true}
+    ]
+  },
+  'relazioni-7': {
+    id: 'relazioni-7', name: 'Relazioni & Centramento Sociale', emoji: '🤝', totalDays: 7,
+    tagline: '7 giorni · Connessione & Confini',
+    description: 'Qualità delle relazioni, energia sociale, confini sani: 7 giorni per allineare vita relazionale e benessere.',
+    days: [
+      {day:1,phase:'Mappa',title:'Audit energetico relazionale',exercise:"Non tutte le relazioni hanno lo stesso peso energetico. Fai una lista delle 5-8 persone con cui interagisci di più (lavoro, famiglia, amici). Per ciascuna: scrivi +, ~ o – in base a come ti senti dopo una conversazione tipica. + = ricarichi, ~ = neutro, – = dreni. Questo non è un giudizio sulla persona — è una mappa della tua energia.",question:"C'è un pattern nella lista? Il rapporto + / – ti ha sorpreso? Hai persone – che però non puoi eliminare dalla tua vita?"},
+      {day:2,phase:'Mappa',title:'La qualità vs la quantità',exercise:"Le relazioni superficiali numerose esauriscono più di 2-3 connessioni profonde. Oggi rifletti: quante interazioni hai avuto questa settimana in cui ti sei sentito davvero visto e ascoltato — non solo funzionale? Anche 5 minuti di conversazione autentica valgono più di un'ora di small talk.",question:"Quando è stata l'ultima volta che hai avuto una conversazione in cui ti sei sentito davvero presente? Con chi?"},
+      {day:3,phase:'Confini',title:'Riconoscere il confine violato',exercise:"Un confine non è un muro — è il perimetro del tuo benessere. Oggi identifica: c'è qualcosa che stai sopportando in una relazione (richiesta, comportamento, dinamica) che ti costa energia ma non hai mai nominato? Non serve 'dire tutto' — serve prima riconoscerlo dentro di te senza razionalizzarlo.",question:"Cosa stai sopportando? È una cosa puntuale o un pattern ripetuto? Cosa temi succederebbe se la nominassi?"},
+      {day:4,phase:'Confini',title:'Dire no come atto di rispetto',exercise:"Dire no non è egoismo — è onestà. Un 'sì' detto per evitare disagio è un debito relazionale che si accumula. Oggi pratica mentalmente (o nella realtà) un 'no' o un 'ora non posso' su una piccola richiesta che normalmente avresti accettato per abitudine. Osserva la reazione interna, non quella dell'altro.",question:"Come ti ha fatto sentire? C'è stata una voce interna che ti diceva che stavi sbagliando? Da dove viene?"},
+      {day:5,phase:'Connessione',title:'Presenza attiva',exercise:"La qualità di una relazione si misura nella qualità della tua attenzione. Oggi, in almeno una conversazione, metti via il telefono, guarda negli occhi, e fai 1 domanda autentica su qualcosa che sta vivendo l'altra persona — senza aspettare il tuo turno per parlare. Ascolta per capire, non per rispondere.",question:"Chi era? Cosa hai scoperto di quella persona che non sapevi o non avevi mai davvero sentito?"},
+      {day:6,phase:'Connessione',title:'Esprimere ciò che vale',exercise:"Nelle relazioni silenziamo spesso gratitudine e apprezzamento perché diamo per scontato che l'altro 'lo sappia'. Oggi: contatta o di' di persona a qualcuno qualcosa di specifico che apprezzi di lui/lei — non generico ('sei un buon amico') ma concreto ('quella cosa che hai fatto/detto la settimana scorsa mi ha dato molto'). Specificità = credibilità.",question:"Come ha reagito? Come ti sei sentito tu dopo averlo detto?"},
+      {day:7,phase:'Integrazione',title:'Il tuo blueprint relazionale',exercise:"Hai esplorato: mappa energetica, qualità vs quantità, confini, il no, presenza attiva, gratitudine espressa. Ora sintetizza: (1) Quale relazione vuoi nutrire di più? (2) Quale dinamica vuoi modificare? (3) Quale abitudine sociale vuoi portare avanti? Scrivile — queste 3 intenzioni sono il tuo punto di riferimento per i prossimi 30 giorni.",question:"C'è una relazione nella tua vita che senti 'in sospeso' — qualcosa di non detto o irrisolto? È il momento giusto per muoverti?",isClosing:true}
+    ]
+  },
+  'energia-10': {
+    id: 'energia-10', name: 'Energia e Focus', emoji: '☀️', totalDays: 10,
+    tagline: '10 giorni · Energia & Presenza',
+    description: 'Esplora le 4 dimensioni dell\'energia — fisica, emotiva, mentale e di scopo — per costruire il tuo sistema personale di gestione dell\'energia.',
+    days: [
+      {day:1,phase:'Baseline',title:'Energy Audit personale',exercise:"Valuta te stesso nelle 4 dimensioni dell'energia con un voto da 1 a 5:\n\n⚡ FISICA — Dormo almeno 7 ore. Prendo pause regolari durante la giornata. Mi disconnetto davvero dal lavoro.\n\n❤️ EMOTIVA — Mi sento entusiasta di quello che faccio. Quando sono con le persone che amo, sono davvero presente. Dedico tempo alle attività che mi ricaricano.\n\n🧠 MENTALE — Mi concentro su una cosa alla volta. Do priorità al task più importante. Creo spazio per la riflessione quotidiana.\n\n🎯 SCOPO — Quello che faccio è allineato con ciò che conta per me. Le mie azioni riflettono i miei valori.\n\nQuesto non è un test — è una mappa.",question:"In quale delle 4 dimensioni senti il gap più grande rispetto a dove vorresti essere? Ti ha sorpreso qualcosa?"},
+      {day:2,phase:'Energia Fisica',title:'Sonno & disconnessione',exercise:"Due leve fondamentali sull'energia fisica:\n\n1. SONNO — Almeno 7 ore non è un lusso, è il prerequisito per tutto il resto. La deprivazione cronica, anche parziale, riduce le capacità cognitive, l'umore e la resilienza allo stress.\n\n2. DISCONNESSIONE — Non è sufficiente smettere di lavorare fisicamente. La vera disconnessione significa che la mente lascia andare il lavoro. Quante ore al giorno sei davvero 'spento'?\n\nOggi: scegli un orario entro cui chiudi ogni device legato al lavoro e rispettalo.",question:"Quante ore di vera disconnessione hai avuto ieri? Come ti senti quando non riesci a staccare?"},
+      {day:3,phase:'Energia Fisica',title:'Pause intenzionali',exercise:"Il corpo e la mente non sono macchine — operano in cicli di 90 minuti (ritmi ultradiani). Dopo ogni ciclo, l'efficienza cala significativamente se non si recupera.\n\nUna pausa di 10-15 minuti ogni 90 minuti non è pigrizia: è gestione attiva dell'energia.\n\nOggi: pianifica almeno 2 pause intenzionali nella tua giornata lavorativa. Niente schermi, niente contenuti. Cammina, respira, guarda fuori.",question:"Quante pause intenzionali hai fatto oggi? Come era la tua concentrazione nelle ultime ore rispetto alle prime?"},
+      {day:4,phase:'Energia Emotiva',title:'Entusiasmo & presenza',exercise:"L'Energy Audit distingue due qualità emotive fondamentali:\n\n1. ENTUSIASMO per quello che fai — Non significa eccitazione costante, ma un senso di significato nel lavoro quotidiano. Senza questo, anche il successo esterno svuota.\n\n2. PRESENZA con chi ami — Essere fisicamente presenti ma mentalmente altrove è una delle fonti più silenziose di esaurimento relazionale ed emotivo.\n\nOggi rifletti onestamente su entrambe le dimensioni senza giudicarti.",question:"C'è un'area della tua vita in cui sei fisicamente presente ma mentalmente altrove? Cosa ti porta via?"},
+      {day:5,phase:'Energia Emotiva',title:'Attività che ricaricano davvero',exercise:"Non tutte le pause rigenerano. Guardare i social, leggere le news, rispondere a messaggi — sono input cognitivi, non recupero.\n\nL'energia emotiva si rigenera nelle attività che ami davvero, quelle che ti fanno perdere il senso del tempo: fotografia, sport, musica, natura, conversazioni autentiche.\n\nOggi: identifica le tue 3 attività rigeneranti. Poi verifica: nell'ultima settimana, hai dedicato almeno un'ora a ciascuna?",question:"Quando è stata l'ultima volta che hai fatto qualcosa solo per il piacere di farlo — senza produttività, senza output, senza schermo?"},
+      {day:6,phase:'Energia Mentale',title:'Una cosa alla volta',exercise:"Il multitasking è un mito cognitivo. Il cervello non elabora due cose in parallelo — commuta tra di esse. Ogni commutazione ha un costo: tempo di rientro (fino a 23 minuti per i task complessi) e qualità dell'output.\n\nOggi: lavora su una sola priorità per almeno un blocco da 90 minuti. Telefono girato, notifiche off, una sola finestra aperta.\n\nDopo il blocco: valuta la qualità del lavoro prodotto vs una sessione normale.",question:"Quante volte hai interrotto un task oggi per rispondere a qualcosa — messaggio, notifica, pensiero? Cosa ti ha distratto di più?"},
+      {day:7,phase:'Energia Mentale',title:'Il task più importante prima',exercise:"La tua energia mentale è al massimo nelle prime ore dopo il risveglio, prima che le decisioni e le interruzioni la consumino.\n\nIl principio è semplice: identifica il task più importante della giornata la sera prima, e fallo per primo — prima delle email, prima dei meeting, prima di qualsiasi cosa reattiva.\n\nOggi: qual era il tuo task più importante? Era davvero la prima cosa che hai fatto?",question:"Qual è stato il primo task cognitivo di questa mattina? Era il più importante? Se no, cos'altro lo ha preceduto e perché?"},
+      {day:8,phase:'Energia di Scopo',title:'Allineamento valori-azioni',exercise:"La domanda più potente dell'Energy Audit:\n\n'C'è una stretta corrispondenza tra quello che dico essere importante e come vivo davvero?'\n\nOggi: scrivi 3 cose che dici essere fondamentali per te — non le risposte 'giuste', quelle vere. Poi verifica concretamente: nelle ultime 2 settimane, quanto tempo hai dedicato a ciascuna?\n\nIl gap tra valori dichiarati e comportamenti reali è la principale fonte di insoddisfazione cronica.",question:"Dove c'è più gap tra ciò che dici importante e come passi il tempo? È una scelta consapevole o è scivolato via?"},
+      {day:9,phase:'Energia di Scopo',title:'Contributo & senso',exercise:"L'energia legata allo scopo è la più duratura e la più difficile da esaurire — ma è anche quella che si accumula più lentamente.\n\nNon serve un grande progetto o una missione straordinaria. Piccole azioni consapevoli, nel lavoro quotidiano, nelle relazioni, nel modo in cui ti prendi cura di te stesso, alimentano questa riserva.\n\nOggi: c'è qualcosa che stai rimandando — un'azione, una conversazione, un progetto — che senti che ti darebbe un forte senso di contributo o significato?",question:"Cosa stai rimandando? Qual è la resistenza reale — tempo, paura, priorità mal gestita?"},
+      {day:10,phase:'Sintesi',title:'Il tuo Energy Blueprint',exercise:"Hai esplorato le 4 dimensioni per 9 giorni. Ora costruisci il tuo sistema personale.\n\nRivedi ogni giorno e rispondi a queste domande:\n\n1. In quale dimensione hai fatto più progressi?\n2. In quale il gap è ancora aperto?\n3. Qual è stato l'insight più sorprendente?\n\nPoi scrivi 3 impegni concreti — uno per dimensione prioritaria — che vuoi mantenere dopo questo protocollo. Devono essere specifici, non aspirati: non 'dormire di più' ma 'entro le 23:30 niente schermi'.",question:"Se un amico ti osservasse dall'esterno questa settimana, cosa direbbe sulla tua gestione dell'energia? Cosa cambierebbe rispetto a un mese fa?",isClosing:true}
+    ]
+  },
+  'composizione-14': {
+    id: 'composizione-14', name: 'Composizione Corporea', emoji: '💪', totalDays: 14,
+    tagline: '14 giorni · Recovery & Consapevolezza',
+    description: 'Recovery, qualità del sonno, gestione dello stress e mindset per supportare l\'obiettivo massa/definizione mantenendo il peso target.',
+    days: [
+      {day:1,phase:'Audit',title:'Baseline soggettiva',exercise:"Non si migliora quello che non si misura — ma la metrica più importante inizialmente non è il numero sulla bilancia: è la tua percezione soggettiva.\n\nOggi registra:\n• Peso attuale\n• Percezione visiva del tuo corpo (1-5, dove 3 è neutro)\n• Energia media negli ultimi 7 giorni (1-5)\n• In quale area senti di stare progredendo?\n• In quale senti il gap più grande?\n\nQuesto è il tuo punto zero — rileggilo al giorno 10 e al giorno 14.",question:"Come descriveresti il tuo corpo in questo momento? Dove senti che stai andando nella direzione giusta e dove no?"},
+      {day:2,phase:'Audit',title:'Sonno profondo & massa muscolare',exercise:"Questa connessione è diretta e fisiologica — non è motivazione:\n\nL'ormone della crescita (GH) viene rilasciato principalmente durante le prime ore di sonno profondo (NREM stadio 3). Il GH è il principale segnale anabolico del corpo: stimola la sintesi proteica muscolare, il recupero dei tessuti, la riduzione del grasso corporeo.\n\nCon un deep sleep al 13%, stai riducendo significativamente questo segnale — indipendentemente da quanto e bene ti alleni.\n\nNon è una coincidenza che deep sleep basso, guadagni muscolari lenti e recupero difficile compaiano insieme.",question:"Stai seguendo o hai completato il Protocollo Deep Sleep? Hai notato un collegamento tra le notti con più sonno profondo e come ti senti fisicamente il giorno dopo?"},
+      {day:3,phase:'Audit',title:'HRV come bussola del recupero',exercise:"L'HRV (Heart Rate Variability) mattutino è il miglior indicatore oggettivo di quanto il tuo sistema nervoso si sia ripreso nelle ultime 24 ore.\n\nHRV alto → sistema nervoso parasimpatico dominante → corpo pronto a produrre adattamento all'allenamento.\nHRV basso → sistema nervoso sotto pressione → allenarsi a piena intensità accumula stress senza stimolo anabolico netto.\n\nOggi: controlla i tuoi dati HRV degli ultimi 7 giorni dall'app Zepp. Cerca un pattern.",question:"C'è una correlazione tra i giorni con HRV più basso e come ti sei sentito durante il WOD? Hai mai saltato un allenamento o alleggerito basandoti sull'HRV?"},
+      {day:4,phase:'Audit',title:'Training load awareness',exercise:"CrossFit 4-5 volte a settimana è un volume di allenamento elevato. Il principio fondamentale è questo:\n\nIl muscolo non cresce durante l'allenamento — cresce durante il recupero. L'allenamento è lo stimolo; il recupero è la risposta adattativa.\n\nTroppo stimolo senza recupero sufficiente = catabolismo netto, non anabolismo.\n\nOggi analizza le ultime 2 settimane: quanti giorni di rest completo hai avuto? Quanti WOD ad alta intensità consecutivi?",question:"Negli ultimi 14 giorni, hai avuto abbastanza recupero vero? Come ti sembra il rapporto stimolo/recupero nel tuo training attuale?"},
+      {day:5,phase:'Audit',title:'Stress & cortisolo',exercise:"Il cortisolo è l'ormone dello stress. Fisiologicamente:\n\n• È antagonista del testosterone → riduce il segnale anabolico\n• Inibisce la sintesi proteica → riduce il recupero muscolare\n• Aumenta il catabolismo muscolare → usa il muscolo come fonte energetica\n• Promuove l'accumulo di grasso viscerale\n\nNon è solo 'stanchezza mentale': il cortisolo cronico sabota direttamente la composizione corporea, indipendentemente dall'allenamento.\n\nLo stress non viene solo dal lavoro — viene anche dall'allenamento eccessivo, dal sonno insufficiente, dalle relazioni, dalle preoccupazioni.",question:"Su una scala 1-5, qual è il tuo livello di stress cronico in questo periodo? Riesci a identificare le 2-3 fonti principali?"},
+      {day:6,phase:'Audit',title:'Idratazione & performance',exercise:"L'idratazione ha un impatto diretto e misurabile sulla performance e sul recupero:\n\n• -2% di disidratazione = -20% di forza e performance\n• La disidratazione riduce la sintesi proteica muscolare\n• Compromette il trasporto dei nutrienti alle cellule muscolari\n• Riduce la qualità del sonno (e quindi il deep sleep)\n\nTarget per il tuo peso: 35ml/kg ≈ 2.9L/giorno. Nei giorni di allenamento intenso: +500-700ml.\n\nOggi: stima il tuo consumo effettivo. Non quello teorico — quello reale.",question:"Sei riuscito a raggiungere il target idrico oggi? In quale momento della giornata l'idratazione tende a calare di più?"},
+      {day:7,phase:'Check',title:'Check fase 1 — Il tuo leverage point',exercise:"Hai esplorato 6 fattori nei primi 6 giorni:\n\n🌙 Deep sleep (day 2)\n📊 HRV e recovery (day 3)\n🏋️ Training load (day 4)\n🔴 Stress & cortisolo (day 5)\n💧 Idratazione (day 6)\n\nOggi: rileggi le tue risposte. Qual è il fattore che stai gestendo peggio? Non quello più difficile in assoluto — quello con il gap più grande tra dove sei e dove potresti essere con un intervento mirato.\n\nQuesto è il tuo leverage point per la fase 2.",question:"Se dovessi scegliere UN solo fattore su cui concentrarti nelle prossime 2 settimane, quale sarebbe? Perché proprio quello?"},
+      {day:8,phase:'Consolidamento',title:'Periodizzazione intenzionale',exercise:"La periodizzazione non è un concetto riservato agli atleti d'élite — è la logica che trasforma l'allenamento da accumulo di fatica a progressione controllata.\n\nPrincipio base: settimana ad alto volume → settimana moderata. Non è deload nel senso di 'riposo': è la settimana in cui avviene la maggior parte dell'adattamento.\n\nMolti atleti CrossFit si fermano solo quando sono esauriti o infortunati — mai per scelta strategica.\n\nOggi: guarda la tua programmazione delle ultime 4 settimane. C'è stato un ciclo intenzionale?",question:"Hai mai pianificato consapevolmente una settimana più leggera? O rallenti solo quando il corpo ti costringe?"},
+      {day:9,phase:'Consolidamento',title:'Qualità del movimento',exercise:"Ad alto volume di CrossFit, la qualità tecnica degrada con la fatica — e i movimenti eseguiti con pattern degradati:\n\n• Non producono lo stimolo anabolico ottimale\n• Aumentano il rischio di infortuni\n• Creano pattern motori incorretti che si rinforzano nel tempo\n\nLa soluzione non è sempre fare meno — spesso è fare meglio.\n\nOggi identifica: qual è il movimento in cui senti che la qualità tecnica cala prima sotto fatica? Squat, clean, pull-up, handstand?",question:"Qual è il tuo movimento tecnicamente più debole quando sei stanco? Stai lavorando su quello o tendi a evitarlo?"},
+      {day:10,phase:'Consolidamento',title:'Body scan settimanale',exercise:"Stesso orario, stesso momento della giornata — la consistenza della misura è più importante della precisione.\n\nOggi registra:\n• Peso\n• Percezione visiva del corpo (1-5)\n• Energia soggettiva (1-5)\n• Come ti senti nella forza sui tuoi movimenti principali?\n\nConfronta con il giorno 1. Non cercare trasformazioni — cerca la direzione del trend e come cambia la tua percezione soggettiva.",question:"Il numero sul peso riflette come ti senti fisicamente? O c'è un gap tra metrica e percezione soggettiva?"},
+      {day:11,phase:'Consolidamento',title:'Flessibilità mentale',exercise:"Questo è uno degli aspetti più sottovalutati nella composizione corporea a lungo termine:\n\nL'aderenza costante nel tempo batte la perfezione a breve termine — sempre.\n\nUn giorno di riposo non pianificato, un WOD saltato, una settimana irregolare non distruggono il progresso. La narrativa mentale che costruisci intorno a quel momento sì — perché determina se riprendi subito o se innesca una spirale di 'tanto ormai'.\n\nOggi: come gestisci mentalmente i 'giorni off' dal tuo piano fisico?",question:"Quando ti allontani dalla routine (riposo, recovery, allenamento saltato), come reagisce la tua testa? C'è una voce critica? Da dove viene?"},
+      {day:12,phase:'Consolidamento',title:'Forza come indicatore di progresso',exercise:"Per la composizione corporea — in particolare per aumentare massa mantenendo il peso — i movimenti compositi pesanti (squat, deadlift, press, clean) sono i più efficaci perché attivano il maggior numero di unità motorie e producono il maggior segnale anabolico.\n\nLa progressione di forza in questi movimenti è il miglior proxy dei progressi sulla composizione corporea nel medio termine.\n\nOggi: valuta i tuoi lifts principali negli ultimi 30 giorni. Stai progredendo, sei fermo o stai arretrando?",question:"Qual è il lift in cui senti di essere più fermo o in calo? Cosa pensi ne sia la causa principale — volume, recupero, tecnica o altro?"},
+      {day:13,phase:'Consolidamento',title:'Il giorno di recupero attivo',exercise:"Il recupero attivo è diverso dal riposo passivo:\n\n• Riposo passivo = nessuno stimolo → riduce la fatica ma rallenta il flusso sanguigno e la rimozione dei metaboliti\n• Recupero attivo = stimolo leggero (camminata, mobilità, stretching) → accelera la rimozione dei metaboliti, mantiene il flusso, riduce l'infiammazione\n\nIdentifica un giorno fisso a settimana da dedicare al recupero attivo. Non è un giorno perso — è un investimento diretto sulla qualità degli allenamenti successivi.",question:"Come potrebbe essere il tuo giorno di recupero attivo ideale? Cosa includerebbe? Hai un giorno della settimana che si presta naturalmente?"},
+      {day:14,phase:'Completamento',title:'Il tuo sistema definitivo',exercise:"Confronto completo con la baseline del giorno 1:\n• Peso\n• Percezione visiva (1-5)\n• Energia soggettiva (1-5)\n• HRV trend\n\nOra costruisci il tuo 'Composizione Blueprint' — i 3 fattori non alimentari che impattano di più la tua composizione corporea e come li gestisci in modo sistematico:\n\n1. Recovery (sonno, HRV, giorni rest)\n2. Stress management (livello cronico, fonti, strategie)\n3. Training quality (periodizzazione, tecnica, recupero attivo)\n\nQuesti sono i pilastri che supportano il lavoro della tua nutrizionista.",question:"Cosa hai imparato su te stesso in questi 14 giorni che non sapevi — o che sapevi ma non stavi applicando?",isClosing:true}
+    ]
+  }
+};
+
+// ── STATO PROTOCOLLO ──
+function getActiveProtocol(){try{const r=lsG('er_active_protocol');return r?JSON.parse(r):null;}catch{return null;}}
+function saveActiveProtocol(data){try{lsS('er_active_protocol',JSON.stringify(data));}catch{}}
+function getProtocolHistory(){try{const r=lsG('er_protocol_history');return r?JSON.parse(r):[];}catch{return[];}}
+function addToHistory(entry){try{const h=getProtocolHistory();h.push(entry);lsS('er_protocol_history',JSON.stringify(h));}catch{}}
+
+function activateProtocol(id){
+  const existing=getActiveProtocol();
+  if(existing&&existing.status==='active') addToHistory({...existing,status:'abandoned',endDate:todayStr()});
+  const proto=PROTOCOL_REGISTRY[id];
+  if(!proto)return;
+  const mornings_bl=lsMornings().filter(m=>!m.skipped&&m.deepSleepPct);
+  let baseline=null;
+  if(mornings_bl.length>0){const last5=mornings_bl.slice(-5);baseline=Math.round(last5.reduce((a,b)=>a+b.deepSleepPct,0)/last5.length*10)/10;}
+  saveActiveProtocol({id,startDate:todayStr(),currentDay:1,lastCheckDate:null,status:'active',totalDays:proto.totalDays,streakDays:0,dayCompleted:Array(proto.totalDays).fill(false),baselineDeepSleep:baseline});
+}
+
+function advanceProtocolDay(){
+  const ap=getActiveProtocol();
+  if(!ap||ap.status!=='active')return;
+  const today=todayStr();
+  if(ap.lastCheckDate===today)return;
+  ap.lastCheckDate=today;
+  saveActiveProtocol(ap);
+}
+
+function completeProtocolDay(note){
+  const ap=getActiveProtocol();
+  if(!ap||ap.status!=='active')return;
+  const today=todayStr();
+  if(note) lsS('proto_note_'+ap.id+'_'+ap.currentDay,note);
+  const mornings_cp=lsMornings();
+  const todayM_cp=mornings_cp.find(m=>m.date===today&&!m.skipped);
+  if(todayM_cp&&todayM_cp.deepSleepPct) lsS('proto_ds_'+ap.id+'_'+ap.currentDay,todayM_cp.deepSleepPct);
+  ap.dayCompleted[ap.currentDay-1]=true;
+  if(ap.lastCheckDate===today||(ap.currentDay>1&&ap.dayCompleted[ap.currentDay-2])) ap.streakDays=(ap.streakDays||0)+1;
+  else ap.streakDays=1;
+  ap.lastCheckDate=today;
+  if(ap.currentDay>=ap.totalDays){ap.status='completed';addToHistory({...ap,endDate:today});}
+  else ap.currentDay++;
+  saveActiveProtocol(ap);
+}
+
+function resumeProtocol(){const ap=getActiveProtocol();if(!ap)return;ap.status='active';saveActiveProtocol(ap);renderProtocol();}
+function abandonProtocol(){if(!confirm('Vuoi mettere in pausa il protocollo?'))return;const ap=getActiveProtocol();if(!ap)return;ap.status='paused';saveActiveProtocol(ap);renderProtocol();}
+function restartProtocol(id){if(!confirm("Vuoi ricominciare dall'inizio?"))return;activateProtocol(id);renderProtocol();}
+
+// ── SPARKLINE DEEP SLEEP ──
+function buildSparkline(protocolId,totalDays,currentDay){
+  const vals=[];
+  const ap_sp=getActiveProtocol();
+  const startDate=ap_sp?new Date(ap_sp.startDate):new Date();
+  for(let i=1;i<=Math.min(currentDay,totalDays);i++){
+    const v=lsG('proto_ds_'+protocolId+'_'+i);
+    if(v){vals.push({i,v:parseFloat(v)});}
+    else{
+      const d=new Date(startDate);d.setDate(startDate.getDate()+i-1);
+      const ds=d.toISOString().split('T')[0];
+      const m=lsMornings().find(x=>x.date===ds&&!x.skipped&&x.deepSleepPct);
+      if(m) vals.push({i,v:m.deepSleepPct});
+    }
+  }
+  if(vals.length===0) return '<p style="font-size:11px;color:var(--ink-s);text-align:center;padding:8px">Nessun dato ancora — inserisci il deep sleep nel check-in mattutino</p>';
+  const allV=vals.map(x=>x.v);
+  const maxV=Math.max(28,...allV);const minV=Math.min(0,...allV);const range=maxV-minV||1;
+  const W=280,H=56,P=4;
+  const px=v=>P+((v.i-1)/(totalDays-1||1))*(W-P*2);
+  const py=v=>H-P-((v.v-minV)/range)*(H-P*2);
+  const targetPct=20;const ty=py({v:targetPct});
+  let path='';let circles='';
+  vals.forEach((pt,idx)=>{path+=(idx===0?'M ':'L ')+px(pt)+' '+py(pt)+' ';const c=pt.v>=20?'var(--green)':pt.v>=15?'var(--gold)':'#A32D2D';circles+=`<circle cx="${px(pt)}" cy="${py(pt)}" r="3" fill="${c}"/>`;});
+  return `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:${H}px">
+    <line x1="${P}" y1="${ty}" x2="${W-P}" y2="${ty}" stroke="var(--green)" stroke-width="1" stroke-dasharray="3,3" opacity=".6"/>
+    <text x="${W-P}" y="${ty-3}" text-anchor="end" font-size="8" fill="var(--green)" font-family="DM Sans,sans-serif">target 20%</text>
+    <path d="${path.trim()}" fill="none" stroke="var(--purple)" stroke-width="1.5" stroke-linejoin="round"/>
+    ${circles}
+  </svg>`;
+}
+
+// ── SABOTATORE (giorno 11) ──
+function renderSabotatore(){
+  const saved=lsG('proto_sabotatore');
+  const opts=[{id:'stress',icon:'🧠',label:'Stress mentale'},{id:'stimolanti',icon:'☕',label:'Stimolanti / schermi'},{id:'orario',icon:'⏰',label:'Orario irregolare'},{id:'ambiente',icon:'🌡️',label:'Ambiente camera'}];
+  return `<div class="sabotatore-grid">${opts.map(o=>`<button class="sab-btn ${saved===o.id?'sel':''}" onclick="selectSabotatore('${o.id}',this)"><span class="sab-icon">${o.icon}</span>${o.label}</button>`).join('')}</div>`;
+}
+function selectSabotatore(id,el){document.querySelectorAll('.sab-btn').forEach(b=>b.classList.remove('sel'));el.classList.add('sel');lsS('proto_sabotatore',id);}
+
+function getDay12Exercise(){
+  const map={stress:"Worry time: dedica 15 minuti nel pomeriggio a scrivere le preoccupazioni e un'azione per ciascuna. A letto, se arriva un pensiero d'ansia dì 'l'ho già trattato' e lascialo passare.",stimolanti:"Stop caffè alle 13:00, niente schermi dopo le 21:00, attiva modalità notte su tutti i device dalle 20:00. Anche pochi minuti di telefono a letto azzerano la melatonina.",orario:"Imposta una sveglia-reminder alle 22:30 come segnale di inizio routine. Rispettala anche nel weekend — il 'social jetlag' distrugge il ritmo della settimana.",ambiente:"Porta un termometro in stanza (target 18-19°C), testa una mascherina, elimina ogni fonte luminosa inclusi i LED degli elettrodomestici. Anche 1 lux sopprime la melatonina."};
+  return map[lsG('proto_sabotatore')]||map.stress;
+}
+
+// ── ROUTINE BUILDER (giorno 13) ──
+function renderRoutineBuilder(){
+  const saved=JSON.parse(lsG('proto_routine')||'["","",""]');
+  return `<div class="routine-steps">${[1,2,3].map(n=>`<div class="routine-step-row"><div class="routine-step-num">${n}</div><input class="routine-step-in" id="routine-${n}" placeholder="Es: doccia tiepida, body scan, niente schermo…" value="${saved[n-1]||''}"></div>`).join('')}</div>`;
+}
+function saveRoutine(){const steps=[1,2,3].map(n=>document.getElementById('routine-'+n)?.value.trim()||'');lsS('proto_routine',JSON.stringify(steps));}
+
+// ── CLOSING STATS (giorno 14) ──
+function buildClosingStats(ap){
+  const vals=[];
+  for(let i=1;i<=14;i++){const v=lsG('proto_ds_'+ap.id+'_'+i);if(v)vals.push({day:i,v:parseFloat(v)});}
+  const week1=vals.filter(x=>x.day<=7).map(x=>x.v);
+  const week2=vals.filter(x=>x.day>7).map(x=>x.v);
+  const avg=arr=>arr.length?Math.round(arr.reduce((a,b)=>a+b,0)/arr.length*10)/10:null;
+  return {w1:avg(week1),w2:avg(week2),baseline:ap.baselineDeepSleep||13.2,improvement:avg(week2)&&ap.baselineDeepSleep?Math.round((avg(week2)-ap.baselineDeepSleep)*10)/10:null};
+}
+
+// ── RENDER PRINCIPALE PROTOCOLLO ──
+function renderProtocol(){
+  const pb=document.getElementById('proto-body');
+  const ap=getActiveProtocol();
+
+  if(ap&&ap.status==='active'){
+    const proto=PROTOCOL_REGISTRY[ap.id];
+    const dayObj=proto.days[ap.currentDay-1];
+    const pct=Math.round((ap.currentDay-1)/ap.totalDays*100);
+    const todayCompleted=ap.dayCompleted[ap.currentDay-1];
+    const note=lsG('proto_note_'+ap.id+'_'+ap.currentDay)||'';
+    const mornings_rp=lsMornings().filter(m=>!m.skipped&&m.deepSleepPct);
+    const todayM_rp=mornings_rp.find(m=>m.date===todayStr());
+    const currentDS=todayM_rp?.deepSleepPct||null;
+    let exerciseText=dayObj.exercise;
+    if(ap.currentDay===12&&!exerciseText) exerciseText=getDay12Exercise();
+
+    let html=`<div class="proto-active-card">
+      <div class="proto-day-label">${proto.emoji} ${proto.name} — Fase: ${dayObj.phase}</div>
+      <div class="proto-day-title">Giorno ${ap.currentDay} di ${ap.totalDays}: <em style="font-style:italic;color:var(--purple)">${dayObj.title}</em></div>
+      <div class="proto-progress-bar"><div class="proto-progress-fill" style="width:${pct}%"></div></div>
+      <div class="proto-progress-txt"><span>${ap.currentDay-1} giorni completati</span><span>${ap.totalDays-(ap.currentDay-1)} rimanenti</span></div>
+    </div>
+    <div class="proto-streak">
+      <div class="badge">🔥 ${ap.streakDays||0} giorni streak</div>
+      ${ap.id==='deep-sleep-14'&&currentDS?`<div class="badge">🌙 Deep sleep ieri: ${currentDS}%</div>`:''}
+      ${ap.id==='deep-sleep-14'&&ap.baselineDeepSleep?`<div class="badge">📊 Baseline: ${ap.baselineDeepSleep}%</div>`:''}
+    </div>
+    ${ap.id==='deep-sleep-14'?`<div class="ds-chart-wrap">
+      <div class="ds-chart-title">Deep sleep% — progresso protocollo</div>
+      ${buildSparkline(ap.id,ap.totalDays,ap.currentDay-1)}
+      <div class="ds-target-note">▸ Target: 20-25% · Baseline: ${ap.baselineDeepSleep||13.2}%</div>
+    </div>`:''}
+    <div class="day-exercise-card">
+      <div class="day-ex-label">Esercizio del giorno</div>
+      <div class="day-ex-title">${dayObj.title}</div>`;
+
+    if(dayObj.isSabotatore){
+      html+=`<div class="day-ex-body">Identifica il fattore che sabota di più il tuo deep sleep. La tua scelta personalizza l'esercizio di domani.</div>`;
+      html+=renderSabotatore();
+    } else if(dayObj.isRoutine){
+      html+=`<div class="day-ex-body">${exerciseText}</div>`;
+      html+=renderRoutineBuilder();
+    } else if(dayObj.isClosing){
+      if(ap.id==='deep-sleep-14'){
+        const stats=buildClosingStats(ap);
+        html+=`<div class="closing-stats">
+          <div class="cstat"><div class="cstat-n">${ap.baselineDeepSleep||'?'}%</div><div class="cstat-l">Baseline</div></div>
+          <div class="cstat ${stats.improvement&&stats.improvement>0?'up':''}"><div class="cstat-n">${stats.w2||'?'}%</div><div class="cstat-l">Media settimana 2</div></div>
+          <div class="cstat"><div class="cstat-n">${stats.w1||'?'}%</div><div class="cstat-l">Media settimana 1</div></div>
+          <div class="cstat ${stats.improvement&&stats.improvement>0?'up':''}"><div class="cstat-n">${stats.improvement?'+'+stats.improvement+'%':'?'}</div><div class="cstat-l">Miglioramento</div></div>
+        </div>
+        <div id="closing-ai-insight" class="ai-bub" style="margin-bottom:12px"><div class="ald"><span></span><span></span><span></span></div></div>`;
+        fetchClosingInsight(ap,stats);
+      } else {
+        html+=`<div id="closing-ai-insight" class="ai-bub" style="margin-bottom:12px"><div class="ald"><span></span><span></span><span></span></div></div>`;
+        fetchGenericClosingInsight(ap);
+      }
+    } else {
+      html+=`<div class="day-ex-body">${exerciseText}</div>`;
+    }
+
+    if(dayObj.question&&!dayObj.isSabotatore) html+=`<div class="day-ex-q">${dayObj.question}</div>`;
+    html+=`<textarea class="day-note-area" id="proto-note" placeholder="La tua nota per oggi…">${note}</textarea>`;
+    html+=`</div>
+    <button class="btn-complete ${todayCompleted?'done-today':''}" id="btn-proto-complete" onclick="onCompleteDay()">
+      ${todayCompleted?'✓ Giorno completato':'Segna giorno completato ✓'}
+    </button>
+    <div class="status-msg" id="proto-st" style="margin-top:8px"></div>
+    <div style="margin-top:14px"><button class="btn-ghost" onclick="abandonProtocol()">Metti in pausa</button></div>`;
+    pb.innerHTML=html;
+    if(dayObj.isRoutine){[1,2,3].forEach(n=>{const el=document.getElementById('routine-'+n);if(el)el.addEventListener('input',saveRoutine);});}
+    return;
+  }
+
+  if(ap&&ap.status==='paused'){
+    const proto=PROTOCOL_REGISTRY[ap.id];
+    pb.innerHTML=`<div class="alert-banner proto" style="margin-bottom:20px"><div class="alert-icon">⏸️</div><div class="alert-text"><strong>${proto.emoji} ${proto.name} in pausa</strong>Ti eri fermato al giorno ${ap.currentDay} di ${ap.totalDays}.</div></div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <button class="btn-complete" onclick="resumeProtocol()">▶ Riprendi dal giorno ${ap.currentDay}</button>
+      <button class="btn-secondary" onclick="restartProtocol('${ap.id}')">↺ Ricomincia dall'inizio</button>
+    </div>${renderHistorySection()}`;
+    return;
+  }
+
+  if(ap&&ap.status==='completed'){
+    const proto=PROTOCOL_REGISTRY[ap.id];
+    let statsHtml='';
+    if(ap.id==='deep-sleep-14'){const stats=buildClosingStats(ap);statsHtml=`<div class="closing-stats"><div class="cstat"><div class="cstat-n">${ap.baselineDeepSleep||'?'}%</div><div class="cstat-l">Baseline</div></div><div class="cstat up"><div class="cstat-n">${stats.w2||'?'}%</div><div class="cstat-l">Media finale</div></div></div>`;}
+    pb.innerHTML=`<div class="proto-active-card" style="background:var(--gbg);border-color:rgba(59,109,17,.3)">
+      <div class="proto-day-label" style="color:var(--green)">✓ Completato ${ap.endDate||''}</div>
+      <div class="proto-day-title">${proto?proto.emoji:''} ${proto?proto.name:ap.id} — ${ap.totalDays} giorni</div>
+      ${statsHtml}
+    </div>
+    <div style="margin-top:16px;margin-bottom:20px"><button class="btn-complete" onclick="activateProtocol('${ap.id}');renderProtocol()">↺ Rifai ${proto?proto.name:ap.id}</button></div>
+    <div class="eyebrow" style="margin-bottom:12px">Altri protocolli</div>
+    ${renderProtocolList()}${renderHistorySection()}`;
+    return;
+  }
+
+  // Stato 0: nessun protocollo
+  const mornings_st0=lsMornings().filter(m=>!m.skipped&&m.deepSleepPct);
+  const lastM_st0=mornings_st0[mornings_st0.length-1];
+  let suggestHtml='';
+  if(lastM_st0&&lastM_st0.deepSleepPct<ALERT_THRESHOLDS.deepSleepPct){
+    suggestHtml=`<div class="alert-banner proto" style="margin-bottom:16px"><div class="alert-icon">🌙</div><div class="alert-text"><strong>Deep sleep critico: ${lastM_st0.deepSleepPct}%</strong>Il Protocollo 14 giorni è progettato esattamente per questo.</div></div>`;
+  }
+  pb.innerHTML=`${suggestHtml}<div class="eyebrow" style="margin-bottom:12px">Scegli il tuo protocollo</div>${renderProtocolList()}${renderHistorySection()}`;
+}
+
+function renderProtocolList(){
+  const list=[
+    {id:'deep-sleep-14',emoji:'🌙',title:'Deep Sleep 14 giorni',desc:'Porta il deep sleep dal 13% al 20-25% con igiene del sonno, body scan MBSR e protocollo integratori.',tag:'Disponibile',locked:false},
+    {id:'stress-7',emoji:'⚡',title:'Centramento sotto stress 7 giorni',desc:'Tecniche di regolazione per mantenere focus e calma nelle settimane ad alta intensità.',tag:'Disponibile',locked:false},
+    {id:'relazioni-7',emoji:'🤝',title:'Relazioni & Centramento Sociale 7 giorni',desc:'Qualità relazioni, energia sociale, confini sani: allinea vita relazionale e benessere.',tag:'Disponibile',locked:false},
+    {id:'composizione-14',emoji:'💪',title:'Composizione corporea 14 giorni',desc:'Recovery, sonno profondo, stress e mindset per supportare massa e definizione mantenendo il peso target.',tag:'Disponibile',locked:false},
+    {id:'energia-10',emoji:'☀️',title:'Energia e Focus 10 giorni',desc:'Le 4 dimensioni dell\'energia (fisica, emotiva, mentale, scopo) per costruire il tuo sistema personale.',tag:'Disponibile',locked:false},
+  ];
+  return `<div class="proto-list">${list.map(p=>`<button class="proto-card ${p.locked?'locked':''}" onclick="${p.locked?'':("activateProtocol('"+p.id+"');renderProtocol()")}"><div class="proto-icon">${p.emoji}</div><div><div class="proto-title">${p.title}</div><div class="proto-desc">${p.desc}</div><span class="proto-tag ${p.locked?'coming':''}">${p.tag}</span></div></button>`).join('')}</div>`;
+}
+
+function renderHistorySection(){
+  const history=getProtocolHistory();
+  if(history.length===0) return '';
+  const names={'deep-sleep-14':'Deep Sleep 14gg','stress-7':'Centramento Stress 7gg','relazioni-7':'Relazioni Sociali 7gg'};
+  return `<div class="divider"></div><div class="eyebrow" style="margin-bottom:8px">Storico protocolli</div><div class="history-list">${history.slice().reverse().map(h=>`<div class="history-item"><div class="history-hd"><span class="history-name">${names[h.id]||h.id}</span><span class="history-status ${h.status}">${h.status==='completed'?'✓ Completato':'Interrotto'}</span></div><div class="history-dates">${h.startDate} → ${h.endDate||'?'} · Giorno ${h.currentDay||'?'}/${h.totalDays}</div></div>`).join('')}</div>`;
+}
+
+function onCompleteDay(){
+  const note=document.getElementById('proto-note')?.value.trim()||'';
+  const ap=getActiveProtocol();
+  if(ap&&ap.currentDay===13) saveRoutine();
+  completeProtocolDay(note);
+  const btn=document.getElementById('btn-proto-complete');
+  const st=document.getElementById('proto-st');
+  if(btn){btn.classList.add('done-today');btn.textContent='✓ Giorno completato';}
+  if(st){st.className='status-msg vis ok';st.textContent='Ottimo! Torna domani per il giorno '+(ap?ap.currentDay:'')+'.';}
+  setTimeout(()=>renderProtocol(),1200);
+}
+
+async function fetchClosingInsight(ap,stats){
+  const el=document.getElementById('closing-ai-insight');if(!el)return;
+  const ctx=`Edoardo, CrossFit 4-5x/settimana, Milano. Protocollo Deep Sleep 14 giorni completato. Baseline: ${stats.baseline||ap.baselineDeepSleep||13.2}% | Media sett.1: ${stats.w1||'n/d'}% | Media sett.2: ${stats.w2||'n/d'}% | Miglioramento: ${stats.improvement?'+'+stats.improvement+'%':'n/c'}`;
+  try{
+    const r=await fetch(AI_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:AI_MODEL,max_tokens:800,messages:[{role:'user',content:ctx+'\n\nScrivi 3-4 frasi in italiano: celebra il completamento, evidenzia il progresso specifico, suggerisci 1 cosa da mantenere definitivamente. Tono diretto e personale.'}]})});
+    const d=await r.json();if(el)el.textContent=d.content?.[0]?.text||'Protocollo completato. Ottimo lavoro.';
+  }catch{if(el)el.textContent='Protocollo completato. Analizza i dati nel Monthly Holistic Report.';}
+}
+
+async function fetchGenericClosingInsight(ap){
+  const el=document.getElementById('closing-ai-insight');if(!el)return;
+  const protoNames={'stress-7':'Centramento sotto stress 7 giorni','relazioni-7':'Relazioni & Centramento Sociale 7 giorni'};
+  const name=protoNames[ap.id]||ap.id;
+  const notes=[];
+  for(let i=1;i<=ap.totalDays;i++){const n=localStorage.getItem('proto_note_'+ap.id+'_'+i);if(n)notes.push('Giorno '+i+': '+n);}
+  const ctx=`Edoardo, CrossFit 4-5x/settimana, Milano. Protocollo "${name}" completato in ${ap.totalDays} giorni. Note dai giorni: ${notes.length?notes.join(' | '):'nessuna nota disponibile'}`;
+  try{
+    const r=await fetch(AI_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:AI_MODEL,max_tokens:800,messages:[{role:'user',content:ctx+'\n\nScrivi 3-4 frasi in italiano: celebra il completamento, evidenzia 1-2 insight specifici emersi dalle note, suggerisci 1 comportamento da mantenere definitivamente. Tono diretto, caldo, personale. Niente frasi generiche.'}]})});
+    const d=await r.json();if(el)el.textContent=d.content?.[0]?.text||'Protocollo completato. Ottimo lavoro.';
+  }catch{if(el)el.textContent='Protocollo completato. Rileggi le tue note per trovare i pattern più utili.';}
+}
+
+// ── INIT BADGE PROTOCOLLO HOME ──
+// ─── NOTIFICHE PUSH ──────────────────────────────────────
+async function requestNotifications(){
+  if(!('Notification' in window)) return;
+  if(Notification.permission==='default'){
+    await Notification.requestPermission();
+  }
+}
+
+function scheduleNotification(){
+  if(!('Notification' in window) || Notification.permission!=='granted') return;
+  const now=new Date();
+  const target=new Date();
+  target.setHours(7,30,0,0);
+  if(now>target) target.setDate(target.getDate()+1);
+  const delay=target-now;
+  setTimeout(()=>{
+    // Controlla se il check-in non è già stato fatto oggi
+    if(shouldShowMorning()){
+      new Notification('🌅 Check-in mattutino',{
+        body:'30 secondi per iniziare bene la giornata',
+        icon: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"%3E%3Crect width="64" height="64" fill="%23F7F0E3"/%3E%3Ctext x="32" y="42" text-anchor="middle" font-size="32"%3E✦%3C/text%3E%3C/svg%3E'
+      });
+    }
+    scheduleNotification(); // Reschedula per il giorno dopo
+  }, delay);
 }
 
 // ─── INIT ─────────────────────────────────────────────────
+// Badge e alert protocollo nella home
+(function(){
+  const _ap=getActiveProtocol();
+  const _pb=document.getElementById('proto-home-badge');
+  if(_ap&&_ap.status==='active'){if(_pb){_pb.textContent=(PROTOCOL_REGISTRY[_ap.id]?.emoji||'🌙')+' Giorno '+_ap.currentDay+'/'+_ap.totalDays;_pb.style.display='inline-flex';}}
+  else{
+    const _mornings=lsMornings().filter(m=>!m.skipped&&m.deepSleepPct);
+    const _lastM=_mornings[_mornings.length-1];
+    if(_lastM&&_lastM.deepSleepPct<ALERT_THRESHOLDS.deepSleepPct){
+      const _al=document.getElementById('home-proto-alert');
+      if(_al)_al.innerHTML=`<div class="alert-banner proto" style="margin-bottom:16px"><div class="alert-icon">🌙</div><div class="alert-text"><strong>Deep sleep critico (${_lastM.deepSleepPct}%)</strong>Vuoi attivare il Protocollo 14 giorni?<button onclick="activateProtocol('deep-sleep-14');goScreen('protocol')" style="display:inline-block;margin-top:6px;background:var(--purple);color:#fff;border:none;padding:6px 14px;border-radius:100px;font-size:11px;cursor:pointer;font-family:var(--fb)">Attiva →</button></div></div>`;
+    }
+  }
+})();
+
 document.getElementById('hdate').textContent=new Date().toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
 renderStreak();
 
-// Service Worker registration
+// Determina schermata iniziale: mattino o home?
+if(shouldShowMorning()){
+  renderMorning();
+  goScreen('morning');
+} else {
+  goScreen('home');
+}
+
+// Richiedi permesso notifiche e schedula
+requestNotifications().then(()=>scheduleNotification());
+
+// Service Worker
 if('serviceWorker' in navigator){
   const swCode=`
-const CACHE='er-v1';
+const CACHE='er-v4';
 const ASSETS=[self.location.href];
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS))));
 self.addEventListener('fetch',e=>{
-  if(e.request.url.includes('api.anthropic.com')||e.request.url.includes('mcp.notion.com')||e.request.url.includes('fonts.googleapis.com')||e.request.url.includes('cdnjs'))return;
+  const u=e.request.url;
+  if(u.includes('api.anthropic.com')||u.includes('mcp.notion.com')||u.includes('notion.com')||u.includes('fonts.googleapis.com')||u.includes('cdnjs'))return;
   e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request)));
 });`;
   const swBlob=new Blob([swCode],{type:'application/javascript'});
