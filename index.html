@@ -127,6 +127,23 @@ body { font-family: var(--fb); background: var(--bg); color: var(--ink); height:
 .morning-num { width: 100%; padding: 13px 16px; border: 0.5px solid var(--line); border-radius: 12px; background: var(--bg-w); font-family: var(--fd); font-size: 1.1rem; font-weight: 300; color: var(--ink); -webkit-appearance: none; outline: none; transition: border-color .2s; -moz-appearance: textfield; }
 .morning-num::-webkit-outer-spin-button, .morning-num::-webkit-inner-spin-button { -webkit-appearance: none; }
 .morning-num:focus { border-color: var(--gold); background: var(--gold-p); }
+
+/* ── RRS BADGE ── */
+.rrs-card { border-radius: 14px; padding: 16px 18px; margin-top: 20px; display: flex; align-items: center; gap: 14px; border: 1px solid transparent; animation: fu .4s ease; }
+.rrs-card.green  { background: #EAF3DE; border-color: rgba(59,109,17,.2); }
+.rrs-card.yellow { background: #FEF9EC; border-color: rgba(201,169,110,.3); }
+.rrs-card.red    { background: #FEF2F2; border-color: rgba(226,75,74,.2); }
+.rrs-score { font-family: var(--fd); font-size: 2.4rem; font-weight: 300; line-height: 1; min-width: 52px; text-align: center; }
+.rrs-card.green  .rrs-score { color: #3B6D11; }
+.rrs-card.yellow .rrs-score { color: #A07A1A; }
+.rrs-card.red    .rrs-score { color: #C0392B; }
+.rrs-info { flex: 1; }
+.rrs-title { font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 3px; }
+.rrs-card.green  .rrs-title { color: #3B6D11; }
+.rrs-card.yellow .rrs-title { color: #A07A1A; }
+.rrs-card.red    .rrs-title { color: #C0392B; }
+.rrs-label { font-size: 12px; color: var(--ink-m); font-family: var(--fb); }
+.rrs-breakdown { font-size: 10px; color: var(--ink-s); margin-top: 3px; font-family: var(--fb); }
 .energy-row { display: flex; gap: 8px; }
 .energy-btn { flex: 1; padding: 14px 8px; border: 0.5px solid var(--line); border-radius: 12px; background: var(--bg-w); font-size: 13px; font-weight: 500; color: var(--ink-m); cursor: pointer; text-align: center; -webkit-appearance: none; transition: all .15s; }
 .energy-btn.sel { border-color: var(--gold); background: var(--gold-p); color: var(--ink); border-width: 1.5px; }
@@ -909,6 +926,22 @@ function saveMorningData(){
   saveMorning(entry);
   morningData=entry;
   advanceProtocolDay();
+
+  // Mostra RRS nella schermata morning prima di uscire
+  const rrsHtml = renderRRS(entry);
+  if(rrsHtml){
+    const body = document.getElementById('morning-body');
+    if(body){
+      // Rimuovi pulsanti salva/salta e mostra RRS + pulsante continua
+      const btnArea = body.querySelector('[style*="margin-top:24px"]');
+      if(btnArea) btnArea.style.display='none';
+      const rrsWrap = document.createElement('div');
+      rrsWrap.id = 'rrs-wrap';
+      rrsWrap.innerHTML = rrsHtml + `<button class="btn-primary" style="margin-top:14px" onclick="goScreen('home')">Inizia la giornata →</button>`;
+      body.appendChild(rrsWrap);
+      return; // non navigare subito
+    }
+  }
   goScreen('home');
 }
 
@@ -917,6 +950,62 @@ function skipMorning(){
   const today=todayStr();
   saveMorning({date:today,skipped:true});
   goScreen('home');
+}
+
+// ─── RRS — Recovery Readiness Score ─────────────────────
+function calcRRS(entry){
+  // Formula: biocharge×0.35 + hrv_norm×0.30 + sleep_score×0.20 + slancio×0.15
+  // hrv_norm = hrv/28 (baseline personale), capped a 1.0
+  // Da luglio 2026: usa hrv4t se disponibile, altrimenti hrv Zepp
+  const bc  = entry.biocharge  != null ? entry.biocharge  : null;
+  const hrv = entry.hrv4t      != null ? entry.hrv4t
+              : entry.hrv      != null ? entry.hrv        : null;
+  const ss  = entry.sleepScore != null ? entry.sleepScore : null;
+  const sl  = entry.slancio    != null ? entry.slancio    : null;
+
+  const missing=[];
+  if(bc  == null) missing.push('Biocharge');
+  if(hrv == null) missing.push('HRV');
+  if(ss  == null) missing.push('Sleep score');
+  if(sl  == null) missing.push('Slancio Hume');
+  if(missing.length === 4) return null;
+
+  const bc_n  = bc  != null ? Math.min(bc  / 100, 1.0) : null;
+  const hrv_n = hrv != null ? Math.min(hrv / 28,  1.0) : null;
+  const ss_n  = ss  != null ? Math.min(ss  / 100, 1.0) : null;
+  const sl_n  = sl  != null ? Math.min(sl  / 100, 1.0) : null;
+
+  const W = {bc:0.35, hrv:0.30, ss:0.20, sl:0.15};
+  let num=0, den=0;
+  if(bc_n  != null){ num += bc_n  * W.bc;  den += W.bc;  }
+  if(hrv_n != null){ num += hrv_n * W.hrv; den += W.hrv; }
+  if(ss_n  != null){ num += ss_n  * W.ss;  den += W.ss;  }
+  if(sl_n  != null){ num += sl_n  * W.sl;  den += W.sl;  }
+
+  const raw = den > 0 ? (num / den) * 100 : null;
+  if(raw == null) return null;
+  return { score: Math.round(raw), missing, hrvSrc: entry.hrv4t != null ? 'HRV4T' : 'Zepp' };
+}
+
+function renderRRS(entry){
+  const res = calcRRS(entry);
+  if(!res) return '';
+  const s = res.score;
+  const cls  = s >= 70 ? 'green' : s >= 50 ? 'yellow' : 'red';
+  const icon = s >= 70 ? '🟢' : s >= 50 ? '🟡' : '🔴';
+  const lbl  = s >= 70 ? 'Recovery buona — allena senza riserve'
+             : s >= 50 ? 'Recovery parziale — monitora intensità'
+             :           'Recovery insufficiente — recupero prioritario';
+  const src  = res.hrvSrc === 'HRV4T' ? 'HRV4Training' : 'HRV Zepp';
+  const miss = res.missing.length ? ` · dati mancanti: ${res.missing.join(', ')}` : '';
+  return `<div class="rrs-card ${cls}">
+    <div class="rrs-score">${s}</div>
+    <div class="rrs-info">
+      <div class="rrs-title">${icon} Recovery Readiness</div>
+      <div class="rrs-label">${lbl}</div>
+      <div class="rrs-breakdown">Su 100 · HRV: ${src}${miss}</div>
+    </div>
+  </div>`;
 }
 
 // ─── SESSION ─────────────────────────────────────────────
@@ -1060,6 +1149,8 @@ function buildCtx(){
     if(todayM.deepSleepPct) p.push('Deep sleep ieri: '+todayM.deepSleepPct+'%');
     if(todayM.sleepScore)   p.push('Sleep score Zepp: '+todayM.sleepScore+'/100');
     if(todayM.humeScore)p.push('Score salute Hume (settimana): '+todayM.humeScore);
+    const rrsCtx = calcRRS(todayM);
+    if(rrsCtx) p.push('Recovery Readiness Score: '+rrsCtx.score+'/100');
   }
   // Dati sessione serale
   if(sd.moodWords&&sd.moodWords.length)p.push('Come mi sento: '+sd.moodWords.join(', '));
@@ -1439,6 +1530,9 @@ function copyForClaude(){
     if(todayM.deepSleepPct) text+='Deep sleep ieri: '+todayM.deepSleepPct+'%\n';
     if(todayM.sleepScore)   text+='Sleep score Zepp: '+todayM.sleepScore+'/100\n';
     if(todayM.humeScore) text+='Score salute Hume (settimana): '+todayM.humeScore+'\n';
+    // RRS
+    const rrsExp = calcRRS(todayM);
+    if(rrsExp) text+='Recovery Readiness Score: '+rrsExp.score+'/100\n';
     text+='\n';
   }
 
